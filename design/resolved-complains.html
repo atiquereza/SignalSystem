@@ -106,12 +106,14 @@
                                         <th>Lastname</th>
                                         <th>Phone Number</th>
                                         <th>Rank</th>
-                                        <th>Complain time</th>
-                                        <th>Resolved at</th>
+                                        <th>Complain date & time</th>
+                                        <th>Resolved date & time</th>
                                         <th>Complain Type</th>
                                         <th>Resolved by</th>
+                                        <th>Remark</th>
                                         <th>Complain</th>
                                         <th>Status</th>
+                                        <th>Action Taken</th>
                                     </tr>
                                     <tr>
                                         <td>Eve</td>
@@ -122,11 +124,13 @@
                                         <td>22:30 </td>
                                         <td>Disconnected</td>
                                         <td>Habib</td>
-                                        <td><a href="" data-toggle="modal" data-target="#myModal">View</a></td>
+                                        <td>Second time</td>
+                                        <td><a href="" data-toggle="modal" data-target="#complain">View</a></td>
 
 
-                                        <!-- Modal -->
-                                        <div id="myModal" class="modal fade" role="dialog">
+
+                                        <!-- Complain Modal -->
+                                        <div id="complain" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -145,9 +149,34 @@
 
                                             </div>
                                         </div>
-
+                                        <!-- Modal -->
 
                                         <td><span class="label label-success">Resolved</span></td>
+                                        <td><a href="" data-toggle="modal" data-target="#resolved">View</a></td>
+
+                                        <!-- Resolved Modal -->
+                                        <div id="resolved" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Action Taken</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>This is the action taken.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+
+
                                     </tr>
                                 </table>
                                 </br><label>Total Resolved Complains: 1</label>
