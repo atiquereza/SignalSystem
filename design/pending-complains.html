@@ -28,8 +28,8 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul id="active" class="nav navbar-nav side-nav">
-                <li class="selected"><a href="#"><i class="fa fa-plus"></i> Add Complain</a></li>
-                <li><a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a></li>
+                <li><a href="user-reporter-index.html"><i class="fa fa-plus"></i> Add Complain</a></li>
+                <li class="selected"><a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a></li>
                 <li><a href="resolved-complains.html"><i class="fa fa-check"></i> Resolved Complains</a></li>
                 <!--<li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>-->
             </ul>
@@ -78,47 +78,50 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Add Complain <small>Search Phone Number and Add Complain</small></h1>
-
+                <h1>Pending Complains <small>List of Complains</small></h1>
             </div>
-        </div>
-        <div class="row">
+            <form action="" method="">
             <div class="col-lg-3">
                 <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
             </div>
             <div class="col-lg-2">
                 <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
             </div>
+            </form>
         </div>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Add complain for Phone Numner ####### </h3>
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Pending Complains </h3>
                     </div>
                     <div class="panel-body">
-                        <form action="" method="">
-                            <div id="shieldui-grid1">
-                                <label>Name:</label></br>
-                                <label>Telephone Number:</label></br>
-                                <label>Rank:</label></br>
-                                <label>Appt/Loc/Unit:</label></br>
-                                <label>Address:</label></br>
 
-                                <div class="dropdown">
-                                    <label>Complain Type:</label> <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
-                                        <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Disconnected</a></li>
-                                        <li><a href="#">Unclear sound</a></li>
-                                        <li><a href="#">Unknown</a></li>
-                                    </ul>
-                                </div>
-                                <label>Write your complain below:</label></br>
-                                <textarea class="form-control" id="complain"></textarea></br>
-                                <input type="submit" class="btn btn-info btn-block" id="" value="Submit Complain">
+                            <div id="shieldui-grid1">
+                                <table style="width:100%" border="1">
+                                    <tr>
+                                        <th>Firstname</th>
+                                        <th>Lastname</th>
+                                        <th>Phone Number</th>
+                                        <th>Rank</th>
+                                        <th>Complain time</th>
+                                        <th>Complain Type</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Eve</td>
+                                        <td>Jackson</td>
+                                        <td>91234</td>
+                                        <td>Major</td>
+                                        <td>21:30 </td>
+                                        <td>Disconnected</td>
+                                        <td><span class="label label-danger">Pending</span></td>
+                                    </tr>
+                                </table>
+                                </br><label>Total Pending Complains: 1</label>
                             </div>
-                        </form>
+
                     </div>
                 </div>
             </div>
