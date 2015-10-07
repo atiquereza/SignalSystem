@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporter</title>
+    <title>Resolver</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
@@ -24,12 +24,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Reporter Panel</a>
+            <a class="navbar-brand" href="#">Resolver Panel</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul id="active" class="nav navbar-nav side-nav">
-                <li class="selected"><a href="#"><i class="fa fa-warning"></i> Pending Complains</a></li>
-                <li><a href="resolver.html"><i class="fa fa-check"></i> Resolved Complains</a></li>
+                <li><a href="user-resolver-index.html"><i class="fa fa-warning"></i> Pending Complains</a></li>
+                <li class="selected"><a href="resolver.html"><i class="fa fa-check"></i> Resolved Complains</a></li>
                 <!--<li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-user">
@@ -77,7 +77,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Pending Complains <small>List of Complains</small></h1>
+                <h1>Resolved Complains <small>List of Resolved Complains</small></h1>
             </div>
             <form action="" method="">
                 <div class="col-lg-3">
@@ -93,7 +93,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Pending Complains </h3>
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Resolved Complains </h3>
                     </div>
                     <div class="panel-body">
 
@@ -105,9 +105,13 @@
                                     <th>Phone Number</th>
                                     <th>Rank</th>
                                     <th>Complain date & time</th>
+                                    <th>Resolved date & time</th>
                                     <th>Complain Type</th>
+                                    <th>Resolved by</th>
+                                    <th>Remark</th>
+                                    <th>Complain</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Action Taken</th>
                                 </tr>
                                 <tr>
                                     <td>Eve</td>
@@ -115,12 +119,65 @@
                                     <td>91234</td>
                                     <td>Major</td>
                                     <td>21:30 </td>
+                                    <td>22:30 </td>
                                     <td>Disconnected</td>
-                                    <td><span class="label label-danger">Pending</span></td>
-                                    <td><a href="#">Resolve</a></td>
+                                    <td>Habib</td>
+                                    <td>Second time</td>
+                                    <td><a href="" data-toggle="modal" data-target="#complain">View</a></td>
+
+
+
+                                    <!-- Complain Modal -->
+                                    <div id="complain" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Complain Details</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>This is the complain details.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Modal -->
+
+                                    <td><span class="label label-success">Resolved</span></td>
+                                    <td><a href="" data-toggle="modal" data-target="#resolved">View</a></td>
+
+                                    <!-- Resolved Modal -->
+                                    <div id="resolved" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Action Taken</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>This is the action taken.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Modal -->
+
+
                                 </tr>
                             </table>
-                            </br><label>Total Pending Complains: 1</label>
+                            </br><label>Total Resolved Complains: 1</label>
                         </div>
 
                     </div>

@@ -9,9 +9,15 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/local.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.min.css" />
 
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="js/en.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/date.js"></script>
+
 
 </head>
 <body>
@@ -24,15 +30,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Reports Panel</a>
+            <a class="navbar-brand" href="#">History Panel</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul id="active" class="nav navbar-nav side-nav">
                 <li><a href="admin-index.html"><i class="fa fa-bullseye"></i> Dashboard</a></li>
                 <li><a href="users.html"><i class="fa fa-user"></i> Users</a></li>
                 <li><a href="register.html"><i class="fa fa-font"></i> Register</a></li>
-                <li  class="selected"><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>
-                <li><a href="history.html"><i class="fa fa-history"></i> History</a></li>
+                <li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>
+                <li class="selected"><a href="history.html"><i class="fa fa-history"></i> History</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-user">
                 <li class="dropdown messages-dropdown">
@@ -79,7 +85,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Reports <small>Detail Report</small></h1>
+                <h1>History <small>Search record</small></h1>
                 <div class="alert alert-dismissable alert-warning">
                     <button data-dismiss="alert" class="close" type="button">&times;</button>
                     Welcome to the Report page! Feel free to review all pages and modify the layout to your needs.
@@ -87,6 +93,37 @@
             </div>
         </div>
 
+        <!-- Datepicker starts-->
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="container">
+                    <div class='col-md-2'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker6'>
+                                <input type='text' class="form-control" placeholder="From"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-2'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker7'>
+                                <input type='text' class="form-control" placeholder="To"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
+            </div>
+        </div>
+        <!-- Datepicker ends-->
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-primary">
@@ -129,84 +166,84 @@
                     </div>
                     <div class="panel-body">
                         <div id="shieldui-grid2">
-                        <table>
-                            <tr>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                                <th>Phone Number</th>
-                                <th>Rank</th>
-                                <th>Complain date & time</th>
-                                <th>Resolved date & time</th>
-                                <th>Complain Type</th>
-                                <th>Resolved by</th>
-                                <th>Remark</th>
-                                <th>Complain</th>
-                                <th>Status</th>
-                                <th>Action Taken</th>
-                            </tr>
-                            <tr>
-                                <td>Eve</td>
-                                <td>Jackson</td>
-                                <td>91234</td>
-                                <td>Major</td>
-                                <td>21:30 </td>
-                                <td>22:30 </td>
-                                <td>Disconnected</td>
-                                <td>Habib</td>
-                                <td>Second time</td>
-                                <td><a href="" data-toggle="modal" data-target="#complain">View</a></td>
+                            <table>
+                                <tr>
+                                    <th>Firstname</th>
+                                    <th>Lastname</th>
+                                    <th>Phone Number</th>
+                                    <th>Rank</th>
+                                    <th>Complain date & time</th>
+                                    <th>Resolved date & time</th>
+                                    <th>Complain Type</th>
+                                    <th>Resolved by</th>
+                                    <th>Remark</th>
+                                    <th>Complain</th>
+                                    <th>Status</th>
+                                    <th>Action Taken</th>
+                                </tr>
+                                <tr>
+                                    <td>Eve</td>
+                                    <td>Jackson</td>
+                                    <td>91234</td>
+                                    <td>Major</td>
+                                    <td>21:30 </td>
+                                    <td>22:30 </td>
+                                    <td>Disconnected</td>
+                                    <td>Habib</td>
+                                    <td>Second time</td>
+                                    <td><a href="" data-toggle="modal" data-target="#complain">View</a></td>
 
 
 
-                                <!-- Complain Modal -->
-                                <div id="complain" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
+                                    <!-- Complain Modal -->
+                                    <div id="complain" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
 
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Complain Details</h4>
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Complain Details</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>This is the complain details.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
-                                            <div class="modal-body">
-                                                <p>This is the complain details.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
+
                                         </div>
-
                                     </div>
-                                </div>
-                                <!-- Modal -->
+                                    <!-- Modal -->
 
-                                <td><span class="label label-success">Resolved</span></td>
-                                <td><a href="" data-toggle="modal" data-target="#resolved">View</a></td>
+                                    <td><span class="label label-success">Resolved</span></td>
+                                    <td><a href="" data-toggle="modal" data-target="#resolved">View</a></td>
 
-                                <!-- Resolved Modal -->
-                                <div id="resolved" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
+                                    <!-- Resolved Modal -->
+                                    <div id="resolved" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
 
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Action Taken</h4>
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Action Taken</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>This is the action taken.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
-                                            <div class="modal-body">
-                                                <p>This is the action taken.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
+
                                         </div>
-
                                     </div>
-                                </div>
-                                <!-- Modal -->
+                                    <!-- Modal -->
 
 
-                            </tr>
+                                </tr>
                             </table>
                             </br><label>Total Resolved Complains: 1</label>
                         </div>
