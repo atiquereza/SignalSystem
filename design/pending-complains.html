@@ -28,9 +28,65 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul id="active" class="nav navbar-nav side-nav">
-                <li><a href="user-reporter-index.html"><i class="fa fa-plus"></i> Add Complain</a></li>
-                <li class="selected"><a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a></li>
-                <li><a href="resolved-complains.html"><i class="fa fa-check"></i> Resolved Complains</a></li>
+                <li><a href="admin-index.html"><i class="fa fa-bullseye"></i> Dashboard</a></li>
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Manage Users <i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo" class="collapse" style="list-style: none";>
+                        <li>
+                            <a href="register.html"><i class="fa fa-fw fa-plus"></i> Register User</a>
+                        </li>
+                        <li>
+                            <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Users</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo1" style="list-style: none";>
+                        <li>
+                            <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
+                        </li>
+                        <li class="selected">
+                            <a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a>
+                        </li>
+                        <li>
+                            <a href="resolved-complains.html"><i class="fa fa-fw fa-check"></i> Resolved Complains</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-envelope"></i>Mail<i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo3" class="collapse" style="list-style: none";>
+                        <li>
+                            <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
+                        </li>
+                        <li>
+                            <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo4"><i class="fa fa-fw fa-wrench"></i>Technical<i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo4" class="collapse" style="list-style: none";>
+                        <li>
+                            <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
+                        </li>
+                        <li>
+                            <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo5"><i class="fa fa-fw fa-cube"></i>Equipments<i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo5" class="collapse" style="list-style: none";>
+                        <li>
+                            <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
+                        </li>
+                        <li>
+                            <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                        </li>
+                    </ul>
+                </li>
                 <!--<li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-user">
@@ -81,12 +137,12 @@
                 <h1>Pending Complains <small>List of Complains</small></h1>
             </div>
             <form action="" method="">
-            <div class="col-lg-3">
-                <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
-            </div>
-            <div class="col-lg-2">
-                <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
-            </div>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
+                </div>
+                <div class="col-lg-2">
+                    <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
+                </div>
             </form>
         </div>
 
@@ -98,29 +154,29 @@
                     </div>
                     <div class="panel-body">
 
-                            <div id="shieldui-grid1">
-                                <table style="width:100%" border="1">
-                                    <tr>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
-                                        <th>Phone Number</th>
-                                        <th>Rank</th>
-                                        <th>Complain date & time</th>
-                                        <th>Complain Type</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Eve</td>
-                                        <td>Jackson</td>
-                                        <td>91234</td>
-                                        <td>Major</td>
-                                        <td>21:30 </td>
-                                        <td>Disconnected</td>
-                                        <td><span class="label label-danger">Pending</span></td>
-                                    </tr>
-                                </table>
-                                </br><label>Total Pending Complains: 1</label>
-                            </div>
+                        <div id="shieldui-grid1">
+                            <table style="width:100%" border="1">
+                                <tr>
+                                    <th>BA Number</th>
+                                    <th>Name</th>
+                                    <th>Rank</th>
+                                    <th>Phone Number</th>
+                                    <th>Complain date & time</th>
+                                    <th>Complain Type</th>
+                                    <th>Status</th>
+                                </tr>
+                                <tr>
+                                    <td>001255</td>
+                                    <td>Jackson</td>
+                                    <td>Major</td>
+                                    <td>91234</td>
+                                    <td>21:30 </td>
+                                    <td>Disconnected</td>
+                                    <td><span class="label label-danger">Pending</span></td>
+                                </tr>
+                            </table>
+                            </br><label>Total Pending Complains: 1</label>
+                        </div>
 
                     </div>
                 </div>

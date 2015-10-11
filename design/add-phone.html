@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard- Admin</title>
+    <title>Register - Dark Admin</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
@@ -13,8 +13,16 @@
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 
+    <style>
+
+        div {
+            padding-bottom:20px;
+        }
+
+    </style>
 </head>
 <body>
+
 <div id="wrapper">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
@@ -24,33 +32,33 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Users Panel</a>
+            <a class="navbar-brand" href="#">Add Phone</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul id="active" class="nav navbar-nav side-nav">
                 <li><a href="admin-index.html"><i class="fa fa-bullseye"></i> Dashboard</a></li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Manage Users <i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo" style="list-style: none";>
+                    <ul id="demo" class="collapse" style="list-style: none";>
                         <li>
                             <a href="register.html"><i class="fa fa-fw fa-plus"></i> Register User</a>
                         </li>
-                        <li class="selected">
+                        <li>
                             <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Users</a>
                         </li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo1" class="collapse" style="list-style: none";>
-                        <li>
+                    <ul id="demo1" style="list-style: none";>
+                        <li class="selected">
                             <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                         </li>
                         <li>
                             <a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a>
                         </li>
                         <li>
-                            <a href="resolved-complains.html"><i class="fa fa-fw fa-check"></i> Resolved Complains</a>
+                            <a href="users.html"><i class="fa fa-fw fa-check"></i> Resolved Complains</a>
                         </li>
                     </ul>
                 </li>
@@ -69,7 +77,7 @@
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo4"><i class="fa fa-fw fa-wrench"></i>Technical<i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="demo4" class="collapse" style="list-style: none";>
                         <li>
-                            <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
+                            <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                         </li>
                         <li>
                             <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
@@ -118,69 +126,125 @@
                         <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
-
                     </ul>
-                </li>
-                <li class="divider-vertical"></li>
-                <li>
-                    <form class="navbar-search">
-                        <input type="text" placeholder="Search" class="form-control">
-                    </form>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Users <small>List of existing users</small></h1>
-                <div class="alert alert-dismissable alert-warning">
-                    <button data-dismiss="alert" class="close" type="button">&times;</button>
-                    Welcome to the uses page! Feel free to review all pages and modify the layout to your needs.
-                </div>
-            </div>
+    <div>
+        <div class="row text-center">
+            <h2>Add New Number</h2>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Users </h3>
-                    </div>
-                    <div class="panel-body">
-
-                        <div id="shieldui-grid1">
-                            <table style="width:100%" border="1">
-                                <tr>
-                                    <th>BA Number</th>
-                                    <th>Name</th>
-                                    <th>Rank</th>
-                                    <th>Email Address</th>
-                                    <th>Role</th>
-                                    <th>Last Log in Time</th>
-                                </tr>
-                                <tr>
-                                    <td>002345</td>
-                                    <td>Jackson</td>
-                                    <td>Major</td>
-                                    <td>abc@abc.com</td>
-                                    <td>Reporter</td>
-                                    <td>21.55</td>
-                                </tr>
-                            </table>
-                            </br><label>Total Users: 1</label>
-                        </div>
-                    </div>
-                </div>
+        <div>
+            <label for="banumber" class="col-md-2">
+                BA Number:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="banumber" placeholder="BA Number">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
 
+        <div>
+            <label for="name" class="col-md-2">
+                Name:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <!--<div>-->
+            <!--<label for="lastname" class="col-md-2">-->
+                <!--Last Name:-->
+            <!--</label>-->
+            <!--<div class="col-md-9">-->
+                <!--<input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">-->
+            <!--</div>-->
+            <!--<div class="col-md-1">-->
+                <!--<i class="fa fa-lock fa-2x"></i>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div>
+            <label for="rank" class="col-md-2">
+                Rank:
+            </label>
+            <div class="col-md-9">
+                <select name="rank" id="rank" class="form-control">
+                    <option>--Please Select--</option>
+                    <option>Second Lieutenant</option>
+                    <option>First Lieutenant</option>
+                    <option>Captain</option>
+                    <option>Major</option>
+                    <option>Others</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="phone" class="col-md-2">
+                New Phone Number:
+            </label>
+            <div class="col-md-9">
+                <input type="email" class="form-control" id="phone" placeholder="Enter Phone Number Here">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="address" class="col-md-2">
+                Address:
+            </label>
+            <div class="col-md-9">
+                <input type="password" class="form-control" id="address" placeholder="Enter Address">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="sex" class="col-md-2">
+                Gender:
+            </label>
+            <div class="col-md-10">
+                <label class="radio">
+                    <input type="radio" name="sex" id="sex" value="male" checked>
+                    Male
+                </label>
+                <label class="radio">
+                    <input type="radio" name="sex" id="Radio1" value="female">
+                    Female
+                </label>
+            </div>
+        </div>
+        <div>
+            <label for="uploadimage" class="col-md-2">
+                Upload Image:
+            </label>
+            <div class="col-md-10">
+                <input type="file" name="uploadimage" id="uploadimage">
+                <p class="help-block">
+                    Allowed formats: jpeg, jpg, gif, png
+                </p>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-info">
+                    Add
+                </button>
+            </div>
+        </div>
     </div>
-    </div>
-
-<!-- /#wrapper -->
-
+</div>
 
 </body>
 </html>
