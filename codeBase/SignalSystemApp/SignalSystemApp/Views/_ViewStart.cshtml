@@ -12,7 +12,14 @@
         }
         else if (!TemplateItems.HasAdminView(Session))
         {
-            Layout = "~/Views/Shared/_Layout_Users.cshtml";
+            if (TemplateItems.HasReoporterView(Session))
+            {
+                Layout = "~/Views/Shared/_Layout_Reporter.cshtml";
+            }
+            else
+            {
+                Layout = "~/Views/Shared/_Layout_Resolver.cshtml";
+            }
         }
     }
     else

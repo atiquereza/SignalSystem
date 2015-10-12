@@ -43,7 +43,25 @@ namespace SignalSystem.Views.Classes
             }
 
             Dictionary<string, string> sessionData = SessionHandler.GetSessionData(Session);
-            if (sessionData["RoleName"] == "ViewUser")
+            if (sessionData["RoleName"] == "Admin")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+        public static bool HasReoporterView(HttpSessionStateBase Session)
+        {
+            if (Session.Count == 0 || Session == null)
+            {
+                return false;
+            }
+
+            Dictionary<string, string> sessionData = SessionHandler.GetSessionData(Session);
+            if (sessionData["RoleName"] == "Resolver")
             {
                 return false;
             }
