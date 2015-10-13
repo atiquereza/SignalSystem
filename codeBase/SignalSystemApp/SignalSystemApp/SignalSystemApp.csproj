@@ -176,6 +176,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TelephoneController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +216,11 @@
     <Content Include="Views\Shared\_Layout_Reporter.cshtml" />
     <Content Include="Views\Shared\_Layout_Resolver.cshtml" />
     <Content Include="Views\Shared\_Layout_Admin.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Registration.cshtml" />
+    <Content Include="Views\Telephone\AddTelephone.cshtml" />
+    <Content Include="Views\Telephone\PendingComplains.cshtml" />
+    <Content Include="Views\Telephone\ResolvedComplains.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

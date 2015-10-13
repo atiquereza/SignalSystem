@@ -1,0 +1,111 @@
+﻿<style>
+    div {
+        padding-bottom: 20px;
+    }
+</style>
+
+
+
+
+<div>
+    <div class="row text-center">
+        <h2>Add New Number</h2>
+    </div>
+    <div>
+        <label for="banumber" class="col-md-2">
+            BA Number:
+        </label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" id="banumber" placeholder="BA Number">
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+
+    <div>
+        <label for="name" class="col-md-2">
+            Name:
+        </label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" id="name" placeholder="Enter Name">
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+   
+    <div>
+        <label for="rank" class="col-md-2">
+            Rank:
+        </label>
+        <div class="col-md-9">
+            <select name="rank" id="rank" class="form-control">
+                <option>--Please Select--</option>
+                <option>Second Lieutenant</option>
+                <option>First Lieutenant</option>
+                <option>Captain</option>
+                <option>Major</option>
+                <option>Others</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label for="phone" class="col-md-2">
+            New Phone Number:
+        </label>
+        <div class="col-md-9">
+            <input type="email" class="form-control" id="phone" placeholder="Enter Phone Number Here">
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+    <div>
+        <label for="address" class="col-md-2">
+            Address:
+        </label>
+        <div class="col-md-9">
+            <input type="password" class="form-control" id="address" placeholder="Enter Address">
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+    <div>
+        <label for="sex" class="col-md-2">
+            Gender:
+        </label>
+        <div class="col-md-10">
+            <label class="radio">
+                <input type="radio" name="sex" id="sex" value="male" checked>
+                Male
+            </label>
+            <label class="radio">
+                <input type="radio" name="sex" id="Radio1" value="female">
+                Female
+            </label>
+        </div>
+    </div>
+    <div>
+        <label for="uploadimage" class="col-md-2">
+            Upload Image:
+        </label>
+        <div class="col-md-10">
+            <input type="file" name="uploadimage" id="uploadimage">
+            <p class="help-block">
+                Allowed formats: jpeg, jpg, gif, png
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-info">
+                Add
+            </button>
+        </div>
+    </div>
+</div>
