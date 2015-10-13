@@ -16,10 +16,10 @@ namespace SignalSystem.Libs
     public class Authentication
     {
 
-        public static bool Authenticate(string userName, string cellNumber, HttpSessionStateBase Session)
+        public static bool Authenticate(string userName, string userPassword, HttpSessionStateBase Session)
         {
-            
-            DBAuthentication authentication = new DBAuthentication(userName, cellNumber); 
+
+            DBAuthentication authentication = new DBAuthentication(userName, userPassword); 
 
             bool result = authentication.IsValid();
 
@@ -31,13 +31,13 @@ namespace SignalSystem.Libs
 
             DBGateway aDbGateway = new DBGateway();
             Hashtable conditionTable = new Hashtable();
-            string query = "select * from users,roles where users.UserName='" + userName + "' and users.UserCellNumber='" + cellNumber + "' and  users.UserRoleId = roles.ID";
+            string query = "select * from users,roles where users.UserName='" + userName + "' and users.UserCredential='" + userPassword + "' and  users.UserRoleId = roles.ID";
             conditionTable["UserName"] = userName;
             DataSet aDataSet = aDbGateway.Select(query, conditionTable);
 
 
             aDataSet.Tables[0].Columns.Add("LogInValue");
-            aDataSet.Tables[0].Rows[0]["LogInValue"] = cellNumber;
+            aDataSet.Tables[0].Rows[0]["LogInValue"] = userPassword;
 
             List<string> cols = new List<string>();
 
@@ -152,7 +152,7 @@ namespace SignalSystem.Libs
 public struct Credentials
 {
     public string Username;
-    public string CellNumber;
+    public string UserPassword;
 }
 
 class DBAuthentication
@@ -160,10 +160,10 @@ class DBAuthentication
     public Credentials Credentials;
 
     DBGateway aGateway = new DBGateway();
-    public DBAuthentication(string Username, string cellNumber)
+    public DBAuthentication(string Username, string userPassword)
     {
         Credentials.Username = Username;
-        Credentials.CellNumber = cellNumber;
+        Credentials.UserPassword = userPassword;
 
     }
 
@@ -174,10 +174,10 @@ class DBAuthentication
 
     public bool IsValid()
     {
-        string query = "select * from users,roles where users.UserName=@username and users.UserCellNumber=@cellnumber and  users.UserRoleId = roles.ID";
+        string query = "select * from users,roles where users.UserName=@username and users.UserCredential=@userCredential and  users.UserRoleId = roles.ID";
         Hashtable aHashtable = new Hashtable();
         aHashtable["username"] = Credentials.Username;
-        aHashtable["cellnumber"] = Credentials.CellNumber;
+        aHashtable["userCredential"] = Credentials.UserPassword;
 
 
         DataSet aDataSet = aGateway.Select(query, aHashtable);

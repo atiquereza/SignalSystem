@@ -4,6 +4,9 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+
+
+
 body {
   /*background: url(http://lorempixel.com/1920/1920/city/9/) no-repeat center center fixed;*/
   -webkit-background-size: cover;
@@ -3045,13 +3048,13 @@ input[type="button"].btn-block {
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   text-decoration: none;
-  color: #ffffff;
-  background-color: #2a9fd6;
+  color:red;
+  background-color:#e45b5b;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  color: #ffffff;
+  color: red;
   text-decoration: none;
   outline: 0;
   background-color: #2a9fd6;

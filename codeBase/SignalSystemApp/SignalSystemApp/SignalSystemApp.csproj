@@ -41,9 +41,10 @@
     <Reference Include="EPPlus">
       <HintPath>..\..\DigitalVaccinationApp\DigitalVaccination\bin\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.Shell32">
-      <HintPath>..\..\..\..\..\..\DigitalVaccinationApp\DigitalVaccination\bin\Interop.Shell32.dll</HintPath>
+    <Reference Include="Interop.Shell32, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Interop.Shell32.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Exchange.WebServices">
@@ -209,9 +210,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_General.cshtml" />
-    <Content Include="Views\Shared\_Layout_Admin.cshtml" />
+    <Content Include="Views\Shared\_Layout_Admin_1.cshtml" />
     <Content Include="Views\Shared\_Layout_Reporter.cshtml" />
     <Content Include="Views\Shared\_Layout_Resolver.cshtml" />
+    <Content Include="Views\Shared\_Layout_Admin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
