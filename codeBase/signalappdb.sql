@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `appmenuitems` (
   PRIMARY KEY (`id`),
   KEY `appView` (`AppViewId`),
   CONSTRAINT `appView` FOREIGN KEY (`AppViewId`) REFERENCES `appviews` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.appmenuitems: ~1 rows (approximately)
 DELETE FROM `appmenuitems`;
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `appviews` (
   `Reporter` int(11) NOT NULL DEFAULT '0',
   `Resolver` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.appviews: ~1 rows (approximately)
 DELETE FROM `appviews`;
@@ -81,6 +81,31 @@ DELETE FROM `menuitems`;
 /*!40000 ALTER TABLE `menuitems` ENABLE KEYS */;
 
 
+-- Dumping structure for table signalappdb.menus
+DROP TABLE IF EXISTS `menus`;
+CREATE TABLE IF NOT EXISTS `menus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Value` text NOT NULL,
+  `Name` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table signalappdb.menus: ~9 rows (approximately)
+DELETE FROM `menus`;
+/*!40000 ALTER TABLE `menus` DISABLE KEYS */;
+INSERT INTO `menus` (`id`, `Value`, `Name`) VALUES
+	(1, 'General', 'rank'),
+	(2, 'Lieutenant General', 'rank'),
+	(3, 'Major General', 'rank'),
+	(4, 'Colonel-Brigadier General', 'rank'),
+	(5, 'Lieutenant colonel', 'rank'),
+	(6, 'Major', 'rank'),
+	(7, 'Captain', 'rank'),
+	(8, 'Lieutenant', 'rank'),
+	(9, 'Second Lieutenant', 'rank');
+/*!40000 ALTER TABLE `menus` ENABLE KEYS */;
+
+
 -- Dumping structure for table signalappdb.roles
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -108,24 +133,25 @@ CREATE TABLE IF NOT EXISTS `userinfo` (
   `UserID` int(11) NOT NULL,
   `UserName` varchar(50) NOT NULL,
   `FullName` text NOT NULL,
-  `FatherName` text NOT NULL,
-  `MotherName` text NOT NULL,
-  `CellNumber` text NOT NULL,
-  `BirthDay` date NOT NULL DEFAULT '1956-06-11',
-  `CurrentAddress` text NOT NULL,
-  `PermanentAddress` text NOT NULL,
-  `BirthCertificateID` text NOT NULL,
+  `RankId` int(11) NOT NULL,
+  `Email` text NOT NULL,
+  `Gender` text NOT NULL,
+  `BANumber` text,
   PRIMARY KEY (`ID`),
   KEY `UserID` (`UserID`),
   CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.userinfo: ~2 rows (approximately)
+-- Dumping data for table signalappdb.userinfo: ~5 rows (approximately)
 DELETE FROM `userinfo`;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` (`ID`, `UserID`, `UserName`, `FullName`, `FatherName`, `MotherName`, `CellNumber`, `BirthDay`, `CurrentAddress`, `PermanentAddress`, `BirthCertificateID`) VALUES
-	(1, 4, 'jubayer', 'All Jubayer Mohammad Mahamudunnabi.', 'Md. Fazlur Rahman.', 'Momotaz Begum.', '01926662274', '1984-08-01', 'Dhaka.', 'Dinajpur', '22222222'),
-	(2, 10, 'arosh', 'arosh', 'Habibunnobi Md Arifur Rahman', 'Arobi', '01926662227', '2015-03-01', 'Dhaka', 'Dinajpur', '222222222222222');
+INSERT INTO `userinfo` (`ID`, `UserID`, `UserName`, `FullName`, `RankId`, `Email`, `Gender`, `BANumber`) VALUES
+	(1, 4, 'jubayer', 'All Jubayer Mohammad Mahamudunnabi.', 2, 'aljubayer@gmail.com', 'Male', NULL),
+	(2, 5, 'atique', 'atique', 3, 'atique@gmail.com', 'Male', NULL),
+	(3, 10, 'habib', 'habib', 2, 'habib@gmail.com', 'Male', NULL),
+	(4, 115, 'sakib', 'sakib', 5, 'sakib@gmail.com', 'Male', NULL),
+	(10, 128, 'Khairul', 'Khairul', 1, 'khairul@gmail.com', 'female', 'BA123555'),
+	(11, 131, 'Razib', 'Razib', 4, 'asdf@gamil.com', 'male', 'BA123555');
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 
 
@@ -139,16 +165,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`ID`),
   KEY `UserRoleId` (`UserRoleId`),
   CONSTRAINT `UserRoleId` FOREIGN KEY (`UserRoleId`) REFERENCES `roles` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.users: ~4 rows (approximately)
+-- Dumping data for table signalappdb.users: ~6 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`ID`, `UserName`, `UserCredential`, `UserRoleId`) VALUES
 	(4, 'jubayer', '01926662274', 2),
 	(5, 'atique', '01926662227', 2),
 	(10, 'habib', '01926662227', 9),
-	(115, 'sakib', '01926662227', 10);
+	(115, 'sakib', '01926662227', 10),
+	(128, 'Khairul', '123456', 2),
+	(131, 'Razib', '123456', 9);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

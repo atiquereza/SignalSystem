@@ -194,7 +194,9 @@
     <Compile Include="Libs\UtilityLibrary.cs" />
     <Compile Include="Libs\ZipFiles.cs" />
     <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\User\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Classes\FrameworkItems.cs" />
     <Compile Include="Views\Classes\MenuItems.cs" />
     <Compile Include="Views\Classes\PaginationView.cs" />
     <Compile Include="Views\Classes\TableView.cs" />
@@ -212,7 +214,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_General.cshtml" />
-    <Content Include="Views\Shared\_Layout_Admin_1.cshtml" />
     <Content Include="Views\Shared\_Layout_Reporter.cshtml" />
     <Content Include="Views\Shared\_Layout_Resolver.cshtml" />
     <Content Include="Views\Shared\_Layout_Admin.cshtml" />

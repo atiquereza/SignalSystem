@@ -229,7 +229,7 @@ namespace SignalSystem.Libs
 
         }
 
-        public string Insert(string queryString, Hashtable parameterTable)
+        public int Insert(string queryString, Hashtable parameterTable)
         {
             try
             {
@@ -241,8 +241,8 @@ namespace SignalSystem.Libs
 
                 SqlConnectionObj.Open();
                 command.CommandText = queryString;
-                command.ExecuteNonQuery();
-                return "Data Successfully Inserted.";
+                int id = command.ExecuteNonQuery();
+                return id;
             }
             catch (Exception ex)
             {
@@ -350,14 +350,14 @@ namespace SignalSystem.Libs
 
         }
 
-        public string Insert(string queryString)
+        public int Insert(string queryString)
         {
             try
             {
                 SqlConnectionObj.Open();
                 SqlCommandobj.CommandText = queryString;
-                SqlCommandobj.ExecuteNonQuery();
-                return "Data Successfully Inserted.";
+                int id = SqlCommandobj.ExecuteNonQuery();
+                return id;
             }
             catch (Exception ex)
             {

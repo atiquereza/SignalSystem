@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SignalSystem.Libs
 {
@@ -82,6 +83,15 @@ namespace SignalSystem.Libs
             }
 
             return baseUrl;
+        }
+
+        public static string GetControllerName()
+        {
+            UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+
+            var routeValueDictionary = urlHelper.RequestContext.RouteData.Values;
+            string controller = routeValueDictionary["controller"].ToString();
+            return controller;
         }
     }
 }
