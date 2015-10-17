@@ -1,0 +1,52 @@
+﻿@using SignalSystemApp.Models.User
+
+@{
+    List<UserInfo> allUsers = new List<UserInfo>();
+    if (ViewData["UserInfo"] != null)
+    {
+        allUsers = (List<UserInfo>)ViewData["UserInfo"];
+    }
+
+    string htmlTable = "<tr><th>BA Number</th><th>Name</th><th>Rank</th><th>Email Address</th><th>Role</th></tr>";
+
+    foreach (UserInfo aUser in allUsers)
+    {
+        htmlTable += "<tr><td>"+aUser.BANumber+"</td><td>"+aUser.Name+"</td><td>"+aUser.Rank+"</td><td>"+aUser.Email+"</td><td>"+aUser.Role+"</td></tr>";
+
+    }
+}
+
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Users <small>List of existing users</small></h1>
+          
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Users </h3>
+                </div>
+                <div class="panel-body">
+
+                    <div id="shieldui-grid1">
+                        <table style="width: 100%" border="1">
+                            @Html.Raw(htmlTable)
+                           
+                        </table>
+                        </br><label>Total Users: @allUsers.Count</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+   
+
+<!-- /#wrapper -->

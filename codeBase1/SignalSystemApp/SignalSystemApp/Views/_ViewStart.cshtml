@@ -1,0 +1,31 @@
+﻿@using SignalSystem.Views.Classes
+
+
+@{
+
+    if (Session.Count > 0)
+    {
+
+        if (TemplateItems.HasAdminView(Session))
+        {
+            Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+        }
+        else if (!TemplateItems.HasAdminView(Session))
+        {
+            if (TemplateItems.HasReoporterView(Session))
+            {
+                Layout = "~/Views/Shared/_Layout_Reporter.cshtml";
+            }
+            else
+            {
+                Layout = "~/Views/Shared/_Layout_Resolver.cshtml";
+            }
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_General.cshtml";
+    }
+
+
+}
