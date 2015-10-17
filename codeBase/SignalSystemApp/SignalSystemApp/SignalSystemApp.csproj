@@ -14,7 +14,7 @@
     <RootNamespace>SignalSystemApp</RootNamespace>
     <AssemblyName>SignalSystemApp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -194,6 +194,7 @@
     <Compile Include="Libs\UtilityLibrary.cs" />
     <Compile Include="Libs\ZipFiles.cs" />
     <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\Telephone\Telephone.cs" />
     <Compile Include="Models\User\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Classes\FrameworkItems.cs" />
@@ -222,6 +223,7 @@
     <Content Include="Views\Telephone\AddTelephone.cshtml" />
     <Content Include="Views\Telephone\PendingComplains.cshtml" />
     <Content Include="Views\Telephone\ResolvedComplains.cshtml" />
+    <Content Include="Views\Telephone\NewComplain.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -249,7 +251,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53561</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53561/</IISUrl>
+          <IISUrl>http://localhost/SignalSystemApp</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

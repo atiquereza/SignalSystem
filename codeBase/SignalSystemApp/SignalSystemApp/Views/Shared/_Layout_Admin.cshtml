@@ -87,6 +87,10 @@
                                 <a href="@Url.Action("AddTelephone", "Telephone")"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                             </li>
                             <li>
+                                <a href="@Url.Action("NewComplain", "Telephone")"><i class="fa fa-warning"></i> NewComplain</a>
+                            </li>
+
+                            <li>
                                 <a href="@Url.Action("PendingComplains", "Telephone")"><i class="fa fa-warning"></i> Pending Complains</a>
                             </li>
                             <li>
@@ -142,9 +146,9 @@
                     </li>
                     <li class="divider-vertical"></li>
                     <li>
-                        <form class="navbar-search">
+                        @*<form class="navbar-search">
                             <input type="text" placeholder="Search" class="form-control">
-                        </form>
+                        </form>*@
                     </li>
                 </ul>
             </div>

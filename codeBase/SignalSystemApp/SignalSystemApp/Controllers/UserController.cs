@@ -38,7 +38,7 @@ namespace SignalSystemApp.Controllers
             if (baNumber.Trim().Length == 0 || name.Trim().Length == 0 || rank.Trim().Length == 0 || email.Trim().Length == 0
                 || password.Trim().Length == 0 || sex.Trim().Length == 0 || role.Trim().Length == 0)
             {
-                ViewData["Message"] = "Error! No Field can not blank";
+                ViewData["Message"] = "Error! Fields can not left blank";
                 return View("Registration");
             }
 

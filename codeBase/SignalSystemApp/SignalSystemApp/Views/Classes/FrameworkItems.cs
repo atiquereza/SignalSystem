@@ -14,7 +14,7 @@ namespace SignalSystemApp.Views.Classes
         {
             List<Dictionary<string, string>> ranks = new List<Dictionary<string, string>>();
             DBGateway gateway = new DBGateway("SignalSystemConnectionString");
-            string query = "select * from menus where name='rank'";
+            string query = "select * from menusrank;";
 
             DataSet aSet = gateway.Select(query);
 
@@ -40,7 +40,25 @@ namespace SignalSystemApp.Views.Classes
             return roles;
         }
 
-    
+        public static List<Dictionary<string, string>> GetComplainTypes()
+        {
+            List<Dictionary<string, string>> ranks = new List<Dictionary<string, string>>();
+            DBGateway gateway = new DBGateway("SignalSystemConnectionString");
+            string query = "select * from menucomplaintype;";
+
+            DataSet aSet = gateway.Select(query);
+
+            foreach (DataRow aRow in aSet.Tables[0].Rows)
+            {
+                Dictionary<string, string> aDictionary = new Dictionary<string, string>();
+                aDictionary.Add("ID", aRow["Id"].ToString());
+                aDictionary.Add("Value", aRow["Value"].ToString());
+                ranks.Add(aDictionary);
+
+            }
+
+            return ranks;
+        }
     
     }
 }
