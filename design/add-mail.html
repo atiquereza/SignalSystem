@@ -39,7 +39,7 @@
                 <li><a href="admin-index.html"><i class="fa fa-bullseye"></i> Dashboard</a></li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Manage Users <i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo" class="collapse" style="list-style: none";>
+                    <ul id="demo" class="collapse" style="list-style: none">
                         <li>
                             <a href="register.html"><i class="fa fa-fw fa-plus"></i> Register User</a>
                         </li>
@@ -50,8 +50,8 @@
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo1" style="list-style: none";>
-                        <li class="selected">
+                    <ul id="demo1" class="collapse" style="list-style: none">
+                        <li>
                             <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                         </li>
                         <li>
@@ -64,8 +64,8 @@
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-envelope"></i>Mail<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo3" class="collapse" style="list-style: none";>
-                        <li>
+                    <ul id="demo3" style="list-style: none">
+                        <li class="selected">
                             <a href="add-mail.html"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
                         </li>
                         <li>
@@ -75,7 +75,7 @@
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo4"><i class="fa fa-fw fa-wrench"></i>Technical<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo4" class="collapse" style="list-style: none";>
+                    <ul id="demo4" class="collapse" style="list-style: none">
                         <li>
                             <a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                         </li>
@@ -86,7 +86,7 @@
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo5"><i class="fa fa-fw fa-cube"></i>Equipments<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo5" class="collapse" style="list-style: none";>
+                    <ul id="demo5" class="collapse" style="list-style: none">
                         <li>
                             <a href="add-equipment.html"><i class="fa fa-fw fa-plus"></i> Add Equipment</a>
                         </li>
@@ -98,32 +98,10 @@
                 <!--<li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-user">
-                <li class="dropdown messages-dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">2 New Messages</li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <span class="avatar"><i class="fa fa-bell"></i></span>
-                                <span class="message">Security alert</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <span class="avatar"><i class="fa fa-bell"></i></span>
-                                <span class="message">Security alert</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#">Go to Inbox <span class="badge">2</span></a></li>
-                    </ul>
-                </li>
                 <li class="dropdown user-dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Steve Miller<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                        <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
                     </ul>
@@ -134,14 +112,14 @@
 
     <div>
         <div class="row text-center">
-            <h2>Add New Number</h2>
+            <h2>Add New Mail</h2>
         </div>
         <div>
-            <label for="banumber" class="col-md-2">
-                BA Number:
+            <label for="mailid" class="col-md-2">
+                Mail ID:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="banumber" placeholder="BA Number">
+                <input type="text" class="form-control" id="mailid" placeholder="Mail ID">
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -149,91 +127,16 @@
         </div>
 
         <div>
-            <label for="name" class="col-md-2">
-                Name:
+            <label for="description" class="col-md-2">
+                Description:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                <textarea class="form-control" id="description"></textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
-        <!--<div>-->
-            <!--<label for="lastname" class="col-md-2">-->
-                <!--Last Name:-->
-            <!--</label>-->
-            <!--<div class="col-md-9">-->
-                <!--<input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">-->
-            <!--</div>-->
-            <!--<div class="col-md-1">-->
-                <!--<i class="fa fa-lock fa-2x"></i>-->
-            <!--</div>-->
-        <!--</div>-->
-        <div>
-            <label for="rank" class="col-md-2">
-                Rank:
-            </label>
-            <div class="col-md-9">
-                <select name="rank" id="rank" class="form-control">
-                    <option>--Please Select--</option>
-                    <option>Second Lieutenant</option>
-                    <option>First Lieutenant</option>
-                    <option>Captain</option>
-                    <option>Major</option>
-                    <option>Others</option>
-                </select>
-            </div>
-        </div>
-        <div>
-            <label for="phone" class="col-md-2">
-                New Phone Number:
-            </label>
-            <div class="col-md-9">
-                <input type="email" class="form-control" id="phone" placeholder="Enter Phone Number Here">
-            </div>
-            <div class="col-md-1">
-                <i class="fa fa-lock fa-2x"></i>
-            </div>
-        </div>
-        <div>
-            <label for="address" class="col-md-2">
-                Address:
-            </label>
-            <div class="col-md-9">
-                <input type="password" class="form-control" id="address" placeholder="Enter Address">
-            </div>
-            <div class="col-md-1">
-                <i class="fa fa-lock fa-2x"></i>
-            </div>
-        </div>
-        <div>
-            <label for="sex" class="col-md-2">
-                Gender:
-            </label>
-            <div class="col-md-10">
-                <label class="radio">
-                    <input type="radio" name="sex" id="sex" value="male" checked>
-                    Male
-                </label>
-                <label class="radio">
-                    <input type="radio" name="sex" id="Radio1" value="female">
-                    Female
-                </label>
-            </div>
-        </div>
-        <div>
-            <label for="uploadimage" class="col-md-2">
-                Upload Image:
-            </label>
-            <div class="col-md-10">
-                <input type="file" name="uploadimage" id="uploadimage">
-                <p class="help-block">
-                    Allowed formats: jpeg, jpg, gif, png
-                </p>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-md-2">
             </div>
