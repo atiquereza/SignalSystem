@@ -4,14 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Dark Admin</title>
+    <title>Resolver</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/local.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.min.css" />
 
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="js/en.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/date.js"></script>
+    <style>
+
+        div {
+            padding-bottom:20px;
+        }
+
+    </style>
 </head>
 <body>
 <div id="wrapper">
@@ -30,9 +42,10 @@
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="demo1" style="list-style: none">
-                    <!--<li>-->
-                    <!--<a href="add-phone.html"><i class="fa fa-fw fa-plus"></i> Add Phone</a>-->
-                    <!--</li>-->
+                    <li>
+                        <a href="add-complain.html"><i class="fa fa-fw fa-plus"></i> Add Complain</a>
+                    </li>
+                    <li>
                     <li class="selected">
                         <a href="resolver.html"><i class="fa fa-warning"></i> Pending Complains</a>
                     </li>
@@ -94,26 +107,87 @@
                     <div id="shieldui-grid1">
                         <table style="width:100%" border="1">
                             <tr>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                                <th>Phone Number</th>
+                                <th>BA Number</th>
+                                <th>Name</th>
                                 <th>Rank</th>
+                                <th>Phone Number</th>
                                 <th>Complain date & time</th>
                                 <th>Complain Type</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             <tr>
-                                <td>Eve</td>
+                                <td>001255</td>
                                 <td>Jackson</td>
-                                <td>91234</td>
                                 <td>Major</td>
+                                <td>91234</td>
                                 <td>21:30 </td>
                                 <td>Disconnected</td>
                                 <td><span class="label label-danger">Pending</span></td>
-                                <td><a href="#">Resolve</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#resolve">Resolve</a></td>
                             </tr>
                         </table>
+
+                        <div id="resolve" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Resolve Details</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="datetimepicker6" class="col-md-2">
+                                            Date:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class='input-group date' id='datetimepicker6'>
+                                                <input type='text' class="form-control" placeholder="From"/>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>  </br>
+                                        <label for="resolvedby" class="col-md-2">
+                                            Resolved By:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <select name="rank" id="resolvedby" class="form-control">
+                                                <option>--Please Select--</option>
+                                                <option>Habib</option>
+                                                <option>Atik</option>
+                                                <option>Sakib</option>
+                                                <option>Jubayer</option>
+                                            </select>
+                                        </div>  </br>
+                                        <label for="actiontaken" class="col-md-2">
+                                            Action Taken:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <textarea class="form-control" id="actiontaken"></textarea></br>
+                                        </div>  </br>
+                                        <label for="remarks" class="col-md-2">
+                                            Remarks:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <input type="remarks" class="form-control" id="remarks" placeholder="Enter Remarks">
+                                        </div>  </br>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                    <div class="pull-left">
+                                        <button type="button" class="btn btn-success" data-target="modal">Resolve</button>
+                                    </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
                         </br><label>Total Pending Complains: 1</label>
                     </div>
 
