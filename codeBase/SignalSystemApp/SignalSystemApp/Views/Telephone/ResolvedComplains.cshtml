@@ -1,5 +1,8 @@
-﻿
+﻿@using SignalSystem.Libs
+
 @{
+    string searchUrl = UtilityLibrary.GetBaseURL() + "Telephone/SearchResolvedComplains";
+    
     List<Dictionary<string, string>> resolvedComplains = new List<Dictionary<string, string>>();
     if (ViewData["Resolved"] != null)
     {
@@ -80,7 +83,7 @@
                 <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
             </div>
             <div class="col-lg-2">
-                <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
+                <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a><br>
             </div>
         </form>
     </div>

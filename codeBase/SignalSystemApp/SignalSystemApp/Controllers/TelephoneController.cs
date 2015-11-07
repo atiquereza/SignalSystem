@@ -119,5 +119,16 @@ namespace SignalSystemApp.Controllers
 
             return View();
         }
+
+        public ActionResult SearchResolvedComplains()
+        {
+            //string phoneNumber
+            //Telephone telephone = new Telephone();
+            //List<Dictionary<string, string>> resolved = new List<Dictionary<string, string>>();
+            //resolved = telephone.GetResolvedComplainsByPhoneNumber(phoneNumber);
+            //ViewData["Resolved"] = resolved;
+
+            return View("ResolvedComplains");
+        }
     }
 }

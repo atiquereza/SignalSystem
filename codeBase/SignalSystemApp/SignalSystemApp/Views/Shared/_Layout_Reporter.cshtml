@@ -1,86 +1,149 @@
-﻿
+﻿@using SignalSystem.Libs
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporter</title>
-
-    
+    <title>Dashboard - Dark Admin</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/font/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/CSS/local.css" rel="stylesheet" />
-
-   
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-   
+
+    @{
+        Dictionary<string, string> sessionDictionary = new Dictionary<string, string>();
+        if (Session != null && Session.Count != 0)
+        {
+            sessionDictionary = SessionHandler.GetSessionData(Session);
+        }
+        else
+        {
+            sessionDictionary.Add("LoggedIn", "");
+
+        }
+
+        string collapseUser = "collapse";
+        string collapseTelephone = "collapse";
+        string collapseMail = "collapse";
+        string collapseTechnical = "collapse";
+        string collapseEquipments = "collapse";
+
+        string contorller = UtilityLibrary.GetControllerName();
+        if (contorller == "User")
+        {
+            collapseUser = string.Empty;
+        }
+        if (contorller == "Telephone")
+        {
+            collapseTelephone = string.Empty;
+        }
+        if (contorller == "Mail")
+        {
+            collapseMail = string.Empty;
+        }
+        if (contorller == "Technical")
+        {
+            collapseTechnical = string.Empty;
+        }
+        if (contorller == "Equipments")
+        {
+            collapseEquipments = string.Empty;
+        }
+    }
 
 </head>
 <body>
-<div id="wrapper">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Reporter Panel</a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul id="active" class="nav navbar-nav side-nav">
-                <li class="selected"><a href="#"><i class="fa fa-plus"></i> Add Complain</a></li>
-                <li><a href="pending-complains.html"><i class="fa fa-warning"></i> Pending Complains</a></li>
-                <li><a href="resolved-complains.html"><i class="fa fa-check"></i> Resolved Complains</a></li>
-                <!--<li><a href="reports.html"><i class="fa fa-info"></i> Reports</a></li>-->
-            </ul>
-            <ul class="nav navbar-nav navbar-right navbar-user">
-                <li class="dropdown messages-dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">2 New Messages</li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <span class="avatar"><i class="fa fa-bell"></i></span>
-                                <span class="message">Security alert</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <span class="avatar"><i class="fa fa-bell"></i></span>
-                                <span class="message">Security alert</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#">Go to Inbox <span class="badge">2</span></a></li>
-                    </ul>
-                </li>
-                <li class="dropdown user-dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Steve Miller<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                        <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Admin Panel</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul id="active" class="nav navbar-nav side-nav">
+                    <li class="selected"><a href="@Url.Action("Index", "Home")"><i class="fa fa-bullseye"></i> Dashboard</a></li>
+                    
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo1" class="@collapseTelephone" style="list-style: none" ;>
+                            <li>
+                                <a href="@Url.Action("AddTelephone", "Telephone")"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("NewComplain", "Telephone")"><i class="fa fa-warning"></i> New Complain</a>
+                            </li>
 
-                    </ul>
-                </li>
-                <li class="divider-vertical"></li>
-                <li>
-                    <form class="navbar-search">
-                        <input type="text" placeholder="Search" class="form-control">
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </nav>
+                            <li>
+                                <a href="@Url.Action("PendingComplains", "Telephone")"><i class="fa fa-warning"></i> Pending Complains</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ResolvedComplains", "Telephone")"><i class="fa fa-fw fa-check"></i> Resolved Complains</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-envelope"></i>Mail<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo3" class="@collapseMail" style="list-style: none" ;>
+                            <li>
+                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
+                            </li>
+                            <li>
+                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo4"><i class="fa fa-fw fa-wrench"></i>Technical<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo4" class="@collapseTechnical" style="list-style: none" ;>
+                            <li>
+                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
+                            </li>
+                            <li>
+                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo5"><i class="fa fa-fw fa-cube"></i>Equipments<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo5" class="@collapseEquipments" style="list-style: none" ;>
+                            <li>
+                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
+                            </li>
+                            <li>
+                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                            </li>
+                        </ul>
+                    </li>
 
-    @RenderBody()
+                </ul>
+                <ul class="nav navbar-nav navbar-right navbar-user">
 
-    <!-- /#wrapper -->
-</div>
+
+                    <li class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @sessionDictionary["LoggedIn"]<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li><a href="@Url.Action("Logout", "Account")"><i class="fa fa-power-off"></i> Log Out</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        @RenderBody()
+
+    </div>
+
 </body>
 </html>

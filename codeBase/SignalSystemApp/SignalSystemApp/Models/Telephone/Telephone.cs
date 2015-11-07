@@ -168,5 +168,10 @@ namespace SignalSystemApp.Models.Telephone
 
             return pendingComplains;
         }
+
+        internal List<Dictionary<string, string>> GetResolvedComplainsByPhoneNumber()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

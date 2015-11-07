@@ -79,14 +79,17 @@ CREATE TABLE IF NOT EXISTS `complains` (
   KEY `TelephoneUserId` (`TelephoneUserId`),
   CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
   CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `telephoneusers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.complains: ~2 rows (approximately)
+-- Dumping data for table signalappdb.complains: ~5 rows (approximately)
 DELETE FROM `complains`;
 /*!40000 ALTER TABLE `complains` DISABLE KEYS */;
 INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`) VALUES
-	(5, 'test1', 'Resolved', 3, 2, '2015-10-17 17:17:04', '0000-00-00 00:00:00', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(6, 'time test', 'Pending', 2, 2, '2015-10-17 17:27:04', '0000-00-00 00:00:00', '', '', '');
+	(5, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 2, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(6, 'time test', 'Pending', 2, 2, '2015-10-17 17:27:04', '0000-00-00 00:00:00', '', '', ''),
+	(7, 'hkjhkjhkjhkjhkjhkjhkjhkjh', 'Pending', 2, 2, '2015-10-17 18:46:12', '0000-00-00 00:00:00', '', '', ''),
+	(8, 'asdfasdf', 'Resolved', 2, 2, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
+	(9, 'dfasdfasdf', 'Pending', 1, 4, '2015-11-07 14:35:37', '0000-00-00 00:00:00', '', '', '');
 /*!40000 ALTER TABLE `complains` ENABLE KEYS */;
 
 
@@ -104,7 +107,7 @@ DELETE FROM `menucomplaintype`;
 /*!40000 ALTER TABLE `menucomplaintype` DISABLE KEYS */;
 INSERT INTO `menucomplaintype` (`Id`, `Value`, `Name`) VALUES
 	(1, 'Disconnected', 'Complain'),
-	(2, 'Unclear Sount', 'Complain'),
+	(2, 'Unclear Sound', 'Complain'),
 	(3, 'Phone Faulty', 'Complain'),
 	(4, 'Other', 'Complain');
 /*!40000 ALTER TABLE `menucomplaintype` ENABLE KEYS */;
@@ -191,13 +194,15 @@ CREATE TABLE IF NOT EXISTS `telephoneusers` (
   PRIMARY KEY (`Id`),
   KEY `Rank` (`RankId`),
   CONSTRAINT `FK__menus` FOREIGN KEY (`RankId`) REFERENCES `menusrank` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.telephoneusers: ~1 rows (approximately)
+-- Dumping data for table signalappdb.telephoneusers: ~3 rows (approximately)
 DELETE FROM `telephoneusers`;
 /*!40000 ALTER TABLE `telephoneusers` DISABLE KEYS */;
 INSERT INTO `telephoneusers` (`Id`, `BANumber`, `Name`, `RankId`, `Status`, `NewPhoneNumber`, `Address`, `Gender`, `ConnectedDate`, `DisconnectedDate`) VALUES
-	(2, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '0000-00-00');
+	(2, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '0000-00-00'),
+	(3, 'BA123456', 'Test User', 1, 'Connected', '987654', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
+	(4, 'BA123456', 'Test User1', 1, 'Connected', '9876547', 'Dhaka', 'male', '2015-11-07', '0000-00-00');
 /*!40000 ALTER TABLE `telephoneusers` ENABLE KEYS */;
 
 
