@@ -1468,6 +1468,11 @@ th {
 .table-striped > tbody > tr:nth-child(odd) > th {
   background-color: #080808;
 }
+
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th {
+  background-color: #080808;
+}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #282828;
@@ -6334,4 +6339,24 @@ table th {border:1px solid;
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+}
+
+.yadcf-filter > option {
+	background: black none repeat scroll 0% 0%;
+}
+.dataTables_length {
+    color: white;
+} 
+.dataTables_length > mytestDatatable_length > option {
+    color: black;
+}
+.paginate_button {
+    color: #C8BFBF !important;
+}
+
+#mytestDatatable_info {
+    color:#C8BFBF !important;
+}
+.paginate_button {
+    color:#C8BFBF !important;
 }

@@ -1,182 +1,121 @@
 ﻿@using SignalSystem.Libs
 
 @{
-    string searchUrl = UtilityLibrary.GetBaseURL() + "Telephone/SearchResolvedComplains";
-    
-    List<Dictionary<string, string>> resolvedComplains = new List<Dictionary<string, string>>();
-    if (ViewData["Resolved"] != null)
+    List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+    if (ViewData["PendingComplains"] != null)
     {
-        resolvedComplains = (List<Dictionary<string, string>>) ViewData["Resolved"];
+        pendingComplains = (List<Dictionary<string, string>>)ViewData["PendingComplains"];
     }
 
-    string tableList = string.Empty;
-
-    foreach (Dictionary<string, string> dictionary in resolvedComplains)
-    {
-        tableList += "<tr>" +
-                     "<td>" + dictionary["Name"] + "</td>" +
-                     "<td>" + dictionary["NewPhoneNumber"] + "</td>" +
-                     "<td>" + dictionary["Rank"] + "</td>" +
-                     "<td>" + dictionary["ComplainDate"] + " </td>" +
-                     "<td>" + dictionary["ResolvedDate"] + " </td>" +
-                     "<td>" + dictionary["ComplainType"] + "</td>" +
-                     "<td>" + dictionary["ResolvedBy"] + "</td>" +
-                     "<td>" + dictionary["Remarks"] + "</td>" +
-                     "<td><a href=\"\" data-toggle=\"modal\" data-target=\"#complain\">View</a></td>" +
-                     "<!-- Complain Modal -->" +
-                     "<div id=\"complain\" class=\"modal fade\" role=\"dialog\">" +
-                     "<div class=\"modal-dialog\">" +
-                     "<!-- Modal content-->" +
-                     "<div class=\"modal-content\">" +
-                     "<div class=\"modal-header\">" +
-                     "<button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>" +
-                     "<h4 class=\"modal-title\">Complain Details</h4>" +
-                     "</div>" +
-                     "<div class=\"modal-body\">" +
-                     "<p>" + dictionary["Description"] + "</p>" +
-                     "</div>" +
-                     "<div class=\"modal-footer\">" +
-                     "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>" +
-                     "</div>" +
-                     "</div>" +
-                     "</div>" +
-                     "</div>" +
-                     "<!-- Modal -->" +
-                     "<td><span class=\"label label-success\">Resolved</span></td>" +
-                     "<td><a href=\"\" data-toggle=\"modal\" data-target=\"#resolved\">View</a></td>" +
-                     "<!-- Resolved Modal -->" +
-                     "<div id=\"resolved\" class=\"modal fade\" role=\"dialog\">" +
-                     "<div class=\"modal-dialog\">" +
-                     "<!-- Modal content-->" +
-                     "<div class=\"modal-content\">" +
-                     "<div class=\"modal-header\">" +
-                     "<button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>" +
-                     "<h4 class=\"modal-title\">Action Taken</h4>" +
-                     "</div>" +
-                     "<div class=\"modal-body\">" +
-                     "<p>" + dictionary["ActionTaken"] + "</p>" +
-                     "</div>" +
-                     "<div class=\"modal-footer\">" +
-                     "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>" +
-                     "</div>" +
-                     "</div>" +
-                     "</div>" +
-                     "</div>" +
-                     "<!-- Modal -->" +
-                     "</tr>";
-    }
+    string pendingList = string.Empty;
+    string deleteAction = UtilityLibrary.GetBaseURL() + "Telephone/DeleteSingleComplainData";
+    string editAction = UtilityLibrary.GetBaseURL() + "Telephone/EditSingleComplainData";
+    string testAction = UtilityLibrary.GetBaseURL() + "Telephone/DataProviderAction";
+    //foreach (Dictionary<string, string> dictionary in pendingComplains)
+    //{
+    //    pendingList += "<tr>" +
+    //                   "<td>" + dictionary["BANumber"] + "</td>" +
+    //                   "<td>" + dictionary["Name"] + "</td>" +
+    //                   "<td>" + dictionary["Rank"] + "</td>" +
+    //                   "<td>" + dictionary["NewPhoneNumber"] + "</td>" +
+    //                   "<td>" + dictionary["ComplainDate"] + "</td>" +
+    //                   "<td>" + dictionary["ComplainType"] + "</td>" +
+    //                   //"<td><span class=\"label label-danger\">Pending</span></td></tr>"+
+    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myEdit\" class=\" editEntry btn btn-xs btn-success\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td>" +
+    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myDelete\" class=\" deleteEntry btn btn-xs btn-danger\"><span class=\"glyphicon glyphicon-remove\"></span></button></td></tr>";
+    //}
 }
-
 
 
 
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1>Resolved Complain <small>List of Resolved Complain</small></h1>
 
+
+
+            <h1>
+                Resolved Complain <small>List of Resolved Complains</small>
+            </h1>
         </div>
+        @*<form action="" method="">
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
+                </div>
+                <div class="col-lg-2">
+                    <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
+                </div>
+            </form>*@
     </div>
-    <div class="row">
-        <form method="POST">
-            <div class="col-lg-3">
-                <input type="text" class="form-control" id="search" placeholder="Search Phone Number" name="search"/>
-            </div>
-            <div class="col-lg-2">
-                <a href="@searchUrl" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a><br>
-            </div>
-        </form>
-    </div>
+
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Resolved Complains</h3>
+                    <h3 class="panel-title">
+                        <i class="fa fa-bar-chart-o"></i> Resolved Complain
+                    </h3>
                 </div>
                 <div class="panel-body">
 
-                    <div id="shieldui-grid1">
-                        <table style="width:100%" border="1">
-                            <tr>
-                                <th>Name</th>
-                                <th>Phone Number</th>
-                                <th>Rank</th>
-                                <th>Complain date & time</th>
-                                <th>Resolved date & time</th>
-                                <th>Complain Type</th>
-                                <th>Resolved by</th>
-                                <th>Remark</th>
-                                <th>Complain</th>
-                                <th>Status</th>
-                                <th>Action Taken</th>
-                            </tr>
-                            @*<tr>
-                                <td>Eve</td>
-                                <td>Jackson</td>
-                                <td>91234</td>
-                                <td>Major</td>
-                                <td>21:30 </td>
-                                <td>22:30 </td>
-                                <td>Disconnected</td>
-                                <td>Habib</td>
-                                <td>Second time</td>
-                                <td><a href="" data-toggle="modal" data-target="#complain">View</a></td>
+                    <div>
+                        @*<table style="width: 100%" border="1">
+                                <tr>
+                                    <th>BA Number</th>
+                                    <th>Name</th>
+                                    <th>Rank</th>
+                                    <th>Phone Number</th>
+                                    <th>Complain date & time</th>
+                                    <th>Complain Type</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                @Html.Raw(pendingList)
+                            </table>*@
 
 
-
-                                <!-- Complain Modal -->
-                                <div id="complain" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Complain Details</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>This is the complain details.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- Modal -->
-
-                                <td><span class="label label-success">Resolved</span></td>
-                                <td><a href="" data-toggle="modal" data-target="#resolved">View</a></td>
-
-                                <!-- Resolved Modal -->
-                                <div id="resolved" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Action Taken</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>This is the action taken.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- Modal -->
+                        <div style="width: 700px;">
+                            <div style="float: left; width: 200px;">
+                                <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                            </div>
+                            <div style="float: left; width: 300px;" id="externalContainer"></div>
+                            <div style="float: left; width: 200px;"></div>
+                            <br style="clear: left;" />
+                        </div>
 
 
-                            </tr>*@
+                        <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
 
-                            @Html.Raw(tableList)
+
+                            <thead>
+                                <tr>
+
+                                    <th class="col-sm-1">Ba Number</th>
+                                    <th class="col-sm-1">Name</th>
+                                    <th class="col-sm-1">Rank</th>
+                                    <th class="col-sm-1">Phone</th>
+                                    <th class="col-sm-1">Complin Date</th>
+                                    <th class="col-sm-1">Complin Type</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>hidden1</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            @*<tfoot>
+                                    <tr>
+
+                                        <th>Company name</th>
+                                        <th>Town</th>
+                                        <th>Date Created</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </tfoot>*@
+
                         </table>
-                        </br><label>Total Resolved Complains: 1</label>
+                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
                     </div>
 
                 </div>
@@ -184,4 +123,567 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<form id="delete-form" class="myModals" method="POST" action="@deleteAction">
+    <div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Complain</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">ID</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainId" name="deleteComplainId" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">BANumber</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainBANumber" name="complain_BANumber" disabled="disabled" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Name</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainName" name="complain_Name" disabled="disabled" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">ComplainType</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainType" name="complain_Type" disabled="disabled" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">PhoneNumber</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainPhoneNumber" name="complain_PhoneNumber" disabled="disabled" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Rank</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainRank" name="complain_Rank" disabled="disabled" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Description</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="deleteComplainDescription" name="complain_Description" disabled="disabled" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class=" col-xs-5 btn btn-primary">Delete Complain</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form id="edit-form" class="myModals" method="POST" action="@editAction">
+    <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">Edit Complain</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">ID</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="ComplainId" name="ComplainId" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">BANumber</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="BANumber" name="BANumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Name</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Name" name="Name" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Rank</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Rank" name="Rank" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Phone Number</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="NewPhoneNumber" name="NewPhoneNumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Complain Type</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="ComplainType" name="ComplainType">
+                                <option value="" selected>Select Type</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Problem Description</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="Description" name="Description"></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Status</label>
+                        <div class="selectStatus col-xs-5">
+
+
+
+                            <select class="form-control" id="Status" name="Status">
+                                <option value="0" selected="selected">Pending</option>
+                                @* Place for putting Resolver user role codes *@
+                                <option value="1">Resolved</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="resolveDiv" style="display:none">
+                        <label class="col-xs-4 control-label">Resolve Description</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="ResolveDescription" name="ResolveDescription"></textarea>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Complain</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@*@section head-css{
+
+
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <link href="~/Content/jquery.dataTables.yadcf.css" rel="stylesheet" />
+    }*@
+
+@section head{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+
+}
+
+
+<style>
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-5 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #mytestDatatable_length select {
+        background: green;
+    }
+
+    #mytestDatatable_length {
+        background: #222222;
+        color: white;
+    }
+
+    #mytestDatatable_filter {
+        background: #222222;
+        color: white;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+
+        $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        $.datepicker.setDefaults({
+
+            buttonImageOnly: true,
+            buttonImage: 'calendar.gif',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:3000',
+
+            showWeek: true,
+            weekHeader: "Wk",
+            autoSize:true
+            //dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            //duration: "fast",
+            //firstDay: 5,
+            //selectOtherMonths: true,
+            //showAnim: "slideDown"
+
+
+       });
+        //var datepickerDefaults = {
+        //    showTodayButton: true,
+        //    showClear: true
+        //};
+
+        var datepickerDefaults = {
+            showTodayButton: true,
+            showClear: true
+        };
+
+        var oTable = $('#mytestDatatable').dataTable({
+            //"pagingType": "full_numbers",
+            //"sDom": "Tfrtip",
+            // "aaSorting": [], // Prevent initial sorting
+            "order": [[0, "desc"]],
+            "sAjaxSource": "/Telephone/ResolvedDataProviderAction",
+            //"fnServerData": function (sSource, aoData, fnCallback) {
+            //    aoData.push({ "name": "roleId", "value": "admin" });},
+            "bLengthChange": true,
+            dom: 'l<>Bfrtip',
+            "bServerSide":true,
+            "fnRowCallback":
+                function (nRow, aData, iDisplayIndex) {
+
+                    //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
+                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class=" editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span></button></td>');
+                    $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
+
+                    return nRow;
+                },
+            "columnDefs": [
+         {
+             "targets": [8],
+             "visible": false,
+             "searchable": false
+         }
+            ]
+
+
+
+        });
+        //oTable.aoData.push({ "name": "roleId", "value": "admin" });
+
+        $('#mytestDatatable_filter input').unbind();
+        $('#mytestDatatable_filter input').bind('keyup', function (e) {
+            if (e.keyCode == 13) {
+                oTable.fnFilter(this.value);
+            }
+        });
+
+        oTable.yadcf([
+                        {
+                            column_number: 0
+
+                        },
+                         {
+                             column_number: 1,
+                             filter_type: "text",
+                             filter_default_label: "Search Name"
+                            },
+                        {
+                            column_number: 2,
+                            filter_type: "select"
+
+                        },
+                        {
+                            column_number: 3,
+                            filter_type: "text",
+                            filter_default_label: "Search Phone"
+                        },
+                        {
+                            column_number: 4,
+                            filter_type: "range_date",
+                            //datepicker_type: 'bootstrap-datetimepicker',
+                            date_format: "mm/dd/yyyy",
+                            //filter_plugin_options: datepickerDefaults,
+                            filter_delay: 500
+                        },
+                       // {column_number: 4, filter_type: "range_date", datepicker_type: 'bootstrap-datetimepicker', date_format: 'YYYY-MM-DD', filter_plugin_options: datepickerDefaults},
+                        {
+                            column_number: 5,
+                            filter_type: "select"
+
+                        },
+                        {
+                            column_number: 6,
+                            //filter_type: "select",
+                            data: ["Last 12 Hour Data", "Last 24 Hour Data"],
+                            filter_default_label: "Select Hourly Data",
+                            filter_container_id: "externalContainer"
+                        }
+        ]);
+
+        $('#min, #max').keyup(function () {
+            oTable.draw();
+        });
+
+
+
+        $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+
+
+        $().tooltip({
+            template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+
+
+        $(".yadcf-filter").css('background', 'black');
+        $(".yadcf-filter-range-date").css('background', 'black');
+        $(".yadcf-filter-range-date").css('font', 'bold');
+
+      //  $('.deleteEntry').on('click', function () {
+        $(document).on('click', '.deleteEntry', function () {
+
+            var Complain_id = $(this).attr('complain_id').trim();
+
+            var myData = ({ "id": Complain_id });
+
+
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetSingleComplainData", "Telephone")",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(myData),
+                dataType: 'json',
+
+                success: function (returnData) {
+
+
+
+                    $.each(returnData, function (index, value) {
+                        //  alert(value.BANumber);
+                        $("#deleteComplainId").val(value.ComplainId);
+                        $("#deleteComplainBANumber").val(value.BANumber);
+                        $("#deleteComplainName").val(value.Name);
+                        $("#deleteComplainType").val(value.ComplainType);
+                        $("#deleteComplainPhoneNumber").val(value.NewPhoneNumber);
+                        $("#deleteComplainRank").val(value.Rank);
+                        $("#deleteComplainDescription").val(value.Description);
+
+                    });
+                }
+            });
+        });
+
+
+        $(document).on('click', '.editEntry', function () {
+            var Complain_id = $(this).attr('complain_id').trim();
+
+     //       alert(Complain_id);
+
+            $("div.selectStatus select").val("0");
+            $("#aSapn2").text("Edit Complain");
+            document.getElementById('resolveDiv').style.display = 'none';
+
+            var myData = ({ "id": Complain_id });
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetSingleComplainData", "Telephone")",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(myData),
+                dataType: 'json',
+
+                success: function (returnData) {
+
+
+
+                    $.each(returnData, function (index, value) {
+
+                        $("#ComplainId").val(value.ComplainId);
+                        $("#BANumber").val(value.BANumber);
+                        $("#Name").val(value.Name);
+                        $("#ComplainType").val(value.ComplainType);
+                        $("#NewPhoneNumber").val(value.NewPhoneNumber);
+                        $("#Rank").val(value.Rank);
+                        $("#Description").val(value.Description);
+                        var options = "";
+                        var selectedOption = "";
+                        for (var i = 0; i < value.ProblemTypes.length; i++) {
+                            if (value.ComplainType == value.ProblemTypes[i].TypeValue) {
+                                selectedOption = value.ProblemTypes[i].TypeId;
+                                options += '<option value="' + value.ProblemTypes[i].TypeId + '" selected>' + value.ProblemTypes[i].TypeValue + '</option>';
+                            }
+                            else {
+                                options += '<option value="' + value.ProblemTypes[i].TypeId + '">' + value.ProblemTypes[i].TypeValue + '</option>';
+                            }
+                        }
+                        $("select#ComplainType").html(options);
+                        // $("select#ComplainType select").val(selectedOption);
+                    });
+
+
+
+                }
+            });
+
+
+
+        });
+
+
+    $('#testButton').click(function() {
+
+        var baNumber = $("#yadcf-filter--mytestDatatable-0 option:selected").text();
+        var hourFilter = $("#yadcf-filter--mytestDatatable-6 option:selected").text();
+        var name = $('#yadcf-filter--mytestDatatable-1').val();
+        var phone = $('#yadcf-filter--mytestDatatable-3').val();
+        var rank = $("#yadcf-filter--mytestDatatable-2 option:selected").text();
+        var complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
+        var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var overAllSearch=$("#mytestDatatable_filter :input").val();
+        alert(fromDateRange);
+        window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=resolved";
+       // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
+        @*$.ajax({
+            type: 'POST',
+            url: "@Url.Action("GetExcelFile", "Telephone")",
+
+            data:JSON.stringify(myData),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (returnValue) {
+
+            }
+        });*@
+
+
+
+        // alert("1");
+    });
+
+        $('#Status').change(function () {
+
+            if ($(this).val() == "1") {
+
+
+                document.getElementById('resolveDiv').style.display = 'block';
+
+                $("#aSapn2").text("Resolve Complain");
+
+            } else {
+
+                document.getElementById('resolveDiv').style.display = 'none';
+
+                $("#aSapn2").text("Edit Complain");
+
+            }
+        });
+
+
+
+
+
+
+
+    });
+</script>
+
+
+
+
+
+
 

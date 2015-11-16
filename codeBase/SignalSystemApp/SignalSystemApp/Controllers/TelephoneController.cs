@@ -1,9 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using SignalSystem.Libs;
+using SignalSystemApp.Models;
 using SignalSystemApp.Models.Telephone;
+
+using SortDirection = System.Web.Helpers.SortDirection;
 
 namespace SignalSystemApp.Controllers
 {
@@ -130,5 +140,606 @@ namespace SignalSystemApp.Controllers
 
             return View("ResolvedComplains");
         }
+
+        public ActionResult GetSingleComplainData(string id)
+        {
+            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+
+            string query =
+                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
+                "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
+                "complains.Description,complains.ComplainDate from complains,menucomplainType,telephoneusers," +
+                "menusRank where complains.`Status`='Pending' and menucomplaintype.Id=complains.MenuComplainTypeId " +
+                "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id and complains.id=" + id + ";";
+            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+            List<TelephoneComplain> aTelephoneComplainList=new List<TelephoneComplain>();
+            DBGateway aGateway=new DBGateway();
+            DataSet aDataSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+            {
+               
+                TelephoneComplain aTelephoneComplain=new TelephoneComplain();
+                aTelephoneComplain.BANumber = dataRow["BANumber"].ToString();
+                aTelephoneComplain.Name = dataRow["Name"].ToString();
+                aTelephoneComplain.ComplainType = dataRow["ComplainType"].ToString();
+                aTelephoneComplain.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelephoneComplain.Rank = dataRow["Rank"].ToString();
+                aTelephoneComplain.Description = dataRow["Description"].ToString();
+                aTelephoneComplain.ComplainDate = dataRow["ComplainDate"].ToString();
+                aTelephoneComplain.ComplainId = dataRow["Id"].ToString();
+                aTelephoneComplainList.Add(aTelephoneComplain);
+            }
+
+            List<TelephoneComplainType> complainTypes=new List<TelephoneComplainType>();
+
+            string queryType = "select * from menucomplaintype";
+            DataSet ctDataSet=aGateway.Select(queryType);
+            foreach (DataRow dataRow in ctDataSet.Tables[0].Rows)
+            {
+                TelephoneComplainType aType=new TelephoneComplainType();
+                aType.TypeId = dataRow["Id"].ToString();
+                aType.TypeValue = dataRow["Value"].ToString();
+               complainTypes.Add(aType);
+            }
+            aTelephoneComplainList.ForEach(list => list.ProblemTypes = complainTypes);
+
+           
+
+            return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+          
+
+        }
+
+
+        public ActionResult DeleteSingleComplainData()
+        {
+            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+
+            //string id=
+            string id = Request["deleteComplainId"].ToString();
+            string query =
+                "delete from  complains where id=" + id + ";";
+            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
+            DBGateway aGateway = new DBGateway();
+            string deleteResult = aGateway.Delete(query);
+
+
+
+            return RedirectToAction("PendingComplains", "Telephone");
+          //  return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+
+
+        public ActionResult EditSingleComplainData(TelephoneComplain aTelephoneComplain)
+        {
+            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+
+            //string id=
+            string id = Request["deleteComplainId"].ToString();
+            string query =
+                "delete from  complains where id=" + id + ";";
+            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
+            DBGateway aGateway = new DBGateway();
+            string deleteResult = aGateway.Delete(query);
+
+
+
+            return RedirectToAction("PendingComplains", "Telephone");
+            //  return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        public JsonResult DataProviderAction(JQueryDataTableParamModel aModel)
+        {
+            List<string> columnlist = new List<string>(new string[] { "BANumber", "Name", "Rank", "NewPhoneNumber", "ComplainDate", "ComplainType" });
+            string serachValue = Request["columns[0][search][value]"];
+
+            var roleId = Request.Params["max"];
+            var banumberFilter = Convert.ToString(Request["sSearch_0"]);
+            var nameFilter = Convert.ToString(Request["sSearch_1"]);
+
+
+            var rankFilter = Convert.ToString(Request["sSearch_2"]);
+            var dateFilter = Convert.ToString(Request["sSearch_4"]);
+            var phoneFilter = Convert.ToString(Request["sSearch_3"]);
+            var complainFilter = Convert.ToString(Request["sSearch_5"]);
+           var hourlyFilter = Convert.ToString(Request["sSearch_6"]);
+            var isNameSortable = Convert.ToBoolean(Request["bSortable_1"]);
+
+            string sSearch = string.Empty;
+            if (aModel.sSearch == null)
+            {
+                sSearch = "";
+            }
+            else
+            {
+                sSearch = aModel.sSearch.ToString();
+            }
+            // var sortingColumnNumber = Convert.ToInt32(aModel.iSortCol_0);
+            //var sortingColumnName = aModel[string.Format("mDataProp_{0}", sortingColumnNumber)]; 
+
+            var banameSortDirection = Request["sSortDir_0"];
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MaxValue;
+            
+            if (hourlyFilter == "")
+            {
+                
+                if (dateFilter.Contains("-yadcf_delim-"))
+                {
+                    string a1 = dateFilter.Replace("-yadcf_delim-", "~");
+                    //Split date range filters with ~
+                    fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
+                    toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]);
+                }
+            }
+            else if (hourlyFilter.Trim() == "Last 12 Hour Data")
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-12.5);
+
+            }
+            else
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-24.5);
+            }
+            
+            Telephone aTelephone = new Telephone();
+            List<TelephoneComplain> complanList = aTelephone.GetVariousComplainList("pending");
+            
+
+
+
+            List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
+
+
+            if (aModel.sSortDir_0 == "asc")
+            {
+                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
+            }
+            else { SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Descending); }
+
+
+
+            List<TelephoneComplain> displayedCompanies =
+                filteredComplaneList.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
+
+
+            var result = from c in displayedCompanies
+                         select new[]
+                {
+
+                    c.BANumber,
+                    c.Name,
+                    c.Rank,
+                    c.NewPhoneNumber,
+                    c.ComplainDate,
+                    c.ComplainType,
+                    "Edit",
+                    "Delete",
+                    Convert.ToString(c.ComplainId)
+                };
+            List<string[]> resultList = result.ToList();
+            List<string> aRankList = new List<string>();
+            List<string> banumberList = new List<string>();
+            List<string> complainTypeList = new List<string>();
+
+
+            foreach (TelephoneComplain a1 in complanList)
+            {
+                if (!aRankList.Contains(a1.Rank))
+                {
+                    aRankList.Add(a1.Rank);
+                }
+                if (!banumberList.Contains(a1.BANumber))
+                {
+                    banumberList.Add(a1.BANumber);
+
+                }
+                if (!complainTypeList.Contains(a1.ComplainType))
+                {
+                    complainTypeList.Add(a1.ComplainType);
+                }
+
+            }
+
+
+
+
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                yadcf_data_0 = banumberList,
+                yadcf_data_2 = aRankList,
+                yadcf_data_5 = complainTypeList,
+
+                iTotalRecords = complanList.Count(),
+                iTotalDisplayRecords = filteredComplaneList.Count(),
+                aaData = resultList
+            },
+               JsonRequestBehavior.AllowGet);
+
+
+
+
+            //Extract only current page
+
+
+        }
+
+        public List<TelephoneComplain> GetFilteredComplaneList(string sSearch, List<TelephoneComplain> complanList, string banumberFilter, string phoneFilter,
+            string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate)
+        {
+            List<TelephoneComplain> searchedComplains;
+
+
+            if ((sSearch == ""))
+            {
+                searchedComplains = complanList;
+            }
+            else
+            {
+                searchedComplains =
+                    complanList.Where(c => c.BANumber.ToLower().Contains(sSearch.ToLower())
+                                           || c.ComplainType.ToLower().Contains(sSearch.ToLower()) ||
+                                           c.Name.ToLower().Contains(sSearch.ToLower()) ||
+                                           c.NewPhoneNumber.ToLower().Contains(sSearch.ToLower()) ||
+                                           c.ComplainType.ToLower().Contains(sSearch.ToLower())).ToList();
+            }
+
+
+            var filteredCompanies = searchedComplains
+                .Where(c => (banumberFilter == "" || c.BANumber.ToLower() == banumberFilter.ToLower())
+                            &&
+                            (phoneFilter == "" || c.NewPhoneNumber.ToLower().Contains(phoneFilter))
+                            &&
+                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.ToLower()))
+                            &&
+                            (rankFilter == "" || c.Rank.ToLower() == rankFilter.ToLower())
+                            &&
+                            (complainFilter == "" || c.ComplainType.ToLower() == complainFilter.ToLower())
+                            &&
+                            (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
+                            &&
+                            (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
+                );
+            List<TelephoneComplain> filteredComplaneList = filteredCompanies.ToList();
+            return filteredComplaneList;
+        }
+
+
+        public JsonResult GetomplainData(JQueryDataTableParamModel aModel)
+        {
+            DBGateway aGateway = new DBGateway();
+            return null;
+        }
+
+        public void SortList<T>(List<T> list, string columnName, SortDirection direction)
+        {
+            var property = typeof(T).GetProperty(columnName);
+            var multiplier = direction == SortDirection.Descending ? -1 : 1;
+            list.Sort((t1, t2) =>
+            {
+                var col1 = property.GetValue(t1);
+                var col2 = property.GetValue(t2);
+                return multiplier * Comparer<object>.Default.Compare(col1, col2);
+            });
+        }
+
+        public ActionResult GetExcelFile(string baNumber, string name, string rank, string phone, string complainType, string fromDateRange, string toDateRange, string overAllSearch, string hourFilter,string status)
+        {
+            if (baNumber.ToLower() == "select value")
+            {
+                baNumber = "";
+            }
+
+            if (rank.ToLower() == "select value")
+            {
+                rank = "";
+            }
+
+
+            if (complainType.ToLower() == "select value")
+            {
+                complainType = "";
+            }
+            if (hourFilter.ToLower() == "select hourly data")
+            {
+                hourFilter = "";
+            }
+            if ((overAllSearch == null))
+            {
+                overAllSearch = "";
+            }
+
+            string a1 = baNumber + rank + complainType;
+            Telephone aTelephone = new Telephone();
+            List<TelephoneComplain> complainList = aTelephone.GetVariousComplainList(status);
+
+            
+            //List<TelephoneComplain> searchedComplains;
+
+
+            //if ((overAllSearch == null))
+            //{
+            //    overAllSearch = "";
+            //    searchedComplains = complainList;
+
+            //}
+            //else
+            //{
+
+            //    searchedComplains =
+            //        complainList.Where(c => c.BANumber.ToLower().Contains(overAllSearch.ToLower())
+            //                               || c.ComplainType.ToLower().Contains(overAllSearch.ToLower()) ||
+            //                               c.Name.ToLower().Contains(overAllSearch.ToLower()) ||
+            //                               c.NewPhoneNumber.ToLower().Contains(overAllSearch.ToLower()) ||
+            //                               c.ComplainType.ToLower().Contains(overAllSearch.ToLower())).ToList();
+            //}
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MaxValue;
+            int fromLength = fromDateRange.Length;
+            int toLenght = toDateRange.Length;
+            if (hourFilter == "")
+            {
+                if (fromDateRange.Length > 0)
+                {
+
+                    fromDate = Convert.ToDateTime(fromDateRange);
+
+                }
+                else
+                {
+                    fromDate = DateTime.MinValue;
+                }
+
+                if (toDateRange.Length > 0)
+                {
+
+                    toDate = Convert.ToDateTime(toDateRange);
+
+                }
+                else
+                {
+                    toDate = DateTime.MaxValue;
+                }
+            }
+            else if (hourFilter.Trim() == "Last 12 Hour Data")
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-12.5);
+
+            }
+            else
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-24.5);
+            }
+
+            List<TelephoneComplain> filteredComplainsList = GetFilteredComplaneList(overAllSearch,complainList, baNumber, phone, name,
+                rank, complainType, fromDate, toDate);
+
+
+            //var filteredComplains = (searchedComplains
+            //    .Where(c => (baNumber == "" || c.BANumber.ToLower() == baNumber.ToLower())
+            //                &&
+            //                (phone == "" || c.NewPhoneNumber.ToLower().Contains(phone))
+            //                &&
+            //                (name == "" || c.Name.ToLower().Contains(name.ToLower()))
+            //                &&
+            //                (rank == "" || c.Rank.ToLower() == rank.ToLower())
+            //                &&
+            //                (complainType == "" || c.ComplainType.ToLower() == complainType.ToLower())
+            //               &&
+            //                (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
+            //                &&
+            //                (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
+            //                )
+            //    );
+
+            //filteredComplains=filteredComplains.ToList();
+
+            DateTime dt = DateTime.Now;
+            DateTime dDate = DateTime.Now;
+            string[] sDate = dDate.ToString().Split(' ');
+            string time = dt.ToString("hh:mm");
+
+            
+            GridView aGridView=new GridView();
+            aGridView.DataSource = filteredComplainsList;
+            aGridView.DataBind();
+
+          //  aGridView.HeaderRow.BackColor = Color.Cornsilk;
+            foreach (TableCell cell in aGridView.HeaderRow.Cells)
+            {
+                cell.BackColor = Color.Cornsilk;
+            }
+
+            foreach (GridViewRow row in aGridView.Rows)
+            {
+               // row.BackColor = Color.White;
+                foreach (TableCell cell in row.Cells)
+                {
+                    if (row.RowIndex % 2 == 0)
+                    {
+                        cell.BackColor = Color.Gainsboro;
+                    }
+                    else
+                    {
+                        cell.BackColor = Color.GhostWhite;
+                    }
+                    cell.CssClass = "textmode";
+                }
+            }
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment;filename=PendingTelephoneComplain_"+sDate[0]+"_"+sDate[1]+sDate[2]+".xls");
+            Response.ContentType = "application/excel";
+            StringWriter swr = new StringWriter();
+            HtmlTextWriter tw = new HtmlTextWriter(swr);
+            aGridView.RenderControl(tw);
+            Response.Write(swr.ToString());
+
+            Response.End();
+            return null;
+        }
+
+
+
+        public JsonResult ResolvedDataProviderAction(JQueryDataTableParamModel aModel)
+        {
+            List<string> columnlist = new List<string>(new string[] { "BANumber", "Name", "Rank", "NewPhoneNumber", "ComplainDate", "ComplainType" });
+            string serachValue = Request["columns[0][search][value]"];
+
+            var roleId = Request.Params["max"];
+            var banumberFilter = Convert.ToString(Request["sSearch_0"]);
+            var nameFilter = Convert.ToString(Request["sSearch_1"]);
+
+
+            var rankFilter = Convert.ToString(Request["sSearch_2"]);
+            var dateFilter = Convert.ToString(Request["sSearch_4"]);
+            var phoneFilter = Convert.ToString(Request["sSearch_3"]);
+            var complainFilter = Convert.ToString(Request["sSearch_5"]);
+            var hourlyFilter = Convert.ToString(Request["sSearch_6"]);
+            var isNameSortable = Convert.ToBoolean(Request["bSortable_1"]);
+
+            string sSearch = string.Empty;
+            if (aModel.sSearch == null)
+            {
+                sSearch = "";
+            }
+            else
+            {
+                sSearch = aModel.sSearch.ToString();
+            }
+            // var sortingColumnNumber = Convert.ToInt32(aModel.iSortCol_0);
+            //var sortingColumnName = aModel[string.Format("mDataProp_{0}", sortingColumnNumber)]; 
+
+            var banameSortDirection = Request["sSortDir_0"];
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MaxValue;
+
+            if (hourlyFilter == "")
+            {
+
+                if (dateFilter.Contains("-yadcf_delim-"))
+                {
+                    string a1 = dateFilter.Replace("-yadcf_delim-", "~");
+                    //Split date range filters with ~
+                    fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
+                    toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]);
+                }
+            }
+            else if (hourlyFilter.Trim() == "Last 12 Hour Data")
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-12.5);
+
+            }
+            else
+            {
+                toDate = DateTime.Now;
+                fromDate = DateTime.Now.AddHours(-24.5);
+            }
+
+            Telephone aTelephone = new Telephone();
+            List<TelephoneComplain> complanList = aTelephone.GetVariousComplainList("resolved");
+
+
+
+
+            List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
+
+
+            if (aModel.sSortDir_0 == "asc")
+            {
+                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
+            }
+            else { SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Descending); }
+
+
+
+            List<TelephoneComplain> displayedCompanies =
+                filteredComplaneList.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
+
+
+            var result = from c in displayedCompanies
+                         select new[]
+                {
+
+                    c.BANumber,
+                    c.Name,
+                    c.Rank,
+                    c.NewPhoneNumber,
+                    c.ComplainDate,
+                    c.ComplainType,
+                    "Edit",
+                    "Delete",
+                    Convert.ToString(c.ComplainId)
+                };
+            List<string[]> resultList = result.ToList();
+            List<string> aRankList = new List<string>();
+            List<string> banumberList = new List<string>();
+            List<string> complainTypeList = new List<string>();
+
+
+            foreach (TelephoneComplain a1 in complanList)
+            {
+                if (!aRankList.Contains(a1.Rank))
+                {
+                    aRankList.Add(a1.Rank);
+                }
+                if (!banumberList.Contains(a1.BANumber))
+                {
+                    banumberList.Add(a1.BANumber);
+
+                }
+                if (!complainTypeList.Contains(a1.ComplainType))
+                {
+                    complainTypeList.Add(a1.ComplainType);
+                }
+
+            }
+
+
+
+
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                yadcf_data_0 = banumberList,
+                yadcf_data_2 = aRankList,
+                yadcf_data_5 = complainTypeList,
+
+                iTotalRecords = complanList.Count(),
+                iTotalDisplayRecords = filteredComplaneList.Count(),
+                aaData = resultList
+            },
+               JsonRequestBehavior.AllowGet);
+
+
+
+
+            //Extract only current page
+
+
+        }
+
+
+
+
+
+
+
     }
 }

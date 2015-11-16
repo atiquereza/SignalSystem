@@ -18,8 +18,9 @@
 
 </head>
 <body>
-    <div class="container">
-      @RenderBody()
-    </div>
+<div class="container">
+    @RenderBody()
+</div>
+    @RenderSection("head", required: false)
 </body>
 </html>

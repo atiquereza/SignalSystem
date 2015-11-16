@@ -2,14 +2,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Http.Routing;
-using Microsoft.Office.Interop.Excel;
 using SignalSystem.Libs;
+
 
 namespace SignalSystemApp.Models.Telephone
 {
+
+public class TelephoneComplain
+{
+    public string BANumber { get; set; }
+    public string Name { get; set; }
+    public string ComplainType { get; set; }
+    public string NewPhoneNumber { get; set; }
+    public string Rank { get; set; }
+    public string Description { get; set; }
+    public string ComplainDate { get; set; }
+    public string ComplainId { get; set; }
+    public List<TelephoneComplainType> ProblemTypes { get; set; }
+    
+    
+    public string Status { set; get; }
+    public string ResolvedDate { set; get; }
+    public string ResolveBy { get; set; }
+    //public string ResolveDescription { get; set; }
+    public string ActionTaken { set; get; }
+    public string Remarks { set; get; }
+    
+
+
+}
+
+    public class TelephoneComplainType
+    {
+        public string TypeId { get; set; }
+        public string TypeValue { get; set; }
+    }
+
+
+
+
     public class Telephone
     {
         DBGateway aGateway = new DBGateway("SignalSystemConnectionString");
@@ -116,7 +147,7 @@ namespace SignalSystemApp.Models.Telephone
             List<Dictionary<string,string>> pendingComplains = new List<Dictionary<string, string>>();
 
             string query =
-                "select telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
+                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
                 "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
                 "complains.Description,complains.ComplainDate from complains,menucomplainType,telephoneusers," +
                 "menusRank where complains.`Status`='Pending' and menucomplaintype.Id=complains.MenuComplainTypeId " +
@@ -132,6 +163,7 @@ namespace SignalSystemApp.Models.Telephone
                 aDictionary.Add("Rank", dataRow["Rank"].ToString());
                 aDictionary.Add("Description", dataRow["Description"].ToString());
                 aDictionary.Add("ComplainDate", dataRow["ComplainDate"].ToString());
+                aDictionary.Add("Id", dataRow["Id"].ToString());
                 pendingComplains.Add(aDictionary);
             }
 
@@ -170,10 +202,53 @@ namespace SignalSystemApp.Models.Telephone
         }
 
 
+        public List<TelephoneComplain> GetVariousComplainList(string type)
+        {
+
+            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+
+            string query =
+                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
+                "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
+                "complains.Description,complains.ComplainDate,complains.Status,complains.ActionTaken,complains.ResolvedBy,complains.ResolvedDate,complains.ActionTaken,complains.Remarks from complains,menucomplainType,telephoneusers," +
+                "menusRank where complains.`Status`='"+type+"' and menucomplaintype.Id=complains.MenuComplainTypeId " +
+                "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id;";
+            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
+            DBGateway aGateway = new DBGateway();
+            DataSet aDataSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+            {
+
+                TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+                aTelephoneComplain.BANumber = dataRow["BANumber"].ToString();
+                aTelephoneComplain.Name = dataRow["Name"].ToString();
+                aTelephoneComplain.ComplainType = dataRow["ComplainType"].ToString();
+                aTelephoneComplain.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelephoneComplain.Rank = dataRow["Rank"].ToString();
+                aTelephoneComplain.Description = dataRow["Description"].ToString();
+                aTelephoneComplain.ComplainDate = dataRow["ComplainDate"].ToString();
+                aTelephoneComplain.ComplainId = dataRow["Id"].ToString();
+                aTelephoneComplain.Status = dataRow["Status"].ToString();
+                
+                aTelephoneComplain.ResolveBy = dataRow["ResolvedBy"].ToString();
+                aTelephoneComplain.ResolvedDate = dataRow["ResolvedDate"].ToString();
+                aTelephoneComplain.ActionTaken = dataRow["ActionTaken"].ToString();
+                aTelephoneComplain.Remarks = dataRow["Remarks"].ToString();
+                aTelephoneComplainList.Add(aTelephoneComplain);
+            }
+
+            return aTelephoneComplainList;
+        }
+
+
 
         internal List<Dictionary<string, string>> GetResolvedComplainsByPhoneNumber(string phoneNumber)
         {
             throw new NotImplementedException();
         }
+
+       
+
     }
 }

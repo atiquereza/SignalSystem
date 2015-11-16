@@ -5,12 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Dark Admin</title>
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+  
+
+    <link href="~/Content/jquery.dataTables.yadcf.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet"/>
+
+  
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet"/>
+    
     <link href="~/Content/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/CSS/local.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/CSS/local.css" rel="stylesheet"/>
+    @*@RenderSection("head-css", required: false)*@
+
+    
+
+
+
+
+
+
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    @*<script src="~/Scripts/bootstrap-datepicker.js"></script>*@
+
+
+
+
 
     @{
         Dictionary<string, string> sessionDictionary = new Dictionary<string, string>();
@@ -154,6 +177,8 @@
         @RenderBody()
 
     </div>
-  
+    
+    @RenderSection("head", required: false)
+
 </body>
 </html>
