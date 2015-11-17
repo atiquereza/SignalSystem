@@ -5954,7 +5954,10 @@ table.tablesorter thead tr th:hover {
   /* Wrappers */
 
   #wrapper {
-	padding-left: 225px;
+	padding-left: 200px;
+  }
+  .panel-heading {
+      padding-left: 200px;
   }
 
   #page-wrapper {

@@ -48,77 +48,78 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading" >
-                    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Pending Complains
-                    </h3>
-                </div>
-                <div class="panel-body">
+        <div id="table-container-div"> @*<div class="col-lg-12">*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" style="margin-left: -190px;">
+                <i class="fa fa-bar-chart-o"></i> Pending Complains
+            </h3>
+        </div>
+        <div class="panel-body">
 
-                   <div>
-                        @*<table style="width: 100%" border="1">
+            <div>
+                @*<table style="width: 100%" border="1">
+                        <tr>
+                            <th>BA Number</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Phone Number</th>
+                            <th>Complain date & time</th>
+                            <th>Complain Type</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        @Html.Raw(pendingList)
+                    </table>*@
+
+
+                <div style="width: 700px;">
+                    <div style="float: left; width: 200px;">
+                        <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                    </div>
+                    <div style="float: left; width: 300px;" id="externalContainer"></div>
+                    <div style="float: left; width: 200px;"></div>
+                    <br style="clear: left;" />
+                </div>
+
+
+                <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
+
+
+                    <thead>
+                        <tr>
+
+                            <th class="col-sm-1">Ba Number</th>
+                            <th class="col-sm-1">Name</th>
+                            <th class="col-sm-1">Rank</th>
+                            <th class="col-sm-1">Phone</th>
+                            <th class="col-sm-1">Complin Date</th>
+                            <th class="col-sm-1">Complin Type</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    @*<tfoot>
                             <tr>
-                                <th>BA Number</th>
-                                <th>Name</th>
-                                <th>Rank</th>
-                                <th>Phone Number</th>
-                                <th>Complain date & time</th>
-                                <th>Complain Type</th>
+
+                                <th>Company name</th>
+                                <th>Town</th>
+                                <th>Date Created</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
-                            @Html.Raw(pendingList)
-                        </table>*@
+                        </tfoot>*@
 
-                     
-                       <div style="width: 700px;">
-                           <div style="float: left; width: 200px;">
-                               <input type="button" value="Export to Excel" style="color: green;" id="testButton">
-                           </div>
-                           <div style="float: left; width: 300px;" id="externalContainer"></div>
-                           <div style="float: left; width: 200px;"></div>
-                           <br style="clear: left;" />
-                       </div>
-                       
-                    
-                       <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
-
-
-                           <thead>
-                               <tr>
-
-                                   <th class="col-sm-1">Ba Number</th>
-                                   <th class="col-sm-1">Name</th>
-                                   <th class="col-sm-1">Rank</th>
-                                   <th class="col-sm-1">Phone</th>
-                                   <th class="col-sm-1">Complin Date</th>
-                                   <th class="col-sm-1">Complin Type</th>
-                                   <th>Edit</th>
-                                   <th>Delete</th>
-                                   <th>hidden1</th>
-
-                               </tr>
-                           </thead>
-                           <tbody></tbody>
-                           @*<tfoot>
-                <tr>
-
-                    <th>Company name</th>
-                    <th>Town</th>
-                    <th>Date Created</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-            </tfoot>*@
-
-                       </table>
-                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
-                    </div>
-
-                </div>
+                </table>
+                @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
             </div>
+
         </div>
+    </div>
+</div>
     </div>
 </div>
 
@@ -436,13 +437,13 @@
 
                     return nRow;
                 },
-            "columnDefs": [
-         {
-             "targets": [8],
-             "visible": false,
-             "searchable": false
-         }
-            ]
+         //   "columnDefs": [
+         //{
+         //    "targets": [8],
+         //    "visible": false,
+         //    "searchable": false
+         //}
+         //   ]
           
             
             
@@ -622,7 +623,7 @@
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var overAllSearch=$("#mytestDatatable_filter :input").val();
-        alert(fromDateRange);
+       // alert($('#mytestDatatable').width());
         window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter+"&status=pending";
        // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
         @*$.ajax({
@@ -659,11 +660,9 @@
 
             }
         });
+        var tableWidth = $('#mytestDatatable').width() + 25;
 
-       
-       
-
-
+        document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
 
 
     });
