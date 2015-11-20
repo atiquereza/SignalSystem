@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Text.RegularExpressions;
 using SignalSystem.Libs;
 
 
@@ -140,6 +141,13 @@ public class TelephoneComplain
             aGateway.Insert(nonQuery, aHashtable);
 
             return true;
+        }
+
+        public String DMYToMDY(String input)
+        {
+            return Regex.Replace(input,
+            @"\b(?<day>\d{1,2})/(?<month>\d{1,2})/(?<year>\d{2,4})\b",
+            "${month}/${day}/${year}");
         }
 
         public List<Dictionary<string, string>> GetPendingComplains()

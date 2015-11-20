@@ -79,12 +79,12 @@
 <div id="filter" style="display: none">
     <div class="row">
                     <div class="col-xs-2">
-                    </br>      <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                    <br>      <input type="button" value="Export to Excel" style="color: green;" id="testButton">
                         </div>
     <div class="col-xs-2">                
-       </br> <div id="externalContainer"></div>
+       <br> <div id="externalContainer"></div>
     </div>
-    </div></br>
+    </div><br>
     @*Search filter*@
     <div class="row">
         <div class="col-xs-2">
@@ -109,11 +109,12 @@
         </div>
     </div></br>
 </div>
+              
 
 
 
 
-                <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
+                <table id="mytestDatatable" name="entrymytestDatatables_table"  border="1" class="table table-condensed table-striped ">
 
 
                     <thead>
@@ -123,13 +124,13 @@
                             <th class="col-sm-1">Name</th>
                             <th class="col-sm-1">Rank</th>
                             <th class="col-sm-1">Phone</th>
-                            <th class="col-sm-1">Complin Date</th>
+                            <th class="col-sm-2">Complin Date</th>
                             <th class="col-sm-1">Complin Type</th>
-                            <th class="col-sm-1">Click to Resolve</th>
+                            <th class ="col-sm-1">Click to Resolve</th>
                             <th class="col-sm-1">Delete</th>
-                            
 
-                        </tr>
+
+</tr>
                     </thead>
                     <tbody></tbody>
                     @*<tfoot>
@@ -317,18 +318,39 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="resolveDiv" style="display:none">
+
+
+                    <div class="form-group" id="resolveDiv" style="display: none">
                         <label class="col-xs-4 control-label">Resolve Description</label>
                         <div class="col-xs-5">
 
-                            <textarea class="form-control" id="ResolveDescription" name="ResolveDescription"></textarea>
+                            <textarea class="form-control" id="ActionTaken" name="ActionTaken"></textarea>
 
                         </div>
+
+
+
+                        <label class="col-xs-2 control-label">Date</label>
+                        <div class="col-xs-5">
+
+                            <input type="text" class="form-control" id="ResolvedDate" name="ResolvedDate" />
+
+                        </div>
+
+
                     </div>
 
 
 
+
+
+
+
+
                 </div>
+
+
+                
                 <div class="modal-footer">
                     <div class="form-group">
                         <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
@@ -440,6 +462,7 @@
             changeMonth: true,
             changeYear: true,
             yearRange: '1900:3000',
+           
             
             showWeek: true,
             weekHeader: "Wk",
@@ -457,6 +480,30 @@
         //    showClear: true
         //};
 
+        //var year1 = "2015";
+        //var month1 = "9";
+        //var day1 = "14";
+        //var hour1 = "14";
+        //var minute1 = "45";
+
+        //var startDate = new Date(year1, month1, day1, hour1, minute1,0);
+        ////var endDate = new Date(year, 11, 28, 0, 0, 0, 0);
+        //var endDate = new Date();
+
+        //var ex13 = $('#resolveTime');
+
+        //ex13.datetimepicker({
+        //    controlType: 'select',
+        //    oneLine: true,
+        //    timeFormat: 'hh:mm tt',
+        //    minDate: startDate,
+        //    maxDate: endDate
+        //}
+        //);
+
+        //ex13.datetimepicker('setDate', (new Date()));
+            
+    
         var datepickerDefaults = {
             showTodayButton: true,
             showClear: true
@@ -477,8 +524,9 @@
                 function (nRow, aData, iDisplayIndex) {
 
                     //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
-                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button></td>');
-                    $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
+                   // $('td:eq(6)', nRow).html(content).addClass("edit-row-data1");
+                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
+                    $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
 
                     return nRow;
                 },
@@ -574,7 +622,7 @@
 
         //  $('.deleteEntry').on('click', function () {
         $(document).on('click', '.deleteEntry', function () {
-
+            
             var Complain_id = $(this).attr('complain_id').trim();
 
             var myData = ({ "id": Complain_id });
@@ -614,14 +662,17 @@
         var Complain_id = $(this).attr('complain_id').trim();
 
         //       alert(Complain_id);
-     
+        var oldDate;
         $("div.selectStatus select").val("0");
         $("#aSapn2").text("Edit Complain");
+
+
         document.getElementById('resolveDiv').style.display = 'none';
 
         var myData = ({ "id": Complain_id });
 
         $.ajax({
+            'async': false,
             type: "POST",
             url: "@Url.Action("GetSingleComplainData", "Telephone")",
             contentType: "application/json; charset=utf-8",
@@ -641,6 +692,7 @@
                 $("#NewPhoneNumber").val(value.NewPhoneNumber);
                 $("#Rank").val(value.Rank);
                 $("#Description").val(value.Description);
+                oldDate = value.ComplainDate;
                 var options = "";
                 var selectedOption = "";
                 for (var i = 0; i < value.ProblemTypes.length; i++) {
@@ -659,7 +711,32 @@
 
 
         }
-    });
+        });
+
+        document.getElementById('ResolvedDate').style.display = 'block';
+        
+        
+        //var startDate = new Date(oldDate);
+        alert(oldDate);
+        //var endDate = new Date(year, 11, 28, 0, 0, 0, 0);
+        var endDate = new Date();
+
+        var ex13 = $('#ResolvedDate');
+     
+
+        ex13.datetimepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm tt',
+            dateFormat: 'dd/mm/yy',
+          
+            maxDate: endDate
+       
+        }        );
+        ex13.datetimepicker('option', 'minDate', new Date(oldDate));
+        ex13.datetimepicker('setDate', (new Date()));
+        
+
 
 
 
@@ -703,6 +780,19 @@
 
 
             document.getElementById('resolveDiv').style.display = 'block';
+           // document.getElementById('resolveTime').style.display = 'block';
+            //var text1= "<label class=\"col-xs-2 control-label\">Date</label>";
+            //var text2="<div class=\"col-xs-5\">";
+
+            //var text3="<input type=\"text\" class=\"form-control\" id=\"resolveTime\" class=\"resolveTime\" />";
+
+            //var text4 = "</div>";
+           // $("#resolveDiv").append(text1, text2, text3, text4);
+        
+
+
+            $("#resolveDiv > :visible");
+          //  $("#resolveDiv div:visible");
 
             $("#aSapn2").text("Resolve Complain");
 
@@ -717,11 +807,27 @@
     var tableWidth = $('#mytestDatatable').width() + 25;
 
     document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+   // document.getElementById('edit-row-data').style.width = "5px";
+   // document.getElementById('delete-row-data').style.width = "10px";
+   // $('td.edit-row-data1').style.width = "5px";
 
 
+
+
+        //Make DateTime picker dropdown to work on a Modal//
+    var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+    $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+
+    $confModal.on('hidden', function () {
+        $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+    });
+
+    $confModal.modal({ backdrop: false });
+        //Make DateTime picker dropdown to work on a Modal//
+        
     });
 </script>
-
 
 
 

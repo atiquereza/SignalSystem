@@ -216,16 +216,36 @@ namespace SignalSystemApp.Controllers
 
         public ActionResult EditSingleComplainData(TelephoneComplain aTelephoneComplain)
         {
-            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+            string complainStatus = string.Empty;
+            string updateQuery = string.Empty;
+            if (aTelephoneComplain.Status == "0")
 
-            //string id=
-            string id = Request["deleteComplainId"].ToString();
+            {
+                complainStatus = "Pending";
+                updateQuery = "UPDATE `signalappdb`.`complains` SET `Description`='" + aTelephoneComplain.Description + "', `Status`='" + complainStatus + "', `MenuComplainTypeId`=" + aTelephoneComplain.ComplainType + " WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
+            }
+            else if (aTelephoneComplain.Status == "1")
+            {
+              
+                   
+                 
+                Telephone aTelephone=new Telephone();
+                string convertedDateText = aTelephone.DMYToMDY(aTelephoneComplain.ResolvedDate);
+                DateTime dt = DateTime.Parse(convertedDateText);
+
+                complainStatus = "Resolved";
+                updateQuery = "UPDATE `signalappdb`.`complains` SET `Description`='" + aTelephoneComplain.Description + "', `Status`='" + complainStatus + "', `MenuComplainTypeId`=" + aTelephoneComplain.ComplainType + ", `ResolvedDate`='" + dt.ToString("yyyy-MM-dd HH:mm:ss") + "', `ActionTaken`='" + aTelephoneComplain.ActionTaken + "', `ResolvedBy`='Habib' WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
+            }
+
+            
+
+           
+
             string query =
-                "delete from  complains where id=" + id + ";";
-            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
-            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
+                "delete from  complains where id=" + aTelephoneComplain.ComplainId + ";";
+            
             DBGateway aGateway = new DBGateway();
-            string deleteResult = aGateway.Delete(query);
+            string deleteResult = aGateway.Update(updateQuery);
 
 
 

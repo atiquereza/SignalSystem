@@ -136,6 +136,7 @@
     <Content Include="Content\font\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\jquery.dataTables.yadcf.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -223,6 +224,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.dataTables.yadcf.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
