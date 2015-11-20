@@ -125,7 +125,7 @@
                             <th class="col-sm-1">Phone</th>
                             <th class="col-sm-1">Complin Date</th>
                             <th class="col-sm-1">Complin Type</th>
-                            <th class="col-sm-1">Edit</th>
+                            <th class="col-sm-1">Click to Resolve</th>
                             <th class="col-sm-1">Delete</th>
                             
 
@@ -477,7 +477,7 @@
                 function (nRow, aData, iDisplayIndex) {
 
                     //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
-                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span></button></td>');
+                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button></td>');
                     $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
 
                     return nRow;
