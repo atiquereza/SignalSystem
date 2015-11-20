@@ -71,16 +71,46 @@
                         </tr>
                         @Html.Raw(pendingList)
                     </table>*@
+<div class="row">
+<div class="col-xs-2">
+<button class="btn btn-info" onclick="$('#filter').toggle();">Show/Hide filters</button>
+</div>
+</div>
+<div id="filter" style="display: none">
+    <div class="row">
+                    <div class="col-xs-2">
+                    </br>      <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                        </div>
+    <div class="col-xs-2">                
+       </br> <div id="externalContainer"></div>
+    </div>
+    </div></br>
+    @*Search filter*@
+    <div class="row">
+        <div class="col-xs-2">
+            <div id="selectBANumber"></div>
+    </div>
+    <div class="col-xs-2">
+            <div id="searchName"></div>
+    </div>
+    <div class="col-xs-2">
+            <div id="selectRank"></div>
+    </div>
+    <div class="col-xs-2">
+            <div id="searchPhone"></div>
+    </div>
+    <div class="col-xs-2">
+        <div id="complainType"></div>
+    </div>
+    </div></br>
+    <div class="row">
+        <div class="col-xs-5">
+            <label>Search by Complain Date:</label><div id="complainDate"></div>
+        </div>
+    </div></br>
+</div>
 
 
-                <div style="width: 700px;">
-                    <div style="float: left; width: 200px;">
-                        <input type="button" value="Export to Excel" style="color: green;" id="testButton">
-                    </div>
-                    <div style="float: left; width: 300px;" id="externalContainer"></div>
-                    <div style="float: left; width: 200px;"></div>
-                    <br style="clear: left;" />
-                </div>
 
 
                 <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
@@ -89,7 +119,7 @@
                     <thead>
                         <tr>
 
-                            <th class="col-sm-1">Ba Number</th>
+                            <th class="col-sm-1">BA Number</th>
                             <th class="col-sm-1">Name</th>
                             <th class="col-sm-1">Rank</th>
                             <th class="col-sm-1">Phone</th>
@@ -327,63 +357,78 @@
 
 
 <style>
-    .myModals  div {
+
+    .myModals div {
         padding-bottom: 10px;
     }
-    .paginate_button {
-        background: lightblue;   
-    }
-    .dataTables_length  {
-        background: whitesmoke;
-    }
-    .dataTables_filter{
-        background: whitesmoke;
-    }
-    #yadcf-filter--reportTable-1 {
-    width: 25px !important;
-    max-width: 25px !important;
-}
-    #yadcf-filter--mytestDatatable-1 {
-    width: 105px !important;
-    max-width: 105px !important;
-}
-    #yadcf-filter--mytestDatatable-0 {
-    width: 120px !important;
-    max-width: 120px !important;
-}
-       #yadcf-filter--mytestDatatable-2 {
-    width: 120px !important;
-    max-width: 120px !important;
-} 
-          #yadcf-filter--mytestDatatable-3 {
-    width: 110px !important;
-    max-width: 110px !important;
-}  
-                  #yadcf-filter--mytestDatatable-5 {
-    width: 110px !important;
-    max-width: 110px !important;
-} 
-          .yadcf-filter-range-date-seperator {
-              width: 20px !important;
-          } 
 
-          #mytestDatatable_length select {
-              background: green;
-          }
-          #mytestDatatable_length {
-              background: #222222;
-              color: white;
-          }
-          #mytestDatatable_filter {
-               background: #222222;
-              color: white;
-              
-          }
+    .paginate_button {
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--mytestDatatable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #mytestDatatable_length select {
+        background: green;
+    }
+
+    #mytestDatatable_length {
+        background: #222222;
+        color: white;
+padding-top:10px;
+    }
+
+    #mytestDatatable_filter {
+        background: #222222;
+        color: white;
+    }
 
 </style>
 
 
 <script>
+
+
     $(document).ready(function () {
 
         $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
@@ -406,7 +451,7 @@
             //showAnim: "slideDown"
            
            
-       });
+        });
         //var datepickerDefaults = {
         //    showTodayButton: true,
         //    showClear: true
@@ -437,13 +482,13 @@
 
                     return nRow;
                 },
-         //   "columnDefs": [
-         //{
-         //    "targets": [8],
-         //    "visible": false,
-         //    "searchable": false
-         //}
-         //   ]
+            //   "columnDefs": [
+            //{
+            //    "targets": [8],
+            //    "visible": false,
+            //    "searchable": false
+            //}
+            //   ]
           
             
             
@@ -459,23 +504,29 @@
 
         oTable.yadcf([
                         {
-                            column_number: 0
+                            column_number: 0,
+                            filter_container_id: "selectBANumber",
+                            filter_default_label: "Search BA"
 
                         },
                          {
                              column_number: 1,
                              filter_type: "text",
-                             filter_default_label: "Search Name"
-                            },
+                             filter_default_label: "Search Name",
+                             filter_container_id: "searchName"
+                         },
                         {
                             column_number: 2,
-                            filter_type: "select"
+                            filter_type: "select",
+                            filter_default_label: "Select Rank",
+                            filter_container_id: "selectRank"
 
                         },
                         {
                             column_number: 3,
                             filter_type: "text",
-                            filter_default_label: "Search Phone"
+                            filter_default_label: "Search Phone",
+                            filter_container_id: "searchPhone"
                         },
                         {
                             column_number: 4,
@@ -483,12 +534,15 @@
                             //datepicker_type: 'bootstrap-datetimepicker',
                             date_format: "mm/dd/yyyy",
                             //filter_plugin_options: datepickerDefaults,
-                            filter_delay: 500
+                            filter_delay: 500,
+                            filter_container_id: "complainDate"
                         },
                        // {column_number: 4, filter_type: "range_date", datepicker_type: 'bootstrap-datetimepicker', date_format: 'YYYY-MM-DD', filter_plugin_options: datepickerDefaults},
                         {
                             column_number: 5,
-                            filter_type: "select"
+                            filter_type: "select",
+                            filter_container_id: "complainType",
+                            filter_default_label: "Complain"
 
                         },
                         {
@@ -518,7 +572,7 @@
         $(".yadcf-filter-range-date").css('background', 'black');
         $(".yadcf-filter-range-date").css('font', 'bold');
 
-      //  $('.deleteEntry').on('click', function () {
+        //  $('.deleteEntry').on('click', function () {
         $(document).on('click', '.deleteEntry', function () {
 
             var Complain_id = $(this).attr('complain_id').trim();
@@ -533,83 +587,83 @@
                 type: "POST",
                 url: "@Url.Action("GetSingleComplainData", "Telephone")",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(myData),
-                dataType: 'json',
+            data: JSON.stringify(myData),
+            dataType: 'json',
 
-                success: function (returnData) {
+            success: function (returnData) {
 
 
 
-                    $.each(returnData, function (index, value) {
-                        //  alert(value.BANumber);
-                        $("#deleteComplainId").val(value.ComplainId);
-                        $("#deleteComplainBANumber").val(value.BANumber);
-                        $("#deleteComplainName").val(value.Name);
-                        $("#deleteComplainType").val(value.ComplainType);
-                        $("#deleteComplainPhoneNumber").val(value.NewPhoneNumber);
-                        $("#deleteComplainRank").val(value.Rank);
-                        $("#deleteComplainDescription").val(value.Description);
+                $.each(returnData, function (index, value) {
+                    //  alert(value.BANumber);
+                    $("#deleteComplainId").val(value.ComplainId);
+                    $("#deleteComplainBANumber").val(value.BANumber);
+                    $("#deleteComplainName").val(value.Name);
+                    $("#deleteComplainType").val(value.ComplainType);
+                    $("#deleteComplainPhoneNumber").val(value.NewPhoneNumber);
+                    $("#deleteComplainRank").val(value.Rank);
+                    $("#deleteComplainDescription").val(value.Description);
 
-                    });
-                }
-            });
+                });
+            }
         });
+    });
 
 
-        $(document).on('click', '.editEntry', function () {
-            var Complain_id = $(this).attr('complain_id').trim();
+    $(document).on('click', '.editEntry', function () {
+        var Complain_id = $(this).attr('complain_id').trim();
 
-     //       alert(Complain_id);
+        //       alert(Complain_id);
      
-            $("div.selectStatus select").val("0");
-            $("#aSapn2").text("Edit Complain");
-            document.getElementById('resolveDiv').style.display = 'none';
+        $("div.selectStatus select").val("0");
+        $("#aSapn2").text("Edit Complain");
+        document.getElementById('resolveDiv').style.display = 'none';
 
-            var myData = ({ "id": Complain_id });
+        var myData = ({ "id": Complain_id });
 
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("GetSingleComplainData", "Telephone")",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(myData),
-                dataType: 'json',
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetSingleComplainData", "Telephone")",
+            contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(myData),
+        dataType: 'json',
 
-                success: function (returnData) {
-
-
-
-                    $.each(returnData, function (index, value) {
-
-                        $("#ComplainId").val(value.ComplainId);
-                        $("#BANumber").val(value.BANumber);
-                        $("#Name").val(value.Name);
-                        $("#ComplainType").val(value.ComplainType);
-                        $("#NewPhoneNumber").val(value.NewPhoneNumber);
-                        $("#Rank").val(value.Rank);
-                        $("#Description").val(value.Description);
-                        var options = "";
-                        var selectedOption = "";
-                        for (var i = 0; i < value.ProblemTypes.length; i++) {
-                            if (value.ComplainType == value.ProblemTypes[i].TypeValue) {
-                                selectedOption = value.ProblemTypes[i].TypeId;
-                                options += '<option value="' + value.ProblemTypes[i].TypeId + '" selected>' + value.ProblemTypes[i].TypeValue + '</option>';
-                            }
-                            else {
-                                options += '<option value="' + value.ProblemTypes[i].TypeId + '">' + value.ProblemTypes[i].TypeValue + '</option>';
-                            }
-                        }
-                        $("select#ComplainType").html(options);
-                        // $("select#ComplainType select").val(selectedOption);
-                    });
+        success: function (returnData) {
 
 
 
+            $.each(returnData, function (index, value) {
+
+                $("#ComplainId").val(value.ComplainId);
+                $("#BANumber").val(value.BANumber);
+                $("#Name").val(value.Name);
+                $("#ComplainType").val(value.ComplainType);
+                $("#NewPhoneNumber").val(value.NewPhoneNumber);
+                $("#Rank").val(value.Rank);
+                $("#Description").val(value.Description);
+                var options = "";
+                var selectedOption = "";
+                for (var i = 0; i < value.ProblemTypes.length; i++) {
+                    if (value.ComplainType == value.ProblemTypes[i].TypeValue) {
+                        selectedOption = value.ProblemTypes[i].TypeId;
+                        options += '<option value="' + value.ProblemTypes[i].TypeId + '" selected>' + value.ProblemTypes[i].TypeValue + '</option>';
+                    }
+                    else {
+                        options += '<option value="' + value.ProblemTypes[i].TypeId + '">' + value.ProblemTypes[i].TypeValue + '</option>';
+                    }
                 }
+                $("select#ComplainType").html(options);
+                // $("select#ComplainType select").val(selectedOption);
             });
 
 
 
-        });
+        }
+    });
+
+
+
+    });
 
     
     $('#testButton').click(function() {
@@ -623,46 +677,46 @@
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var overAllSearch=$("#mytestDatatable_filter :input").val();
-       // alert($('#mytestDatatable').width());
+        // alert($('#mytestDatatable').width());
         window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter+"&status=pending";
-       // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
+        // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
         @*$.ajax({
             type: 'POST',
             url: "@Url.Action("GetExcelFile", "Telephone")",
            
             data:JSON.stringify(myData),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (returnValue) {
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (returnValue) {
                
-            }
-        });*@
+        }
+    });*@
 
 
 
-        // alert("1");
+    // alert("1");
     });
 
-        $('#Status').change(function () {
+    $('#Status').change(function () {
 
-            if ($(this).val() == "1") {
+        if ($(this).val() == "1") {
 
 
-                document.getElementById('resolveDiv').style.display = 'block';
+            document.getElementById('resolveDiv').style.display = 'block';
 
-                $("#aSapn2").text("Resolve Complain");
+            $("#aSapn2").text("Resolve Complain");
 
-            } else {
+        } else {
 
-                document.getElementById('resolveDiv').style.display = 'none';
+            document.getElementById('resolveDiv').style.display = 'none';
 
-                $("#aSapn2").text("Edit Complain");
+            $("#aSapn2").text("Edit Complain");
 
-            }
-        });
-        var tableWidth = $('#mytestDatatable').width() + 25;
+        }
+    });
+    var tableWidth = $('#mytestDatatable').width() + 25;
 
-        document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+    document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
 
 
     });
