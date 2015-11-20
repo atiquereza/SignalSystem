@@ -21,7 +21,7 @@
     //                   "<td>" + dictionary["ComplainDate"] + "</td>" +
     //                   "<td>" + dictionary["ComplainType"] + "</td>" +
     //                   //"<td><span class=\"label label-danger\">Pending</span></td></tr>"+
-    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myEdit\" class=\" editEntry btn btn-xs btn-success\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td>" +
+    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myEdit\" class=\" btn btn-xs btn-success\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td>" +
     //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myDelete\" class=\" deleteEntry btn btn-xs btn-danger\"><span class=\"glyphicon glyphicon-remove\"></span></button></td></tr>";
     //}
 }
@@ -125,8 +125,8 @@
                             <th class="col-sm-1">Phone</th>
                             <th class="col-sm-1">Complin Date</th>
                             <th class="col-sm-1">Complin Type</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th class="col-sm-1">Edit</th>
+                            <th class="col-sm-1">Delete</th>
                             
 
                         </tr>
@@ -415,12 +415,12 @@
     #mytestDatatable_length {
         background: #222222;
         color: white;
-padding-top:10px;
+        padding-top:10px;
     }
 
     #mytestDatatable_filter {
         background: #222222;
-        color: white;
+        color: black;
     }
 
 </style>
@@ -477,7 +477,7 @@ padding-top:10px;
                 function (nRow, aData, iDisplayIndex) {
 
                     //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
-                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class=" editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span></button></td>');
+                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span></button></td>');
                     $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
 
                     return nRow;
