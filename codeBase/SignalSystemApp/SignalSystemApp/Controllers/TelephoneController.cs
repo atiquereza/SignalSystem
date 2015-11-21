@@ -489,10 +489,10 @@ namespace SignalSystemApp.Controllers
                             (resolverTodate == DateTime.MaxValue || Convert.ToDateTime(c.ResolvedDate) < resolverTodate)
                             &&
                             (resolvedByFilter == "" || c.ResolveBy.ToLower() == resolvedByFilter.ToLower())
-                            //&&
-                            //(actionFilter == "" || c.ActionTaken.ToLower().Contains(actionFilter.ToLower()))
-                            // &&
-                            //(remarksFilter == "" || c.Remarks.ToLower().Contains(remarksFilter.ToLower()))
+                            &&
+                            (actionFilter == "" || c.ActionTaken.ToLower().Contains(actionFilter.ToLower()))
+                             &&
+                            (remarksFilter == "" || c.Remarks.ToLower().Contains(remarksFilter.ToLower()))
                             
                 );
             List<TelephoneComplain> filteredComplaneList = filteredCompanies.ToList();
