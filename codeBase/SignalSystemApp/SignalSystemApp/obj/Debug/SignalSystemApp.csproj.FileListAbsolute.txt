@@ -106,4 +106,3 @@ G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\
 G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\bin\System.Web.Http.WebHost.xml
 G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\obj\Debug\SignalSystemApp.dll
 G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\obj\Debug\SignalSystemApp.pdb
-G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\obj\Debug\SignalSystemApp.csprojResolveAssemblyReference.cache

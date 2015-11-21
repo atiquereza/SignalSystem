@@ -162,7 +162,7 @@
 
 
 <!-- Modal -->
-<form id="delete-form" class="myModals" method="POST" action="@deleteAction">
+<form id="delete-form" class="myModals" method="POST" action="@deleteAction" onsubmit="if(!confirm('Do you want to Delete This Entry?')){return false;}">
     <div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -328,12 +328,22 @@
 
                         </div>
 
-                        <label class="col-xs-4 control-label">Date</label>
+                        <label class="col-xs-4 control-label">Resolve Time</label>
                         <div class="col-xs-5">
 
                             <input type="text" class="form-control" id="ResolvedDate" name="ResolvedDate" />
 
                         </div>
+
+                        <label class="col-xs-4 control-label">Remarks</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="Remarks" name="Remarks"></textarea>
+
+                        </div>
+
+                      
+
 
 
                     </div>
@@ -552,7 +562,7 @@
                         {
                             column_number: 0,
                             filter_container_id: "selectBANumber",
-                            filter_default_label: "Search BA"
+                            filter_default_label: "Select BA"
 
                         },
                          {
@@ -588,7 +598,7 @@
                             column_number: 5,
                             filter_type: "select",
                             filter_container_id: "complainType",
-                            filter_default_label: "Complain"
+                            filter_default_label: "Select Complain"
 
                         },
                         {

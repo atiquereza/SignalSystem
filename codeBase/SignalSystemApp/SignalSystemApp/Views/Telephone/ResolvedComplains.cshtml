@@ -77,7 +77,7 @@
 
                         <div style="width: 700px;">
                             <div style="float: left; width: 200px;">
-                                <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                                <input type="button" value="Export to Excel" style="color: green;" id="ExportExcel">
                             </div>
                             <div style="float: left; width: 300px;" id="externalContainer"></div>
                             <div style="float: left; width: 200px;"></div>
@@ -97,8 +97,11 @@
                                     <th class="col-sm-1">Phone</th>
                                     <th class="col-sm-1">Complin Date</th>
                                     <th class="col-sm-1">Complin Type</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th>Resolved By</th>
+                                    <th>Resolve Date</th>
+                                    <th>Action Taken</th>
+                                    <th>Remarks</th>
+                                    <th>View Complain</th>
                                     <th>hidden1</th>
 
                                 </tr>
@@ -256,7 +259,7 @@
                     <div class="form-group">
                         <label class="col-xs-4 control-label">Complain Type</label>
                         <div class="col-xs-5">
-                            <select class="form-control" id="ComplainType" name="ComplainType">
+                            <select class="form-control" id="ComplainType" name="ComplainType" disabled>
                                 <option value="" selected>Select Type</option>
 
                             </select>
@@ -268,7 +271,7 @@
                         <label class="col-xs-4 control-label">Problem Description</label>
                         <div class="col-xs-5">
 
-                            <textarea class="form-control" id="Description" name="Description"></textarea>
+                            <textarea class="form-control" id="Description" name="Description" disabled></textarea>
 
                         </div>
                     </div>
@@ -279,32 +282,66 @@
 
 
 
-                            <select class="form-control" id="Status" name="Status">
-                                <option value="0" selected="selected">Pending</option>
+                            <select class="form-control" id="Status" name="Status" disabled="">
+                                @*<option value="0" selected="selected">Pending</option>*@
                                 @* Place for putting Resolver user role codes *@
-                                <option value="1">Resolved</option>
+                                <option value="0" selected="selected">Resolved</option>
 
                             </select>
 
                         </div>
                     </div>
 
-                    <div class="form-group" id="resolveDiv" style="display:none">
+                    <div class="form-group" id="resolveDiv">
+                        <label class="col-xs-4 control-label">Complain Date</label>
+                        <div class="col-xs-5">
+
+                            <input type="text" class="form-control" id="ComplainDate" name="ComplainDate" disabled></input>
+
+                        </div>
+                        
+                        <label class="col-xs-4 control-label">Resolved By</label>
+                        <div class="col-xs-5">
+
+                            <input type="text" class="form-control" id="ResolveBy" name="ResolveBy" disabled></input>
+
+                        </div>
+                        
                         <label class="col-xs-4 control-label">Resolve Description</label>
                         <div class="col-xs-5">
 
-                            <textarea class="form-control" id="ResolveDescription" name="ResolveDescription"></textarea>
+                            <textarea class="form-control" id="ActionTaken" name="ActionTaken" disabled></textarea>
 
                         </div>
+
+                        <label class="col-xs-4 control-label">Resolve Time</label>
+                        <div class="col-xs-5">
+
+                            <input type="text" class="form-control" id="ResolvedDate" name="ResolvedDate" disabled/>
+
+                        </div>
+
+                        <label class="col-xs-4 control-label">Remarks</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="Remarks" name="Remarks" disabled></textarea>
+
+                        </div>
+
+
+
+
+
                     </div>
+
 
 
 
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Complain</span></button>
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal ">Close</button>
+                        @*<button type="button" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Close</span></button>*@
                     </div>
                 </div>
             </div>
@@ -444,14 +481,14 @@
                 function (nRow, aData, iDisplayIndex) {
 
                     //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
-                    $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class=" editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span></button></td>');
-                    $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
+                    $('td:eq(10)', nRow).html('<button complain_id=' + aData[11] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class=" editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-leaf">View</span></button></td>');
+                    //$('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
 
                     return nRow;
                 },
             "columnDefs": [
          {
-             "targets": [8],
+             "targets": [11],
              "visible": false,
              "searchable": false
          }
@@ -471,7 +508,9 @@
 
         oTable.yadcf([
                         {
-                            column_number: 0
+                            column_number:0 ,
+                            filter_default_label: "Select BA"
+
 
                         },
                          {
@@ -481,7 +520,8 @@
                             },
                         {
                             column_number: 2,
-                            filter_type: "select"
+                            filter_type: "select",
+                            filter_default_label: "Select Rank"
 
                         },
                         {
@@ -500,16 +540,33 @@
                        // {column_number: 4, filter_type: "range_date", datepicker_type: 'bootstrap-datetimepicker', date_format: 'YYYY-MM-DD', filter_plugin_options: datepickerDefaults},
                         {
                             column_number: 5,
-                            filter_type: "select"
+                            filter_type: "select",
+                            filter_default_label: "Select Complain"
 
                         },
                         {
                             column_number: 6,
-                            //filter_type: "select",
-                            data: ["Last 12 Hour Data", "Last 24 Hour Data"],
-                            filter_default_label: "Select Hourly Data",
-                            filter_container_id: "externalContainer"
-                        }
+                            filter_type: "select",
+                            filter_default_label: "Select Resolver"
+
+                            
+                        },
+                        {
+                            column_number: 7,
+                            filter_type: "range_date",
+                            date_format: "mm/dd/yyyy",
+                            filter_delay: 500
+                        },
+                         {
+                             column_number: 8,
+                             filter_type: "text",
+                             filter_default_label: "Search Actions"
+                         },
+                         {
+                             column_number: 9,
+                             filter_type: "text",
+                             filter_default_label: "Search Remarks"
+                         }
         ]);
 
         $('#min, #max').keyup(function () {
@@ -575,7 +632,7 @@
 
             $("div.selectStatus select").val("0");
             $("#aSapn2").text("Edit Complain");
-            document.getElementById('resolveDiv').style.display = 'none';
+           // document.getElementById('resolveDiv').style.display = 'none';
 
             var myData = ({ "id": Complain_id });
 
@@ -599,6 +656,12 @@
                         $("#NewPhoneNumber").val(value.NewPhoneNumber);
                         $("#Rank").val(value.Rank);
                         $("#Description").val(value.Description);
+                        $("#ActionTaken").val(value.ActionTaken);
+                        $("#Remarks").val(value.Remarks);
+                        $('#ResolvedDate').val(value.ResolvedDate);
+                        $("#ResolveBy").val(value.ResolveBy);
+                        $("#ComplainDate").val(value.ComplainDate);
+                        
                         var options = "";
                         var selectedOption = "";
                         for (var i = 0; i < value.ProblemTypes.length; i++) {
@@ -624,7 +687,7 @@
         });
 
 
-    $('#testButton').click(function() {
+    $('#ExportExcel').click(function() {
 
         var baNumber = $("#yadcf-filter--mytestDatatable-0 option:selected").text();
         var hourFilter = $("#yadcf-filter--mytestDatatable-6 option:selected").text();
@@ -634,9 +697,15 @@
         var complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-        var overAllSearch=$("#mytestDatatable_filter :input").val();
+        var overAllSearch = $("#mytestDatatable_filter :input").val();
+        var resolvedBy = $("#yadcf-filter--mytestDatatable-6 option:selected").text();
+        var resolvefromDateRange = $("#yadcf-filter--mytestDatatable-from-date-7").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var resolvetoDateRange = $("#yadcf-filter--mytestDatatable-to-date-7").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var actionTaken = $('#yadcf-filter--mytestDatatable-8').val();
+        var remarks = $('#yadcf-filter--mytestDatatable-9').val();
+
         alert(fromDateRange);
-        window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=resolved";
+        window.location = "/Telephone/GetResolveExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&resolvedBy=" + resolvedBy + "&resolvefromDateRange=" + resolvefromDateRange + "&resolvetoDateRange=" + resolvetoDateRange + "&actionTaken=" + actionTaken + "&remarks=" + remarks + " &status=resolved&";
        // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
         @*$.ajax({
             type: 'POST',
