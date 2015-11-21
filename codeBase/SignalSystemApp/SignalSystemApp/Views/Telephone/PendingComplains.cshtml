@@ -11,19 +11,7 @@
     string deleteAction = UtilityLibrary.GetBaseURL() + "Telephone/DeleteSingleComplainData";
     string editAction = UtilityLibrary.GetBaseURL() + "Telephone/EditSingleComplainData";
     string testAction = UtilityLibrary.GetBaseURL() + "Telephone/DataProviderAction";
-    //foreach (Dictionary<string, string> dictionary in pendingComplains)
-    //{
-    //    pendingList += "<tr>" +
-    //                   "<td>" + dictionary["BANumber"] + "</td>" +
-    //                   "<td>" + dictionary["Name"] + "</td>" +
-    //                   "<td>" + dictionary["Rank"] + "</td>" +
-    //                   "<td>" + dictionary["NewPhoneNumber"] + "</td>" +
-    //                   "<td>" + dictionary["ComplainDate"] + "</td>" +
-    //                   "<td>" + dictionary["ComplainType"] + "</td>" +
-    //                   //"<td><span class=\"label label-danger\">Pending</span></td></tr>"+
-    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myEdit\" class=\" btn btn-xs btn-success\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td>" +
-    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myDelete\" class=\" deleteEntry btn btn-xs btn-danger\"><span class=\"glyphicon glyphicon-remove\"></span></button></td></tr>";
-    //}
+    
 }
 
 
@@ -37,14 +25,7 @@
             <h1>Pending Complains <small>List of Complains</small>
             </h1>
         </div>
-        @*<form action="" method="">
-            <div class="col-lg-3">
-                <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
-            </div>
-            <div class="col-lg-2">
-                <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
-            </div>
-        </form>*@
+       
     </div>
 
     <div class="row">
@@ -58,19 +39,7 @@
         <div class="panel-body">
 
             <div>
-                @*<table style="width: 100%" border="1">
-                        <tr>
-                            <th>BA Number</th>
-                            <th>Name</th>
-                            <th>Rank</th>
-                            <th>Phone Number</th>
-                            <th>Complain date & time</th>
-                            <th>Complain Type</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                        @Html.Raw(pendingList)
-                    </table>*@
+              
 <div class="row">
 <div class="col-xs-2">
 <button class="btn btn-info" onclick="$('#filter').toggle();">Show/Hide filters</button>
@@ -79,7 +48,7 @@
 <div id="filter" style="display: none">
     <div class="row">
                     <div class="col-xs-2">
-                    <br>      <input type="button" value="Export to Excel" style="color: green;" id="testButton">
+                    <br>      <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
                         </div>
     <div class="col-xs-2">                
        <br> <div id="externalContainer"></div>
@@ -370,15 +339,6 @@
     </div>
     </form>
 
-@*@section head-css{
-
-
-<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
-
-
-<link href="~/Content/jquery.dataTables.yadcf.css" rel="stylesheet" />
-}*@
-
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
@@ -475,42 +435,9 @@
             showWeek: true,
             weekHeader: "Wk",
             autoSize:true
-            //dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-            //duration: "fast",
-            //firstDay: 5,
-            //selectOtherMonths: true,
-            //showAnim: "slideDown"
            
            
         });
-        //var datepickerDefaults = {
-        //    showTodayButton: true,
-        //    showClear: true
-        //};
-
-        //var year1 = "2015";
-        //var month1 = "9";
-        //var day1 = "14";
-        //var hour1 = "14";
-        //var minute1 = "45";
-
-        //var startDate = new Date(year1, month1, day1, hour1, minute1,0);
-        ////var endDate = new Date(year, 11, 28, 0, 0, 0, 0);
-        //var endDate = new Date();
-
-        //var ex13 = $('#resolveTime');
-
-        //ex13.datetimepicker({
-        //    controlType: 'select',
-        //    oneLine: true,
-        //    timeFormat: 'hh:mm tt',
-        //    minDate: startDate,
-        //    maxDate: endDate
-        //}
-        //);
-
-        //ex13.datetimepicker('setDate', (new Date()));
-            
     
         var datepickerDefaults = {
             showTodayButton: true,
@@ -521,7 +448,7 @@
             //"pagingType": "full_numbers",
             //"sDom": "Tfrtip",
             // "aaSorting": [], // Prevent initial sorting
-            "order": [[0, "desc"]],
+            "order": [[4, "desc"]],
             "sAjaxSource": "/Telephone/DataProviderAction",
             //"fnServerData": function (sSource, aoData, fnCallback) {
             //    aoData.push({ "name": "roleId", "value": "admin" });},
@@ -531,8 +458,7 @@
             "fnRowCallback":
                 function (nRow, aData, iDisplayIndex) {
 
-                    //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
-                   // $('td:eq(6)', nRow).html(content).addClass("edit-row-data1");
+                  
                     $('td:eq(6)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
                     $('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
 
@@ -549,7 +475,7 @@
             
             
         });
-        //oTable.aoData.push({ "name": "roleId", "value": "admin" });
+       
 
         $('#mytestDatatable_filter input').unbind();
         $('#mytestDatatable_filter input').bind('keyup', function (e) {
@@ -593,7 +519,7 @@
                             filter_delay: 500,
                             filter_container_id: "complainDate"
                         },
-                       // {column_number: 4, filter_type: "range_date", datepicker_type: 'bootstrap-datetimepicker', date_format: 'YYYY-MM-DD', filter_plugin_options: datepickerDefaults},
+                       
                         {
                             column_number: 5,
                             filter_type: "select",
@@ -651,7 +577,7 @@
 
 
                 $.each(returnData, function (index, value) {
-                    //  alert(value.BANumber);
+                  
                     $("#deleteComplainId").val(value.ComplainId);
                     $("#deleteComplainBANumber").val(value.BANumber);
                     $("#deleteComplainName").val(value.Name);
@@ -669,7 +595,6 @@
     $(document).on('click', '.editEntry', function () {
         var Complain_id = $(this).attr('complain_id').trim();
 
-        //       alert(Complain_id);
         var oldDate;
         $("div.selectStatus select").val("0");
         $("#aSapn2").text("Edit Complain");
@@ -724,9 +649,7 @@
         document.getElementById('ResolvedDate').style.display = 'block';
         
         
-        //var startDate = new Date(oldDate);
-        alert(oldDate);
-        //var endDate = new Date(year, 11, 28, 0, 0, 0, 0);
+        
         var endDate = new Date();
 
         var ex13 = $('#ResolvedDate');
@@ -751,7 +674,7 @@
     });
 
     
-    $('#testButton').click(function() {
+    $('#ExportExcelButton').click(function() {
 
         var baNumber = $("#yadcf-filter--mytestDatatable-0 option:selected").text();
         var hourFilter = $("#yadcf-filter--mytestDatatable-6 option:selected").text();
@@ -762,25 +685,9 @@
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var overAllSearch=$("#mytestDatatable_filter :input").val();
-        // alert($('#mytestDatatable').width());
+        
         window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter+"&status=pending";
-        // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
-        @*$.ajax({
-            type: 'POST',
-            url: "@Url.Action("GetExcelFile", "Telephone")",
-           
-            data:JSON.stringify(myData),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (returnValue) {
-               
-        }
-    });*@
-
-
-
-    // alert("1");
-    });
+            });
 
     $('#Status').change(function () {
 
@@ -788,20 +695,9 @@
 
 
             document.getElementById('resolveDiv').style.display = 'block';
-           // document.getElementById('resolveTime').style.display = 'block';
-            //var text1= "<label class=\"col-xs-2 control-label\">Date</label>";
-            //var text2="<div class=\"col-xs-5\">";
-
-            //var text3="<input type=\"text\" class=\"form-control\" id=\"resolveTime\" class=\"resolveTime\" />";
-
-            //var text4 = "</div>";
-           // $("#resolveDiv").append(text1, text2, text3, text4);
-        
-
-
+          
             $("#resolveDiv > :visible");
-          //  $("#resolveDiv div:visible");
-
+          
             $("#aSapn2").text("Resolve Complain");
 
         } else {
@@ -815,13 +711,7 @@
     var tableWidth = $('#mytestDatatable').width() + 25;
 
     document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
-   // document.getElementById('edit-row-data').style.width = "5px";
-   // document.getElementById('delete-row-data').style.width = "10px";
-   // $('td.edit-row-data1').style.width = "5px";
-
-
-
-
+  
         //Make DateTime picker dropdown to work on a Modal//
     var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 

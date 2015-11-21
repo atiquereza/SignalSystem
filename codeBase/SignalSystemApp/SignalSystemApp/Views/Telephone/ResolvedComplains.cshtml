@@ -11,19 +11,7 @@
     string deleteAction = UtilityLibrary.GetBaseURL() + "Telephone/DeleteSingleComplainData";
     string editAction = UtilityLibrary.GetBaseURL() + "Telephone/EditSingleComplainData";
     string testAction = UtilityLibrary.GetBaseURL() + "Telephone/DataProviderAction";
-    //foreach (Dictionary<string, string> dictionary in pendingComplains)
-    //{
-    //    pendingList += "<tr>" +
-    //                   "<td>" + dictionary["BANumber"] + "</td>" +
-    //                   "<td>" + dictionary["Name"] + "</td>" +
-    //                   "<td>" + dictionary["Rank"] + "</td>" +
-    //                   "<td>" + dictionary["NewPhoneNumber"] + "</td>" +
-    //                   "<td>" + dictionary["ComplainDate"] + "</td>" +
-    //                   "<td>" + dictionary["ComplainType"] + "</td>" +
-    //                   //"<td><span class=\"label label-danger\">Pending</span></td></tr>"+
-    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myEdit\" class=\" editEntry btn btn-xs btn-success\"><span class=\"glyphicon glyphicon-pencil\"></span></button></td>" +
-    //                   "<td><button complain_id=\"" + dictionary["Id"] + "\" type=\"button\" data-toggle=\"modal\" data-target=\"#myDelete\" class=\" deleteEntry btn btn-xs btn-danger\"><span class=\"glyphicon glyphicon-remove\"></span></button></td></tr>";
-    //}
+    
 }
 
 
@@ -38,19 +26,12 @@
                 Resolved Complain <small>List of Resolved Complains</small>
             </h1>
         </div>
-        @*<form action="" method="">
-                <div class="col-lg-3">
-                    <input type="text" class="form-control" id="search" placeholder="Search Phone Number">
-                </div>
-                <div class="col-lg-2">
-                    <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-search"></span> Search</a></br>
-                </div>
-            </form>*@
+        
     </div>
 
     <div class="row">
         <div id="table-container-div">
-            @*<div class="col-lg-12">*@
+            
             <div class="panel panel-primary">
                 <div class="panel-heading" >
                     <h3 class="panel-title" style="margin-left: -190px;">
@@ -60,21 +41,6 @@
                 <div class="panel-body">
 
                     <div>
-                        @*<table style="width: 100%" border="1">
-                            <tr>
-                                <th>BA Number</th>
-                                <th>Name</th>
-                                <th>Rank</th>
-                                <th>Phone Number</th>
-                                <th>Complain date & time</th>
-                                <th>Complain Type</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                            @Html.Raw(pendingList)
-                        </table>*@
-
-
                         <div style="width: 700px;">
                             <div style="float: left; width: 200px;">
                                 <input type="button" value="Export to Excel" style="color: green;" id="ExportExcel">
@@ -119,7 +85,7 @@
                             </tfoot>*@
 
                         </table>
-                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
+                      
                     </div>
 
                 </div>
@@ -136,80 +102,7 @@
 
 
 <!-- Modal -->
-<form id="delete-form" class="myModals" method="POST" action="@deleteAction">
-    <div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Delete Complain</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">ID</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainId" name="deleteComplainId" readonly="readonly" />
 
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">BANumber</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainBANumber" name="complain_BANumber" disabled="disabled" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Name</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainName" name="complain_Name" disabled="disabled" />
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">ComplainType</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainType" name="complain_Type" disabled="disabled" />
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">PhoneNumber</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainPhoneNumber" name="complain_PhoneNumber" disabled="disabled" />
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Rank</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainRank" name="complain_Rank" disabled="disabled" />
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Description</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="deleteComplainDescription" name="complain_Description" disabled="disabled" />
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class=" col-xs-5 btn btn-primary">Delete Complain</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 <form id="edit-form" class="myModals" method="POST" action="@editAction">
     <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -349,14 +242,7 @@
     </div>
 </form>
 
-@*@section head-css{
 
-
-    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
-
-
-    <link href="~/Content/jquery.dataTables.yadcf.css" rel="stylesheet" />
-    }*@
 
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
@@ -448,18 +334,10 @@
             showWeek: true,
             weekHeader: "Wk",
             autoSize:true
-            //dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-            //duration: "fast",
-            //firstDay: 5,
-            //selectOtherMonths: true,
-            //showAnim: "slideDown"
-
+            
 
        });
-        //var datepickerDefaults = {
-        //    showTodayButton: true,
-        //    showClear: true
-        //};
+        
 
         var datepickerDefaults = {
             showTodayButton: true,
@@ -467,20 +345,17 @@
         };
 
         var oTable = $('#mytestDatatable').dataTable({
-            //"pagingType": "full_numbers",
-            //"sDom": "Tfrtip",
-            // "aaSorting": [], // Prevent initial sorting
-            "order": [[0, "desc"]],
+            
+            "order": [[4, "desc"]],
             "sAjaxSource": "/Telephone/ResolvedDataProviderAction",
-            //"fnServerData": function (sSource, aoData, fnCallback) {
-            //    aoData.push({ "name": "roleId", "value": "admin" });},
+           
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
             "bServerSide":true,
             "fnRowCallback":
                 function (nRow, aData, iDisplayIndex) {
 
-                    //$('td:eq(4)', nRow).html('<a href="view.php?comic=' + aData[2] + '">Edit</a>');
+                  
                     $('td:eq(10)', nRow).html('<button complain_id=' + aData[11] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class=" editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-leaf">View</span></button></td>');
                     //$('td:eq(7)', nRow).html('<button complain_id=' + aData[8] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>');
 
@@ -497,7 +372,7 @@
 
 
         });
-        //oTable.aoData.push({ "name": "roleId", "value": "admin" });
+     
 
         $('#mytestDatatable_filter input').unbind();
         $('#mytestDatatable_filter input').bind('keyup', function (e) {
@@ -509,14 +384,16 @@
         oTable.yadcf([
                         {
                             column_number:0 ,
-                            filter_default_label: "Select BA"
+                            filter_default_label: "Select BA",
+                            filter_delay: 500
 
 
                         },
                          {
                              column_number: 1,
                              filter_type: "text",
-                             filter_default_label: "Search Name"
+                             filter_default_label: "Search Name",
+                             filter_delay: 500
                             },
                         {
                             column_number: 2,
@@ -527,27 +404,30 @@
                         {
                             column_number: 3,
                             filter_type: "text",
-                            filter_default_label: "Search Phone"
+                            filter_default_label: "Search Phone",
+                            filter_delay: 500
                         },
                         {
                             column_number: 4,
                             filter_type: "range_date",
-                            //datepicker_type: 'bootstrap-datetimepicker',
+                            
                             date_format: "mm/dd/yyyy",
-                            //filter_plugin_options: datepickerDefaults,
+                            
                             filter_delay: 500
                         },
-                       // {column_number: 4, filter_type: "range_date", datepicker_type: 'bootstrap-datetimepicker', date_format: 'YYYY-MM-DD', filter_plugin_options: datepickerDefaults},
+                      
                         {
                             column_number: 5,
                             filter_type: "select",
-                            filter_default_label: "Select Complain"
+                            filter_default_label: "Select Complain",
+                            filter_delay: 500
 
                         },
                         {
                             column_number: 6,
                             filter_type: "select",
-                            filter_default_label: "Select Resolver"
+                            filter_default_label: "Select Resolver",
+                            filter_delay: 500
 
                             
                         },
@@ -560,12 +440,14 @@
                          {
                              column_number: 8,
                              filter_type: "text",
-                             filter_default_label: "Search Actions"
+                             filter_default_label: "Search Actions",
+                             filter_delay: 500
                          },
                          {
                              column_number: 9,
                              filter_type: "text",
-                             filter_default_label: "Search Remarks"
+                             filter_default_label: "Search Remarks",
+                             filter_delay: 500
                          }
         ]);
 
@@ -587,7 +469,7 @@
         $(".yadcf-filter-range-date").css('background', 'black');
         $(".yadcf-filter-range-date").css('font', 'bold');
 
-      //  $('.deleteEntry').on('click', function () {
+
         $(document).on('click', '.deleteEntry', function () {
 
             var Complain_id = $(this).attr('complain_id').trim();
@@ -610,7 +492,7 @@
 
 
                     $.each(returnData, function (index, value) {
-                        //  alert(value.BANumber);
+                     
                         $("#deleteComplainId").val(value.ComplainId);
                         $("#deleteComplainBANumber").val(value.BANumber);
                         $("#deleteComplainName").val(value.Name);
@@ -628,11 +510,11 @@
         $(document).on('click', '.editEntry', function () {
             var Complain_id = $(this).attr('complain_id').trim();
 
-     //       alert(Complain_id);
+  
 
             $("div.selectStatus select").val("0");
             $("#aSapn2").text("Edit Complain");
-           // document.getElementById('resolveDiv').style.display = 'none';
+        
 
             var myData = ({ "id": Complain_id });
 
@@ -674,7 +556,7 @@
                             }
                         }
                         $("select#ComplainType").html(options);
-                        // $("select#ComplainType select").val(selectedOption);
+                        
                     });
 
 
@@ -706,22 +588,7 @@
 
         alert(fromDateRange);
         window.location = "/Telephone/GetResolveExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&resolvedBy=" + resolvedBy + "&resolvefromDateRange=" + resolvefromDateRange + "&resolvetoDateRange=" + resolvetoDateRange + "&actionTaken=" + actionTaken + "&remarks=" + remarks + " &status=resolved&";
-       // var myData = ({ "baNumber": baNumber, "rank" : rank,"complainType":complainType,"fromDate":fromDate,"toDate":toDate} );
-        @*$.ajax({
-            type: 'POST',
-            url: "@Url.Action("GetExcelFile", "Telephone")",
-
-            data:JSON.stringify(myData),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (returnValue) {
-
-            }
-        });*@
-
-
-
-        // alert("1");
+       
     });
 
         $('#Status').change(function () {

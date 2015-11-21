@@ -151,8 +151,7 @@ namespace SignalSystemApp.Controllers
                 "complains.Description,complains.ComplainDate,complains.ResolvedBy,complains.ResolvedDate,complains.Remarks,complains.ActionTaken from complains,menucomplainType,telephoneusers," +
                 "menusRank where menucomplaintype.Id=complains.MenuComplainTypeId " +
                 "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id and complains.id=" + id + ";";
-            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
-            //complains.`Status`='Pending' and 
+          
             List<TelephoneComplain> aTelephoneComplainList=new List<TelephoneComplain>();
             DBGateway aGateway=new DBGateway();
             DataSet aDataSet = aGateway.Select(query);
@@ -200,19 +199,19 @@ namespace SignalSystemApp.Controllers
         {
             List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
 
-            //string id=
+          
             string id = Request["deleteComplainId"].ToString();
             string query =
                 "delete from  complains where id=" + id + ";";
-            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
-            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
+            
+          
             DBGateway aGateway = new DBGateway();
             string deleteResult = aGateway.Delete(query);
 
 
 
             return RedirectToAction("PendingComplains", "Telephone");
-          //  return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+        
 
 
         }
@@ -255,7 +254,7 @@ namespace SignalSystemApp.Controllers
 
 
             return RedirectToAction("PendingComplains", "Telephone");
-            //  return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+            
 
 
         }
@@ -286,8 +285,7 @@ namespace SignalSystemApp.Controllers
             {
                 sSearch = aModel.sSearch.ToString();
             }
-            // var sortingColumnNumber = Convert.ToInt32(aModel.iSortCol_0);
-            //var sortingColumnName = aModel[string.Format("mDataProp_{0}", sortingColumnNumber)]; 
+            
 
             var banameSortDirection = Request["sSortDir_0"];
 
@@ -598,68 +596,53 @@ namespace SignalSystemApp.Controllers
             List<TelephoneComplain> filteredComplainsList = GetFilteredComplaneList(overAllSearch,complainList, baNumber, phone, name,
                 rank, complainType, fromDate, toDate);
 
-
-            //var filteredComplains = (searchedComplains
-            //    .Where(c => (baNumber == "" || c.BANumber.ToLower() == baNumber.ToLower())
-            //                &&
-            //                (phone == "" || c.NewPhoneNumber.ToLower().Contains(phone))
-            //                &&
-            //                (name == "" || c.Name.ToLower().Contains(name.ToLower()))
-            //                &&
-            //                (rank == "" || c.Rank.ToLower() == rank.ToLower())
-            //                &&
-            //                (complainType == "" || c.ComplainType.ToLower() == complainType.ToLower())
-            //               &&
-            //                (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
-            //                &&
-            //                (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
-            //                )
-            //    );
-
-            //filteredComplains=filteredComplains.ToList();
-
-            DateTime dt = DateTime.Now;
-            DateTime dDate = DateTime.Now;
-            string[] sDate = dDate.ToString().Split(' ');
-            string time = dt.ToString("hh:mm");
-
-            
-            GridView aGridView=new GridView();
-            aGridView.DataSource = filteredComplainsList;
-            aGridView.DataBind();
-
-          //  aGridView.HeaderRow.BackColor = Color.Cornsilk;
-            foreach (TableCell cell in aGridView.HeaderRow.Cells)
+            if (filteredComplainsList.Count > 0)
             {
-                cell.BackColor = Color.Cornsilk;
-            }
 
-            foreach (GridViewRow row in aGridView.Rows)
-            {
-               // row.BackColor = Color.White;
-                foreach (TableCell cell in row.Cells)
+                DateTime dt = DateTime.Now;
+                DateTime dDate = DateTime.Now;
+                string[] sDate = dDate.ToString().Split(' ');
+                string time = dt.ToString("hh:mm");
+
+
+                GridView aGridView = new GridView();
+                aGridView.DataSource = filteredComplainsList;
+                aGridView.DataBind();
+
+
+                foreach (TableCell cell in aGridView.HeaderRow.Cells)
                 {
-                    if (row.RowIndex % 2 == 0)
-                    {
-                        cell.BackColor = Color.Gainsboro;
-                    }
-                    else
-                    {
-                        cell.BackColor = Color.GhostWhite;
-                    }
-                    cell.CssClass = "textmode";
+                    cell.BackColor = Color.Cornsilk;
                 }
+
+                foreach (GridViewRow row in aGridView.Rows)
+                {
+                    // row.BackColor = Color.White;
+                    foreach (TableCell cell in row.Cells)
+                    {
+                        if (row.RowIndex%2 == 0)
+                        {
+                            cell.BackColor = Color.Gainsboro;
+                        }
+                        else
+                        {
+                            cell.BackColor = Color.GhostWhite;
+                        }
+                        cell.CssClass = "textmode";
+                    }
+                }
+
+                Response.ClearContent();
+                Response.AddHeader("content-disposition",
+                    "attachment;filename=PendingTelephoneComplain_" + sDate[0] + "_" + sDate[1] + sDate[2] + ".xls");
+                Response.ContentType = "application/excel";
+                StringWriter swr = new StringWriter();
+                HtmlTextWriter tw = new HtmlTextWriter(swr);
+                aGridView.RenderControl(tw);
+                Response.Write(swr.ToString());
+
+                Response.End();
             }
-
-            Response.ClearContent();
-            Response.AddHeader("content-disposition", "attachment;filename=PendingTelephoneComplain_"+sDate[0]+"_"+sDate[1]+sDate[2]+".xls");
-            Response.ContentType = "application/excel";
-            StringWriter swr = new StringWriter();
-            HtmlTextWriter tw = new HtmlTextWriter(swr);
-            aGridView.RenderControl(tw);
-            Response.Write(swr.ToString());
-
-            Response.End();
             return null;
         }
 
@@ -695,8 +678,7 @@ namespace SignalSystemApp.Controllers
             {
                 sSearch = aModel.sSearch.ToString();
             }
-            // var sortingColumnNumber = Convert.ToInt32(aModel.iSortCol_0);
-            //var sortingColumnName = aModel[string.Format("mDataProp_{0}", sortingColumnNumber)]; 
+            
 
             var banameSortDirection = Request["sSortDir_0"];
 
@@ -910,10 +892,7 @@ namespace SignalSystemApp.Controllers
                     resolveToDate = DateTime.MaxValue;
                 }
 
-                //List<TelephoneComplain> filteredComplainsList = GetFilteredComplaneList(overAllSearch, complainList, baNumber, phone, name,
-                  //  rank, complainType, fromDate, toDate);
-
-
+                
           
                 List<TelephoneComplain> filteredComplainsList = GetResolvedFilteredComplaneList(overAllSearch, complainList, baNumber, phone, name,rank, complainType, fromDate, toDate, resolvedBy,resolveFromDate,resolveToDate,actionTaken,remarks);
 
@@ -928,7 +907,7 @@ namespace SignalSystemApp.Controllers
             aGridView.DataSource = filteredComplainsList;
             aGridView.DataBind();
 
-            //  aGridView.HeaderRow.BackColor = Color.Cornsilk;
+        
             foreach (TableCell cell in aGridView.HeaderRow.Cells)
             {
                 cell.BackColor = Color.Cornsilk;
@@ -936,7 +915,7 @@ namespace SignalSystemApp.Controllers
 
             foreach (GridViewRow row in aGridView.Rows)
             {
-                // row.BackColor = Color.White;
+              
                 foreach (TableCell cell in row.Cells)
                 {
                     if (row.RowIndex % 2 == 0)

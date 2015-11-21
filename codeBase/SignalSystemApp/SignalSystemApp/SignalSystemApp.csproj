@@ -295,6 +295,7 @@
     <Folder Include="ApiController\" />
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\js\" />
+    <Folder Include="Views\New\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
