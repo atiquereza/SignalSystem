@@ -17,7 +17,8 @@
     
     <link href="~/Content/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/CSS/local.css" rel="stylesheet"/>
-    <link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet"/>
+  
     
     @*<link href="~/Content/TestCss.css" rel="stylesheet" />*@
     @*@RenderSection("head-css", required: false)*@
@@ -75,7 +76,7 @@
         {
             collapseTechnical = string.Empty;
         }
-        if (contorller == "Equipments")
+        if (contorller == "Equipment")
         {
             collapseEquipments = string.Empty;
         }
@@ -155,7 +156,7 @@
                                 <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
                             </li>
                             <li>
-                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                                <a href="@Url.Action("Index", "Equipment")"><i class="fa fa-fw fa-eye"></i> View List of </a>
                             </li>
                         </ul>
                     </li>

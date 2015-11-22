@@ -245,11 +245,10 @@ namespace SignalSystemApp.Controllers
 
            
 
-            string query =
-                "delete from  complains where id=" + aTelephoneComplain.ComplainId + ";";
+           
             
             DBGateway aGateway = new DBGateway();
-            string deleteResult = aGateway.Update(updateQuery);
+            string updateResult = aGateway.Update(updateQuery);
 
 
 
