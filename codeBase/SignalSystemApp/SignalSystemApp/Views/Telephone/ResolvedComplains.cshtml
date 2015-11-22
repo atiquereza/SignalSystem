@@ -39,16 +39,66 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-
                     <div>
-                        <div style="width: 700px;">
-                            <div style="float: left; width: 200px;">
-                                <input type="button" value="Export to Excel" style="color: green;" id="ExportExcel">
-                            </div>
-                            <div style="float: left; width: 300px;" id="externalContainer"></div>
-                            <div style="float: left; width: 200px;"></div>
-                            <br style="clear: left;" />
-                        </div>
+
+@*Search filter starts*@              
+<div class="row">
+<div class="col-xs-2">
+<button class="btn btn-info" onclick="$('#filter').toggle();">Show/Hide filters</button>
+</div>
+</div>
+<div id="filter" style="display: none">
+    <div class="row">
+        <div class="col-xs-2">
+            <br><input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
+        </div>
+        <div class="col-xs-2">                
+            <br><div id="externalContainer"></div>
+        </div>
+    </div>
+    <br>
+    
+    <div class="row">
+        <div class="col-xs-2">
+            <div id="selectBANumber"></div>
+        </div>
+        <div class="col-xs-2">
+            <div id="searchName"></div>
+        </div>
+        <div class="col-xs-2">
+            <div id="selectRank"></div>
+        </div>
+        <div class="col-xs-2">
+            <div id="searchPhone"></div>
+        </div>
+        <div class="col-xs-2">
+            <div id="complainType"></div>
+        </div>
+        <div class="col-xs-2">
+            <div id="selectResolver"></div>
+        </div>
+    </div></br>
+    <div class="row">
+        <div class="col-xs-3">
+            <div id="searchAction"></div>
+        </div>
+        <div class="col-xs-3">
+            <div id="searchRemarks"></div>
+        </div>
+    </div></br>
+    <div class="row">
+        <div class="col-xs-3">
+            <label>Search by Complain Date:</label><div id="complainDate"></div>
+        </div>
+
+        <div class="col-xs-3">
+            <label>Search by Resolve Date:</label><div id="selectResolveDate"></div>
+        </div>
+    </div></br>
+</div>              
+@*Search filter ends*@
+
+
 
 
                         <table id="mytestDatatable" name="entrymytestDatatables_table" style="width: 100%" border="1" class="table table-condensed table-striped ">
@@ -109,7 +159,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel1">Edit Complain</h4>
+                    <h4 class="modal-title" id="myModalLabel1">View Complain</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -233,7 +283,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal ">Close</button>
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
                         @*<button type="button" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Close</span></button>*@
                     </div>
                 </div>
@@ -309,11 +359,12 @@
     #mytestDatatable_length {
         background: #222222;
         color: white;
+        padding-top:10px;
     }
 
     #mytestDatatable_filter {
         background: #222222;
-        color: white;
+        color: black;
     }
 </style>
 
@@ -385,7 +436,8 @@
                         {
                             column_number:0 ,
                             filter_default_label: "Select BA",
-                            filter_delay: 500
+                            filter_delay: 500,
+                            filter_container_id: "selectBANumber"
 
 
                         },
@@ -393,41 +445,45 @@
                              column_number: 1,
                              filter_type: "text",
                              filter_default_label: "Search Name",
-                             filter_delay: 500
+                             filter_delay: 500,
+                             filter_container_id: "searchName"
                             },
                         {
                             column_number: 2,
                             filter_type: "select",
-                            filter_default_label: "Select Rank"
+                            filter_default_label: "Select Rank",
+                            filter_container_id: "selectRank"
 
                         },
                         {
                             column_number: 3,
                             filter_type: "text",
                             filter_default_label: "Search Phone",
-                            filter_delay: 500
+                            filter_delay: 500,
+                            filter_container_id: "searchPhone"
                         },
                         {
                             column_number: 4,
-                            filter_type: "range_date",
-                            
-                            date_format: "mm/dd/yyyy",
-                            
-                            filter_delay: 500
+                            filter_type: "range_date",                      
+                            date_format: "mm/dd/yyyy",  
+                            filter_delay: 500,
+                            filter_container_id: "complainDate"
                         },
                       
                         {
                             column_number: 5,
                             filter_type: "select",
-                            filter_default_label: "Select Complain",
-                            filter_delay: 500
+                            filter_default_label: "Complain",
+                            filter_delay: 500,
+                            filter_container_id: "complainType"
 
                         },
                         {
                             column_number: 6,
                             filter_type: "select",
                             filter_default_label: "Select Resolver",
-                            filter_delay: 500
+                            filter_delay: 500,
+                            filter_container_id: "selectResolver"
 
                             
                         },
@@ -435,19 +491,22 @@
                             column_number: 7,
                             filter_type: "range_date",
                             date_format: "mm/dd/yyyy",
-                            filter_delay: 500
+                            filter_delay: 500,
+                            filter_container_id: "selectResolveDate"
                         },
                          {
                              column_number: 8,
                              filter_type: "text",
                              filter_default_label: "Search Actions",
-                             filter_delay: 500
+                             filter_delay: 500,
+                             filter_container_id: "searchAction"
                          },
                          {
                              column_number: 9,
                              filter_type: "text",
                              filter_default_label: "Search Remarks",
-                             filter_delay: 500
+                             filter_delay: 500,
+                             filter_container_id: "searchRemarks"
                          }
         ]);
 
