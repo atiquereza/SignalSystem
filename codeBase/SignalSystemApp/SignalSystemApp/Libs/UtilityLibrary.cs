@@ -93,5 +93,29 @@ namespace SignalSystem.Libs
             string controller = routeValueDictionary["controller"].ToString();
             return controller;
         }
+
+        public static string GetUserId()
+        {
+
+            HttpSessionStateBase Session = (HttpSessionStateBase)System.Web.HttpContext.Current.Session["SessionBackup"];
+
+            Dictionary<string, string> sessionData = SessionHandler.GetSessionData(Session);
+
+            string userName = sessionData["LoggedIn"];
+
+            return userName;
+
+        }
+
+
+
+        public static HttpSessionStateBase GetCurrentSession()
+        {
+
+            return (HttpSessionStateBase)System.Web.HttpContext.Current.Session["SessionBackup"];
+
+        }
+
+
     }
 }

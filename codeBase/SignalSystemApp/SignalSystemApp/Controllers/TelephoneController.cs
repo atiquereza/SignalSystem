@@ -236,9 +236,10 @@ namespace SignalSystemApp.Controllers
                 Telephone aTelephone=new Telephone();
                 string convertedDateText = aTelephone.DMYToMDY(aTelephoneComplain.ResolvedDate);
                 DateTime dt = DateTime.Parse(convertedDateText);
+                string userName = UtilityLibrary.GetUserId();
 
                 complainStatus = "Resolved";
-                updateQuery = "UPDATE `signalappdb`.`complains` SET `Description`='" + aTelephoneComplain.Description + "', `Status`='" + complainStatus + "', `MenuComplainTypeId`=" + aTelephoneComplain.ComplainType + ", `ResolvedDate`='" + dt.ToString("yyyy-MM-dd HH:mm:ss") + "', `ActionTaken`='" + aTelephoneComplain.ActionTaken + "', `ResolvedBy`='Habib' WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
+                updateQuery = "UPDATE `signalappdb`.`complains` SET `Description`='" + aTelephoneComplain.Description + "', `Status`='" + complainStatus + "', `Remarks`='" + aTelephoneComplain.Remarks + "', `MenuComplainTypeId`=" + aTelephoneComplain.ComplainType + ", `ResolvedDate`='" + dt.ToString("yyyy-MM-dd HH:mm:ss") + "', `ActionTaken`='" + aTelephoneComplain.ActionTaken + "', `ResolvedBy`='" + userName + "' WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
             }
 
             

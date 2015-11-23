@@ -57,14 +57,14 @@ public class TelephoneComplain
             }
 
             string nonQuery = "INSERT INTO `signalappdb`.`telephoneusers` (`BANumber`, `RankId`, `Status`,`Name`, " +
-                              "`NewPhoneNumber`, `Address`, `Gender`, `ConnectedDate`) " +
+                              "`NewPhoneNumber`, `Address`, `Gender`) " +
                               "VALUES (@BANumber, @RankId, @Status,@Name, " +
-                              "@NewPhoneNumber, @Address, @Gender, @ConnectedDate);";
+                              "@NewPhoneNumber, @Address, @Gender);";
             Hashtable aHashtable = new Hashtable()
             {
                 {"BANumber",baNumber},
                 {"RankId",rank},
-                {"Status","Connected"},
+                {"Status","Disconnected"},
                 {"NewPhoneNumber",telephoneNumber},
                  {"Address",address},
                 {"Gender",sex},
@@ -78,9 +78,9 @@ public class TelephoneComplain
 
         }
 
-        private bool IsTelephoneIsInUse(string telephoneNumber)
+        public bool IsTelephoneIsInUse(string telephoneNumber)
         {
-            string query = "select * from telephoneusers where NewPhoneNumber=@telephoneNumber and Status='Connected';";
+            string query = "select * from telephoneusers where NewPhoneNumber=@telephoneNumber ;";
             Hashtable aHashtable = new Hashtable(){{"telephoneNumber",telephoneNumber}};
             DataSet aDataSet = aGateway.Select(query, aHashtable);
 
