@@ -1,0 +1,692 @@
+﻿@using SignalSystem.Libs
+@{
+    ViewBag.Title = "ListPhones";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    string pendingList = string.Empty;
+    string connectDeleteAction = UtilityLibrary.GetBaseURL() + "Telephone/PhoneConnectDeleteAction";
+    string disconnectAction = UtilityLibrary.GetBaseURL() + "Telephone/PhoneDisconnect";
+    string testAction = UtilityLibrary.GetBaseURL() + "Telephone/DataProviderAction";
+}
+
+<h2>ListPhones</h2>
+
+
+
+
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+
+
+
+            <h1>
+                Phone Status <small>List of Phones</small>
+            </h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div id="table-container-div">
+            @*<div class="col-lg-12">*@
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="margin-left: -190px;">
+                        <i class="fa fa-bar-chart-o"></i> Phone Status
+                    </h3>
+                </div>
+                <div class="panel-body">
+
+                    <div>
+                        @*Search filter starts*@
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <button class="btn btn-info" onclick="$('#filter').toggle();">Show/Hide filters</button>
+                            </div>
+                        </div>
+                        <div id="filter" style="display: none">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <br>      <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
+                                </div>
+                                <div class="col-xs-2">
+                                    <br> <div id="externalContainer"></div>
+                                </div>
+                            </div><br/>
+
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <div id="selectBANumber"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="searchName"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="selectRank"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="searchPhone"></div>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <div id="address"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="gender"></div>
+                                </div>
+                               
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <div id="phoneStatus"></div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <label>Search by Connection Date:</label>
+                                    <div id="connectionDate"></div>
+                                </div>
+                            </div><br/>
+                        </div>
+
+                        @*Search filter ends*@
+
+
+
+                        <table id="MainDataTable" name="entryMainDataTables_table" border="1" class="table table-condensed table-striped ">
+
+
+                            <thead>
+                                <tr>
+
+                                    <th class="col-sm-1">BA Number</th>
+                                    <th class="col-sm-1">Name</th>
+                                    <th class="col-sm-1">Rank</th>
+                                    <th class="col-sm-1">Phone</th>
+                                    <th class="col-sm-2">Address</th>
+                                    <th class="col-sm-1">Gender</th>
+                                    <th class="col-sm-1">Status</th>
+                                    <th class="col-sm-1">Connected Date</th>
+                                    <th class="col-sm-1">Change Status</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                           
+                        </table>
+                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<form id="delete-form" class="myModals" method="POST" action="@disconnectAction" onsubmit="if(!confirm('Do you want to Delete This Entry?')){return false;}">
+    <div class="modal fade" id="Disconnect_Edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Disconnect Phone</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">ID</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_PhoneId" name="Disconnect_PhoneId" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">BANumber</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_BANumber" name="Disconnect_BANumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Name</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_Name" name="Disconnect_Name" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Rank</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_Rank" name="Disconnect_Rank" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Phone Number</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_NewPhoneNumber" name="Disconnect_NewPhoneNumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Address</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Disconnect_Address" name="Disconnect_Address" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Operation Type</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="Connection_Status" name="Connection_Status">
+
+                                <option value="0" selected>Disconnect</option>
+                               
+
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+
+
+                        <label class="col-xs-4 control-label">Remarks</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="Disconnect_Remarks" name="Disconnect_Remarks"></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class=" col-xs-5 btn btn-primary">Disconnect Phone</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form id="edit-form" class="myModals" method="POST" action="@connectDeleteAction">
+    <div class="modal fade" id="Connect_Edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">Edit Phone</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">ID</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_PhoneId" name="Connect_PhoneId" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">BANumber</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_BANumber" name="Connect_BANumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Name</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_Name" name="Connect_Name" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Rank</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_Rank" name="Connect_Rank" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Phone Number</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_NewPhoneNumber" name="Connect_NewPhoneNumber" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Address</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Connect_Address" name="Connect_Address" readonly="readonly" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Operation Type</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="Status" name="Status">
+
+                                <option value="0" selected>Delete</option>
+                                <option value="1">Connect</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group" id="resolveDiv" style="display: none">
+
+
+                        <label class="col-xs-4 control-label">Remarks</label>
+                        <div class="col-xs-5">
+
+                            <textarea class="form-control" id="Connect_Remarks" name="Connect_Remarks"></textarea>
+
+                        </div>
+                        
+
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Delete Phone</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section head{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+
+}
+
+
+<style>
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--MainDataTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--MainDataTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--MainDataTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #MainDataTable_length select {
+        background: green;
+    }
+
+    #MainDataTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #MainDataTable_filter {
+        background: #222222;
+        color: black;
+    }
+</style>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        $.datepicker.setDefaults({
+
+            buttonImageOnly: true,
+            buttonImage: 'calendar.gif',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:3000',
+
+
+            showWeek: true,
+            weekHeader: "Wk",
+            autoSize:true
+
+
+        });
+
+        var datepickerDefaults = {
+            showTodayButton: true,
+            showClear: true
+        };
+
+        var oTable = $('#MainDataTable').dataTable({
+           
+            "order": [[7, "asc"]],
+            "sAjaxSource": "/Telephone/TelephoneDataProviderAction",
+           
+            "bLengthChange": true,
+            dom: 'l<>Bfrtip',
+            "bServerSide":true,
+            "fnRowCallback":
+                function (nRow, aData, iDisplayIndex) {
+
+                    if (aData[6] == "Disconnected"){
+                        $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Connect_Edit" name="ConnectEntry" class="ConnectEntry btn btn-xs btn-success">Connect/Edit</span></button>');
+                    
+                    }
+                    if (aData[6] == "Connected") {
+                        $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Disconnect_Edit" name="DisconnectEntry" class="DisconnectEntry btn btn-xs btn-danger">Disonnect/Edit</span></button>');
+                    
+                    }
+
+                    return nRow;
+                }
+
+
+        });
+
+
+        $('#MainDataTable_filter input').unbind();
+        $('#MainDataTable_filter input').bind('keyup', function (e) {
+            if (e.keyCode == 13) {
+                oTable.fnFilter(this.value);
+            }
+        });
+
+        oTable.yadcf([
+                        {
+                            column_number: 0,
+                            filter_container_id: "selectBANumber",
+                            filter_default_label: "Select BA"
+
+                        },
+                         {
+                             column_number: 1,
+                             filter_type: "text",
+                             filter_default_label: "Search Name",
+                             filter_container_id: "searchName"
+                         },
+                        {
+                            column_number: 2,
+                            filter_type: "select",
+                            filter_default_label: "Select Rank",
+                            filter_container_id: "selectRank"
+
+                        },
+                        {
+                            column_number: 3,
+                            filter_type: "text",
+                            filter_default_label: "Search Phone",
+                            filter_container_id: "searchPhone"
+                        },
+                        {
+                            column_number: 4,
+                            filter_type: "text",
+                            filter_default_label: "Search Address",
+                           
+                            
+                            filter_delay: 500,
+                            filter_container_id: "address"
+                        },
+
+                        {
+                            column_number: 5,
+                            filter_type: "select",
+                            filter_container_id: "gender",
+                            filter_default_label: "Select Gender"
+
+                        },
+                        {
+                            column_number: 6,
+                            filter_type: "select",
+                           
+                            filter_default_label: "Select Status",
+                            filter_container_id: "phoneStatus"
+                        },
+                        {
+                            column_number: 7,
+                            filter_type: "range_date",
+                          
+                            date_format: "mm/dd/yyyy",
+                           
+                            filter_delay: 500,
+                           
+                            filter_container_id: "connectionDate"
+                        }
+        ]);
+
+
+
+
+        $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+
+
+        $().tooltip({
+            template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+
+
+        $(".yadcf-filter").css('background', 'black');
+        $(".yadcf-filter-range-date").css('background', 'black');
+        $(".yadcf-filter-range-date").css('font', 'bold');
+
+        //  $('.DisconnectEntry').on('click', function () {
+        $(document).on('click', '.DisconnectEntry', function () {
+
+            var phoneUser_id = $(this).attr('phoneUser_id').trim();
+
+            var myData = ({ "id": phoneUser_id });
+            alert(phoneUser_id);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetSinglePhoneData", "Telephone")",
+                contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(myData),
+            dataType: 'json',
+
+            success: function (returnData) {
+
+
+
+                $.each(returnData, function (index, value) {
+
+                    $("#Disconnect_PhoneId").val(value.ID);
+                    $("#Disconnect_BANumber").val(value.BANumber);
+                    $("#Disconnect_Name").val(value.Name);
+                    $("#Disconnect_NewPhoneNumber").val(value.NewPhoneNumber);
+                    $("#Disconnect_Rank").val(value.Rank);
+                    $("#Disconnect_Address").val(value.Address);
+
+                });
+            }
+        });
+    });
+
+
+    $(document).on('click', '.ConnectEntry', function () {
+        var phoneUser_id = $(this).attr('phoneUser_id').trim();
+
+        var oldDate;
+        $("div.selectStatus select").val("0");
+        $("#aSapn2").text("Delete Phone");
+
+
+        document.getElementById('resolveDiv').style.display = 'none';
+
+        var myData = ({ "id": phoneUser_id });
+
+        $.ajax({
+            'async': false,
+            type: "POST",
+            url: "@Url.Action("GetSinglePhoneData", "Telephone")",
+            contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(myData),
+        dataType: 'json',
+
+        success: function (returnData) {
+
+
+
+            $.each(returnData, function (index, value) {
+
+                $("#Connect_PhoneId").val(value.ID);
+                $("#Connect_BANumber").val(value.BANumber);
+                $("#Connect_Name").val(value.Name);
+                $("#Connect_NewPhoneNumber").val(value.NewPhoneNumber);
+                $("#Connect_Rank").val(value.Rank);
+                $("#Connect_Address").val(value.Address);
+
+            });
+
+
+
+        }
+        });
+
+ 
+
+
+
+    });
+
+
+    $('#ExportExcelButton').click(function() {
+
+        var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
+        var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
+        var name = $('#yadcf-filter--MainDataTable-1').val();
+        var phone = $('#yadcf-filter--MainDataTable-3').val();
+        var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
+        var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
+        var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var overAllSearch=$("#MainDataTable_filter :input").val();
+
+        window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter+"&status=pending";
+            });
+
+    $('#Status').change(function () {
+
+        if ($(this).val() == "1") {
+
+
+            document.getElementById('resolveDiv').style.display = 'block';
+
+            $("#resolveDiv > :visible");
+
+            $("#aSapn2").text("Connect Phone");
+
+        } else {
+
+            document.getElementById('resolveDiv').style.display = 'none';
+
+            $("#aSapn2").text("Delete Phone");
+
+        }
+    });
+    var tableWidth = $('#MainDataTable').width() + 25;
+
+    document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+
+        //Make DateTime picker dropdown to work on a Modal//
+    var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+    $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+
+    $confModal.on('hidden', function () {
+        $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+    });
+
+    $confModal.modal({ backdrop: false });
+        //Make DateTime picker dropdown to work on a Modal//
+
+    });
+</script>
+
+
+
+
+
+

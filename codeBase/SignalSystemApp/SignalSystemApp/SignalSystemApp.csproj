@@ -326,6 +326,7 @@
     <Content Include="Views\Telephone\NewComplain.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Equipment\Index.cshtml" />
+    <Content Include="Views\Telephone\ListPhones.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -39,6 +39,53 @@ public class TelephoneComplain
         public string TypeValue { get; set; }
     }
 
+    public class TelphoneUser
+    {
+        public string ID { get; set; }
+        public string BANumber { get; set; }
+        public string Name { get; set; }
+        public string Rank { get; set; }
+        public string NewPhoneNumber { get; set; }
+        public string Address { get; set; }
+        public string Gender { get; set; }
+        public string PhoneStatus { set; get; }
+        public string ConnectedDate { get; set; }
+        public string DisconnectedDate { get; set; }
+
+        public List<TelphoneUser> GetTelphoneUsers()
+        {
+             DBGateway aGateway=new DBGateway();
+             string query = "select telephoneusers.Id,telephoneusers.BANumber,telephoneusers.Name,menusrank.Value as Rank,telephoneusers.NewPhoneNumber,telephoneusers.Address,telephoneusers.Gender,telephoneusers.`Status`,telephoneusers.ConnectedDate,telephoneusers.DisconnectedDate from telephoneusers,menusrank where telephoneusers.RankId=menusrank.id";
+             List<TelphoneUser> listTelphoneUsers=new List<TelphoneUser>();
+             DataSet aDataSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+            {
+
+                TelphoneUser aTelphoneUser = new TelphoneUser();
+                aTelphoneUser.BANumber = dataRow["BANumber"].ToString();
+                aTelphoneUser.Name = dataRow["Name"].ToString();
+
+                aTelphoneUser.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelphoneUser.Rank = dataRow["Rank"].ToString();
+
+                aTelphoneUser.ConnectedDate = dataRow["ConnectedDate"].ToString();
+                aTelphoneUser.DisconnectedDate = dataRow["DisconnectedDate"].ToString();
+                aTelphoneUser.ID = dataRow["Id"].ToString();
+                aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
+
+                aTelphoneUser.Address = dataRow["Address"].ToString();
+                aTelphoneUser.Gender = dataRow["Gender"].ToString();
+
+                listTelphoneUsers.Add(aTelphoneUser);
+            }
+
+            return listTelphoneUsers;
+
+        }
+           
+
+    }
+
 
 
 
