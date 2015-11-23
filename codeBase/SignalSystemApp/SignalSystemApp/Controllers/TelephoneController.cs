@@ -425,7 +425,8 @@ namespace SignalSystemApp.Controllers
             string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate)
         {
             List<TelephoneComplain> searchedComplains;
-
+            sSearch = sSearch.Trim();
+            
 
             if ((sSearch == ""))
             {
@@ -434,24 +435,24 @@ namespace SignalSystemApp.Controllers
             else
             {
                 searchedComplains =
-                    complanList.Where(c => c.BANumber.ToLower().Contains(sSearch.ToLower())
-                                           || c.ComplainType.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Name.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.NewPhoneNumber.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.ComplainType.ToLower().Contains(sSearch.ToLower())).ToList();
+                    complanList.Where(c => c.BANumber.ToLower().Trim().Contains(sSearch.ToLower())
+                                           || c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower()) ||
+                                           c.Name.Trim().ToLower().Contains(sSearch.ToLower()) ||
+                                           c.NewPhoneNumber.Trim().ToLower().Contains(sSearch.ToLower()) ||
+                                           c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower())).ToList();
             }
 
 
             var filteredCompanies = searchedComplains
-                .Where(c => (banumberFilter == "" || c.BANumber.ToLower() == banumberFilter.ToLower())
+                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.Trim().ToLower())
                             &&
-                            (phoneFilter == "" || c.NewPhoneNumber.ToLower().Contains(phoneFilter))
+                            (phoneFilter == "" || c.NewPhoneNumber.Trim().ToLower().Contains(phoneFilter.Trim()))
                             &&
-                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.ToLower()))
+                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.Trim().ToLower()))
                             &&
-                            (rankFilter == "" || c.Rank.ToLower() == rankFilter.ToLower())
+                            (rankFilter == "" || c.Rank.Trim().ToLower() == rankFilter.Trim().ToLower())
                             &&
-                            (complainFilter == "" || c.ComplainType.ToLower() == complainFilter.ToLower())
+                            (complainFilter == "" || c.ComplainType.Trim().ToLower() == complainFilter.Trim().ToLower())
                             &&
                             (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
                             &&
@@ -494,7 +495,7 @@ namespace SignalSystemApp.Controllers
 
 
             var filteredCompanies = searchedComplains
-                .Where(c => (banumberFilter == "" || c.BANumber.ToLower() == banumberFilter.ToLower())
+                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.Trim().ToLower())
                             &&
                             (phoneFilter == "" || c.NewPhoneNumber.ToLower().Contains(phoneFilter))
                             &&
@@ -532,6 +533,7 @@ namespace SignalSystemApp.Controllers
         {
             List<TelphoneUser> searchedPhones;
 
+            sSearch = sSearch.Trim();
 
             if ((sSearch == ""))
             {
@@ -551,24 +553,24 @@ namespace SignalSystemApp.Controllers
 
 
             var filteredPhones = searchedPhones
-                .Where(c => (banumberFilter == "" || c.BANumber.ToLower() == banumberFilter.ToLower())
+                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.ToLower())
                             &&
-                            (phoneFilter == "" || c.NewPhoneNumber.ToLower().Contains(phoneFilter))
+                            (phoneFilter == "" || c.NewPhoneNumber.Trim().ToLower().Contains(phoneFilter))
                             &&
-                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.ToLower()))
+                            (nameFilter == "" || c.Name.Trim().ToLower().Contains(nameFilter.ToLower()))
                             &&
-                            (rankFilter == "" || c.Rank.ToLower() == rankFilter.ToLower())
+                            (rankFilter == "" || c.Rank.Trim().ToLower() == rankFilter.ToLower())
                             &&
-                            (addressFilter == "" || c.Address.ToLower().Contains(addressFilter.ToLower()))
+                            (addressFilter == "" || c.Address.Trim().ToLower().Contains(addressFilter.ToLower()))
                             &&
-                              (genderFilter == "" || c.Gender.ToLower() == genderFilter.ToLower())
+                              (genderFilter == "" || c.Gender.Trim().ToLower() == genderFilter.ToLower())
                             &&
-                              (statusFilter == "" || c.PhoneStatus.ToLower() == statusFilter.ToLower())
-                            &&
+                              (statusFilter == "" || c.PhoneStatus.Trim().ToLower() == statusFilter.Trim().ToLower())
+                            //&&
 
-                            (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ConnectedDate))
-                            &&
-                            (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ConnectedDate) < toDate)
+                            //(fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ConnectedDate))
+                            //&&
+                            //(toDate == DateTime.MaxValue || Convert.ToDateTime(c.ConnectedDate) < toDate)
                 );
             List<TelphoneUser> filteredPhoneList = filteredPhones.ToList();
             return filteredPhoneList;
@@ -672,8 +674,8 @@ namespace SignalSystemApp.Controllers
             }
 
             List<TelephoneComplain> filteredComplainsList = GetFilteredComplaneList(overAllSearch, complainList,
-                baNumber, phone, name,
-                rank, complainType, fromDate, toDate);
+                baNumber.Trim(), phone.Trim(), name.Trim(),
+                rank.Trim(), complainType.Trim(), fromDate, toDate);
 
             if (filteredComplainsList.Count > 0)
             {
@@ -742,15 +744,15 @@ namespace SignalSystemApp.Controllers
             var nameFilter = Convert.ToString(Request["sSearch_1"]);
 
 
-            var rankFilter = Convert.ToString(Request["sSearch_2"]);
+            var rankFilter = Convert.ToString(Request["sSearch_2"]).Trim();
             var dateFilter = Convert.ToString(Request["sSearch_4"]);
-            var phoneFilter = Convert.ToString(Request["sSearch_3"]);
-            var complainFilter = Convert.ToString(Request["sSearch_5"]);
-            var hourlyFilter = Convert.ToString(Request["sSearch_6"]);
-            var resolverFilter = Convert.ToString(Request["sSearch_6"]);
+            var phoneFilter = Convert.ToString(Request["sSearch_3"]).Trim();
+            var complainFilter = Convert.ToString(Request["sSearch_5"]).Trim();
+            var hourlyFilter = Convert.ToString(Request["sSearch_6"]).Trim();
+            var resolverFilter = Convert.ToString(Request["sSearch_6"]).Trim();
             var resolveDateFilter = Convert.ToString(Request["sSearch_7"]);
-            var actionTakenFilter = Convert.ToString(Request["sSearch_8"]);
-            var remarksFilter = Convert.ToString(Request["sSearch_9"]);
+            var actionTakenFilter = Convert.ToString(Request["sSearch_8"]).Trim();
+            var remarksFilter = Convert.ToString(Request["sSearch_9"]).Trim();
             var isNameSortable = Convert.ToBoolean(Request["bSortable_1"]);
 
             string sSearch = string.Empty;
@@ -1053,22 +1055,17 @@ namespace SignalSystemApp.Controllers
             string serachValue = Request["columns[0][search][value]"];
 
             var roleId = Request.Params["max"];
-            var banumberFilter = Convert.ToString(Request["sSearch_0"]);
-            var nameFilter = Convert.ToString(Request["sSearch_1"]);
+            var banumberFilter = Convert.ToString(Request["sSearch_0"]).Trim();
+            var nameFilter = Convert.ToString(Request["sSearch_1"]).Trim();
 
 
-            var rankFilter = Convert.ToString(Request["sSearch_2"]);
-            var phoneFilter = Convert.ToString(Request["sSearch_3"]);
-            var addressFilter = Convert.ToString(Request["sSearch_4"]);
-            var genderFilter = Convert.ToString(Request["sSearch_5"]);
-            var statusFilter = Convert.ToString(Request["sSearch_6"]);
+            var rankFilter = Convert.ToString(Request["sSearch_2"]).Trim();
+            var phoneFilter = Convert.ToString(Request["sSearch_3"]).Trim();
+            var addressFilter = Convert.ToString(Request["sSearch_4"]).Trim();
+            var genderFilter = Convert.ToString(Request["sSearch_5"]).Trim();
+            var statusFilter = Convert.ToString(Request["sSearch_6"]).Trim();
             var connectedDateFilter = Convert.ToString(Request["sSearch_7"]);
-            var disconnectedDateFilter = Convert.ToString(Request["sSearch_8"]);
-
-
-
-            var dateFilter = Convert.ToString(Request["sSearch_7"]);
-
+           
             var complainFilter = Convert.ToString(Request["sSearch_5"]);
             var hourlyFilter = Convert.ToString(Request["sSearch_6"]);
             var isNameSortable = Convert.ToBoolean(Request["bSortable_1"]);
@@ -1088,29 +1085,9 @@ namespace SignalSystemApp.Controllers
 
             DateTime fromDate = DateTime.MinValue;
             DateTime toDate = DateTime.MaxValue;
-
-            if (hourlyFilter == "")
-            {
-
-                if (dateFilter.Contains("-yadcf_delim-"))
-                {
-                    string a1 = dateFilter.Replace("-yadcf_delim-", "~");
-                    //Split date range filters with ~
-                    fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
-                    toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]);
-                }
-            }
-            else if (hourlyFilter.Trim() == "Last 12 Hour Data")
-            {
-                toDate = DateTime.Now;
-                fromDate = DateTime.Now.AddHours(-12.5);
-
-            }
-            else
-            {
-                toDate = DateTime.Now;
-                fromDate = DateTime.Now.AddHours(-24.5);
-            }
+      
+           
+      
 
             TelphoneUser aTelephoneUser = new TelphoneUser();
             List<TelphoneUser> aUsersList = aTelephoneUser.GetTelphoneUsers();
@@ -1159,6 +1136,7 @@ namespace SignalSystemApp.Controllers
             List<string> aRankList = new List<string>();
             List<string> banumberList = new List<string>();
             List<string> complainTypeList = new List<string>();
+            List<string> statusList=new List<string>();
 
 
             foreach (TelphoneUser a1 in aUsersList)
@@ -1177,6 +1155,10 @@ namespace SignalSystemApp.Controllers
                     complainTypeList.Add(a1.Gender);
                 }
 
+                if (!statusList.Contains(a1.PhoneStatus))
+                {
+                    statusList.Add(a1.PhoneStatus);
+                }
             }
 
 
@@ -1186,6 +1168,7 @@ namespace SignalSystemApp.Controllers
                 yadcf_data_0 = banumberList,
                 yadcf_data_2 = aRankList,
                 yadcf_data_5 = complainTypeList,
+                yadcf_data_6 = statusList,
 
                 iTotalRecords = aUsersList.Count(),
                 iTotalDisplayRecords = filterTelphoneUsers.Count(),
