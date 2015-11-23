@@ -135,10 +135,10 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-envelope"></i>Mail<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo3" class="@collapseMail" style="list-style: none" >
                             <li>
-                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
+                                <a href="@Url.Action("Index", "Mail")"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
                             </li>
                             <li>
-                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
+                                <a href="@Url.Action("ListMails", "Mail")"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
                             </li>
                         </ul>
                     </li>

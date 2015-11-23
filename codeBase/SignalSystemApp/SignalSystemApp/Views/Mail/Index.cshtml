@@ -1,0 +1,95 @@
+﻿@using SignalSystem.Libs
+@using SignalSystemApp.Models.Equipment
+
+@{
+    
+
+    string pendingList = string.Empty;
+    string deleteAction = UtilityLibrary.GetBaseURL() + "Equipment/DeleteSingleEquipment";
+    string editAction = UtilityLibrary.GetBaseURL() + "Equipment/EditSingleEquipment";
+    string addAction = UtilityLibrary.GetBaseURL() + "Equipment/AddEquipment";
+    string addTypeAction = UtilityLibrary.GetBaseURL() + "Equipment/AddEquipmentType";
+
+}
+
+
+<div id="page-wrapper">
+
+    <div class="row text-center">
+        <h2>Add New Mail</h2>
+    </div>
+
+    <div id="table-container-div">
+        <div>
+        <label for="mailid" class="col-md-2">
+            Mail ID:
+        </label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" id="mailid" placeholder="Mail ID">
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+
+    <div>
+        <label for="description" class="col-md-2">
+            Description:
+        </label>
+        <div class="col-md-9">
+            <textarea class="form-control" id="description"></textarea>
+        </div>
+        <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-info custom-btn">
+                Add
+            </button>
+        </div>
+    </div>
+    </div>
+    
+
+</div>
+
+
+@section head{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+
+}
+
+
+<style>
+   
+
+        div {
+            padding-bottom:20px;
+        }
+        .custom-btn {
+            width: 200px !important;
+        }
+
+   
+</style>
+
+
+<script>
+
+
+    $(document).ready(function() {
+
+
+    });
+</script>
+
+
+
+
+
+
