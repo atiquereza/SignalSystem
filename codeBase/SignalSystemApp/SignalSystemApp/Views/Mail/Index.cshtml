@@ -2,7 +2,31 @@
 @using SignalSystemApp.Models.Equipment
 
 @{
-    
+    string submitNewMailAction = UtilityLibrary.GetBaseURL() + "Mail/AddNewMail";
+
+    string message = string.Empty;
+
+    if (ViewData["message"] != null)
+    {
+        message = ViewData["message"].ToString();
+    }
+
+    if (message.Trim().Length != 0)
+    {
+        if (message.Contains("Error"))
+        {
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\">" +
+                       "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                       message + "</div>";
+        }
+        else
+        {
+               message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;\">" +
+                       "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                       message + "</div>";
+        }
+
+    }
 
     string pendingList = string.Empty;
     string deleteAction = UtilityLibrary.GetBaseURL() + "Equipment/DeleteSingleEquipment";
@@ -13,8 +37,15 @@
 }
 
 
-<div id="page-wrapper">
 
+
+<div class="row">
+    <div class="col-lg-12">
+        @Html.Raw(message)
+    </div>
+ </div>
+
+<form method="POST" action="@submitNewMailAction">
     <div class="row text-center">
         <h2>Add New Mail</h2>
     </div>
@@ -25,7 +56,7 @@
             Mail ID:
         </label>
         <div class="col-md-9">
-            <input type="text" class="form-control" id="mailid" placeholder="Mail ID">
+            <input type="text" class="form-control" id="mailid" placeholder="Mail ID" name="mailId">
         </div>
         <div class="col-md-1">
             <i class="fa fa-lock fa-2x"></i>
@@ -37,7 +68,7 @@
             Description:
         </label>
         <div class="col-md-9">
-            <textarea class="form-control" id="description"></textarea>
+            <textarea class="form-control" id="description" name="mailDescription"></textarea>
         </div>
         <div class="col-md-1">
             <i class="fa fa-lock fa-2x"></i>
@@ -53,10 +84,7 @@
         </div>
     </div>
     </div>
-    
-
-</div>
-
+</form>
 
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
