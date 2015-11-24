@@ -34,34 +34,33 @@
                         <div class="col-xs-2">
                             <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
                         </div>
-                    </div><br>
-                    <div id="filter" style="">
+                    </div>
+                    <div id="filter" style="display: none">
                         <div class="row">
                             <div class="col-xs-2">
                                 <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
                             </div>
                             <div class="col-xs-2">
-                                <br>
                                 <div id="externalContainer"></div>
                             </div>
-                        </div><br/>
+                        </div><br />
 
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                                 <div id="mailDBid"></div>
                             </div><label>&nbsp;</label>
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                                 <div id="mailID"></div>
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                                 <div id="mailDescription"></div>
-                            </div>
+                            </div><br>
                         </div>
                         <div class="row">
-                           <div class="col-xs-2">
-                                    <label>Search by Complain Date:</label>
-                                    <div id="mailDate"></div>
-                           </div> <br>
+                            <div class="col-xs-5"><br>
+                                <label>Search by Complain Date:</label>
+                                <div id="mailDate"></div>
+                            </div> <br>
                         </div>
                     </div>
 
@@ -96,7 +95,70 @@
 
 
 <style>
-    
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--MainDataTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--MainDataTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--MainDataTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #MainDataTable_length select {
+        background: green;
+    }
+
+    #MainDataTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #MainDataTable_filter {
+        background: #222222;
+        color: black;
+    }    
      
 </style>
 
