@@ -49,14 +49,16 @@
                         <div class="row">
                             <div class="col-xs-2">
                                 <div id="mailDBid"></div>
-                            </div> <br>
+                            </div><label>&nbsp;</label>
                             <div class="col-xs-2">
-                                <div id="mailId"></div>
-                            </div> <br>
+                                <div id="mailID"></div>
+                            </div>
                             <div class="col-xs-2">
                                 <div id="mailDescription"></div>
-                            </div> <br>
-                           <div class="col-xs-5">
+                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-xs-2">
                                     <label>Search by Complain Date:</label>
                                     <div id="mailDate"></div>
                            </div> <br>
@@ -158,7 +160,8 @@
                             column_number: 0,
                             filter_type: "text",
                             filter_container_id: "mailDBid",
-                            filter_default_label: "Select ID",
+                            filter_delay: 1000,
+                            filter_default_label: "Select ID"
                             
 
                         },
@@ -166,12 +169,14 @@
                              column_number: 1,
                              filter_type: "text",
                              filter_default_label: "Mail ID",
+                             filter_delay: 1000,
                              filter_container_id: "mailID"
                          },
                         {
                             column_number: 2,
                             filter_type: "text",
                             filter_default_label: "mailDescription",
+                            filter_delay:1000,
                             filter_container_id: "mailDescription"
 
                         },
@@ -179,7 +184,7 @@
                             column_number: 3,
                             filter_type:  "range_date",
                             date_format: "mm/dd/yyyy",
-                            filter_default_label: "Mail Date",
+                            
                             filter_delay: 500,
                             filter_container_id: "mailDate"
                         }  
