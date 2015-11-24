@@ -514,7 +514,7 @@
             var phoneUser_id = $(this).attr('phoneUser_id').trim();
 
             var myData = ({ "id": phoneUser_id });
-            alert(phoneUser_id);
+            //alert(phoneUser_id);
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetSinglePhoneData", "Telephone")",

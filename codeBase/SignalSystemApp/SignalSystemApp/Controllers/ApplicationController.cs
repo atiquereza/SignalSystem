@@ -33,7 +33,7 @@ namespace SignalSystemApp.Controllers
 
 
 
-                ViewData["message"] = "Data Successfully Added.";
+                ViewData["message"] = messasge;
                 return View("Index");
             }
             catch (Exception exception)
