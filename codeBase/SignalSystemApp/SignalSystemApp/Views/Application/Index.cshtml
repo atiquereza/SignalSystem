@@ -1,0 +1,74 @@
+﻿@using SignalSystem.Libs;
+@{
+    string complainTypeAddAction = UtilityLibrary.GetBaseURL() + "Application/AddNewComplainType";
+
+
+    string message = string.Empty;
+
+    if (ViewData["message"] != null)
+    {
+        message = ViewData["message"].ToString();
+    }
+
+    if (message.Trim().Length != 0)
+    {
+        if (message.Contains("Error"))
+        {
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\">" +
+                       "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                       message + "</div>";
+        }
+        else
+        {
+            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;\">" +
+                    "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                    message + "</div>";
+        }
+
+    }
+    
+    
+}
+
+
+<div>
+    <div class="row text-center">
+        <h2>Server Configuration</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.Raw(message)
+        </div>
+    </div>
+    <form method="POST" action="@complainTypeAddAction">
+        <div>
+            <label for="complaintype" class="col-md-2">
+                Complain Type:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="complaintype" placeholder="Enter Complain type" name="complainType" required="required">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <button type="submit" class="btn btn-info custom-btn">
+                    Add
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<style>
+    div {
+        padding-bottom: 10px;
+    }
+</style>
