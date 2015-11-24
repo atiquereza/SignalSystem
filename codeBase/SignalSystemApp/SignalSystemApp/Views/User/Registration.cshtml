@@ -26,12 +26,12 @@
         
         if(ViewData["Message"].ToString().Contains("Error"))
         {
-            message = "<div class=\"alert alert-dismissible alert-danger\"> "
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\"> "
             + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
         }
         else
         {
-            message = "<div class=\"alert alert-dismissible alert-success\"> "
+            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;\"> "
             + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
         }
         

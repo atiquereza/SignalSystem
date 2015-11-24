@@ -60,16 +60,18 @@
 
     if (ViewData["Message"] != null)
     {
-
+        message = ViewData["message"].ToString();
         if (ViewData["Message"].ToString().Contains("Error"))
         {
-            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;> "
-            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\">" +
+                        "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                        message + "</div>";
         }
         else
         {
-            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;> "
-            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;\">" +
+                      "<button data-dismiss=\"alert\" class=\"close\" type=\"button\" style=\"padding-right: 10px; color: blue;\">&times;</button>" +
+                      message + "</div>";
         }
 
     }
@@ -97,10 +99,11 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
+        <div>
+            @Html.Raw(message)
+        </div>
         <div class="panel panel-primary">
-            <div>
-                @Html.Raw(message)
-            </div>
+           
 
 
             <div class="panel-heading">

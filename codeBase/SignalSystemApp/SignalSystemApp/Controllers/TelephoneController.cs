@@ -342,15 +342,8 @@ namespace SignalSystemApp.Controllers
             List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter,
                 phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
 
+            GetSortedList(aModel, filteredComplaneList,columnlist);
 
-            if (aModel.sSortDir_0 == "asc")
-            {
-                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
-            }
-            else
-            {
-                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Descending);
-            }
 
 
 
@@ -801,15 +794,9 @@ namespace SignalSystemApp.Controllers
                 banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate, resolverFilter,
                 resolvefromDate, resolvetoDate, actionTakenFilter, remarksFilter);
 
+            GetSortedList(aModel, filteredComplaneList,columnlist);
 
-            if (aModel.sSortDir_0 == "asc")
-            {
-                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
-            }
-            else
-            {
-                SortList(filteredComplaneList, columnlist[aModel.iSortCol_0], SortDirection.Descending);
-            }
+          
 
 
 
@@ -1101,14 +1088,7 @@ namespace SignalSystemApp.Controllers
             // List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
 
 
-            if (aModel.sSortDir_0 == "asc")
-            {
-                SortList(filterTelphoneUsers, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
-            }
-            else
-            {
-                SortList(filterTelphoneUsers, columnlist[aModel.iSortCol_0], SortDirection.Descending);
-            }
+            GetSortedList(aModel, filterTelphoneUsers, columnlist);
 
 
 
@@ -1176,6 +1156,18 @@ namespace SignalSystemApp.Controllers
             },
              JsonRequestBehavior.AllowGet);
     }
+
+        private void GetSortedList<T>(JQueryDataTableParamModel aModel, List<T> filterList, List<string> columnlist)
+        {
+            if (aModel.sSortDir_0 == "asc")
+            {
+                SortList(filterList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
+            }
+            else
+            {
+                SortList(filterList, columnlist[aModel.iSortCol_0], SortDirection.Descending);
+            }
+        }
 
         public ActionResult GetSinglePhoneData(string id)
         {

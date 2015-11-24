@@ -56,6 +56,9 @@ namespace SignalSystemApp.Controllers
             var mailDescriptionFilter = Convert.ToString(Request["sSearch_2"]);
             var dateFilter = Convert.ToString(Request["sSearch_3"]);
 
+
+            
+
             var result = from aMailData in mailData
                 select new[]
                 {
@@ -64,8 +67,6 @@ namespace SignalSystemApp.Controllers
                     aMailData.MailID,
                     aMailData.MailDescription,
                     aMailData.MailDate.ToString("dd-MM-yyyy").ToString()
-
-
 
                 };
 
@@ -77,12 +78,9 @@ namespace SignalSystemApp.Controllers
             return Json(new
             {
                 sEcho = aModel.sEcho,
-                //yadcf_data_0 = banumberList,
-                //yadcf_data_2 = aRankList,
-                //yadcf_data_5 = complainTypeList,
 
-                iTotalRecords = 12,//complanList.Count(),
-                iTotalDisplayRecords = 10,//filteredComplaneList.Count(),
+                iTotalRecords = 25,//resultList.Count,
+                iTotalDisplayRecords = 12,//filteredComplaneList.Count(),
                 aaData = resultList
             },
                JsonRequestBehavior.AllowGet);

@@ -271,6 +271,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Libs\UtilityLibrary.cs" />
     <Compile Include="Libs\ZipFiles.cs" />
     <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\Application\ApplicationConfiguration.cs" />
     <Compile Include="Models\Equipment\EquipmentDetails.cs" />
     <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\JQueryDataTableParamModel.cs" />
@@ -331,6 +333,7 @@
     <Content Include="Views\Telephone\ListPhones.cshtml" />
     <Content Include="Views\Mail\Index.cshtml" />
     <Content Include="Views\Mail\ListMails.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
