@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `complains` (
   KEY `TelephoneUserId` (`TelephoneUserId`),
   CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
   CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `telephoneusers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.complains: ~39 rows (approximately)
 DELETE FROM `complains`;
@@ -123,7 +123,9 @@ INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `T
 	(67, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
 	(68, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
 	(69, 'bnbnbmbn', 'Resolved', 4, 5, '2015-11-13 05:47:53', '2015-11-21 16:16:00', '', 'Wire changed', 'Habib'),
-	(70, 'cannot hear', 'Resolved', 2, 13, '2015-11-16 05:20:01', '0000-00-00 00:00:00', '', 'can hear now', 'Habib');
+	(70, 'cannot hear', 'Resolved', 2, 13, '2015-11-16 05:20:01', '0000-00-00 00:00:00', '', 'can hear now', 'Habib'),
+	(71, 'Stolen by Zahurul', 'Pending', 7, 13, '2015-11-24 16:26:53', '0000-00-00 00:00:00', '', '', ''),
+	(72, 'Disconnected', 'Pending', 1, 13, '2015-11-24 16:30:38', '0000-00-00 00:00:00', '', '', '');
 /*!40000 ALTER TABLE `complains` ENABLE KEYS */;
 
 
@@ -209,9 +211,9 @@ CREATE TABLE IF NOT EXISTS `maildata` (
   `MailDescription` text NOT NULL,
   `Date` date NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.maildata: ~0 rows (approximately)
+-- Dumping data for table signalappdb.maildata: ~11 rows (approximately)
 DELETE FROM `maildata`;
 /*!40000 ALTER TABLE `maildata` DISABLE KEYS */;
 INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `Date`) VALUES
@@ -236,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `menucomplaintype` (
   `Value` text NOT NULL,
   `Name` text NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.menucomplaintype: ~6 rows (approximately)
 DELETE FROM `menucomplaintype`;
@@ -247,7 +249,8 @@ INSERT INTO `menucomplaintype` (`Id`, `Value`, `Name`) VALUES
 	(3, 'Phone Faulty', 'Complain'),
 	(4, 'Other', 'Complain'),
 	(5, 'NewConnection', 'Complain'),
-	(6, 'DiscardConnection', 'Complain');
+	(6, 'DiscardConnection', 'Complain'),
+	(7, 'Cable Stolen', 'Complain');
 /*!40000 ALTER TABLE `menucomplaintype` ENABLE KEYS */;
 
 
@@ -341,7 +344,7 @@ INSERT INTO `telephoneusers` (`Id`, `BANumber`, `Name`, `RankId`, `Status`, `New
 	(3, 'BA123456', 'Test User', 1, 'Disconnected', '987654', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
 	(4, 'BA123456', 'Test User1', 1, 'Connected', '9876547', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
 	(5, 'BA123457\r\n', 'Test User1hhkk jjhdfdfdsfsdfl fdfdfdfd dfdfdf', 1, 'Connected', '98765478889999999', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
-	(6, 'BA558300', 'Reza', 3, 'Connected', '123456', 'Rangpur', 'male', '2015-11-22', '0000-00-00'),
+	(6, 'BA558300', 'Reza', 3, 'Connected', '12345689', 'Rangpur', 'male', '2015-11-22', '0000-00-00'),
 	(9, 'BA112345', 'User101', 7, 'Disconnected', '1125568', 'Comilla', 'male', '0000-00-00', '0000-00-00'),
 	(10, 'BA445789', 'Kazi ', 6, 'Disconnected', '99807', 'Comilla', 'male', '0000-00-00', '0000-00-00'),
 	(12, 'BA445789', 'Akkasur', 8, 'Connected', '995527', 'Rangpur', 'male', '2015-11-23', '0000-00-00'),
@@ -363,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `userinfo` (
   PRIMARY KEY (`ID`),
   KEY `UserID` (`UserID`),
   CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.userinfo: ~6 rows (approximately)
 DELETE FROM `userinfo`;
@@ -374,7 +377,8 @@ INSERT INTO `userinfo` (`ID`, `UserID`, `UserName`, `FullName`, `RankId`, `Email
 	(3, 10, 'habib', 'habib', 2, 'habib@gmail.com', 'Male', 'BA123553'),
 	(4, 115, 'sakib', 'sakib', 5, 'sakib@gmail.com', 'Male', 'BA123554'),
 	(10, 128, 'Khairul', 'Khairul', 1, 'khairul@gmail.com', 'female', 'BA123555'),
-	(11, 131, 'Razib', 'Razib', 4, 'asdf@gamil.com', 'male', 'BA123556');
+	(11, 131, 'Razib', 'Razib', 4, 'asdf@gamil.com', 'male', 'BA123556'),
+	(12, 132, 'Zahurul', 'Zahurul', 1, 'zahurul@gmail.com', 'male', 'BA291488');
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 
 
@@ -388,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`ID`),
   KEY `UserRoleId` (`UserRoleId`),
   CONSTRAINT `UserRoleId` FOREIGN KEY (`UserRoleId`) REFERENCES `roles` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.users: ~6 rows (approximately)
 DELETE FROM `users`;
@@ -399,7 +403,8 @@ INSERT INTO `users` (`ID`, `UserName`, `UserCredential`, `UserRoleId`) VALUES
 	(10, 'habib', '01926662227', 9),
 	(115, 'sakib', '01926662227', 10),
 	(128, 'Khairul', '123456', 2),
-	(131, 'Razib', '123456', 9);
+	(131, 'Razib', '123456', 9),
+	(132, 'Zahurul', '01926662274', 2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
