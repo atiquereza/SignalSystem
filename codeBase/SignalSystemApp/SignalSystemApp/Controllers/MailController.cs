@@ -57,10 +57,7 @@ namespace SignalSystemApp.Controllers
             var dateFilter = Convert.ToString(Request["sSearch_3"]);
 
 
-            var idFilter = Convert.ToString(Request["sSearch_0"]);
-            var mailIdFilter = Convert.ToString(Request["sSearch_1"]);
-            var mailDescriptionFilter = Convert.ToString(Request["sSearch_2"]);
-            var dateFilter = Convert.ToString(Request["sSearch_3"]);
+            
 
             var result = from aMailData in mailData
                 select new[]
