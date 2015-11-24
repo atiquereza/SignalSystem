@@ -79,18 +79,154 @@ CREATE TABLE IF NOT EXISTS `complains` (
   KEY `TelephoneUserId` (`TelephoneUserId`),
   CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
   CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `telephoneusers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.complains: ~5 rows (approximately)
+-- Dumping data for table signalappdb.complains: ~39 rows (approximately)
 DELETE FROM `complains`;
 /*!40000 ALTER TABLE `complains` DISABLE KEYS */;
 INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`) VALUES
-	(5, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 2, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(6, 'time test', 'Pending', 2, 2, '2015-10-17 17:27:04', '0000-00-00 00:00:00', '', '', ''),
-	(7, 'hkjhkjhkjhkjhkjhkjhkjhkjh', 'Pending', 2, 2, '2015-10-17 18:46:12', '0000-00-00 00:00:00', '', '', ''),
-	(8, 'asdfasdf', 'Resolved', 2, 2, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
-	(9, 'dfasdfasdf', 'Pending', 1, 4, '2015-11-07 14:35:37', '0000-00-00 00:00:00', '', '', '');
+	(8, 'asdfasdf', 'Resolved', 2, 3, '2015-11-07 14:33:27', '2015-11-23 11:43:00', 'N/A', 'Cable changed', 'jubayer'),
+	(9, 'Bad kotha', 'Resolve', 3, 4, '2015-11-07 14:35:37', '2015-11-08 14:35:37', '', 'Changed Line', 'Habib'),
+	(10, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(11, 'hhjjklllfgfgfg helloooo', 'Resolved', 3, 3, '2015-09-17 17:17:04', '2015-11-23 11:25:00', '', 'gghhuujj', 'Habib'),
+	(12, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(18, 'asdfasdf', 'Resolved', 3, 3, '2015-11-07 14:33:27', '2015-11-23 12:11:00', 'No Issue', 'Solved it', 'jubayer'),
+	(36, 'bnbnbmbn', 'Resolved', 4, 5, '2015-11-13 05:47:53', '2015-11-21 16:16:00', '', 'Wire changed', 'Habib'),
+	(39, 'New Connection Activation', 'Resolved', 5, 9, '2015-11-23 16:57:02', '2015-11-23 16:57:07', 'Addition Remark', 'Connection Provided', 'Atique'),
+	(40, 'New Connection Activation', 'Resolved', 5, 12, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Checking Done', 'Connection Provided', 'jubayer'),
+	(41, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-11-21 13:50:00', 'Some remarks', '', 'Habib'),
+	(42, 'asdfasdf', 'Pending', 2, 3, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
+	(43, 'Bad kotha', 'Resolve', 3, 4, '2015-11-07 14:35:37', '2015-11-08 14:35:37', '', 'Changed Line', 'Habib'),
+	(44, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(45, 'hhjjklll', 'Pending', 1, 3, '2015-09-17 17:17:04', '0000-00-00 00:00:00', '', '', ''),
+	(46, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(47, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(48, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(49, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(50, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
+	(51, 'bnbnbmbn', 'Resolved', 4, 13, '2015-11-13 05:47:53', '2015-11-21 03:46:00', '', 'jhhjh', 'Habib'),
+	(52, 'asdfasdf', 'Pending', 2, 3, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
+	(53, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-11-20 22:19:00', 'Some remarks', 'Phone Ste Changed', 'Habib'),
+	(54, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(55, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(56, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(57, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(58, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(59, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(60, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(61, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(62, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(63, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(64, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(65, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(66, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(67, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(68, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
+	(69, 'bnbnbmbn', 'Resolved', 4, 5, '2015-11-13 05:47:53', '2015-11-21 16:16:00', '', 'Wire changed', 'Habib'),
+	(70, 'cannot hear', 'Resolved', 2, 13, '2015-11-16 05:20:01', '0000-00-00 00:00:00', '', 'can hear now', 'Habib');
 /*!40000 ALTER TABLE `complains` ENABLE KEYS */;
+
+
+-- Dumping structure for table signalappdb.deletedtelephoneusers
+DROP TABLE IF EXISTS `deletedtelephoneusers`;
+CREATE TABLE IF NOT EXISTS `deletedtelephoneusers` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `BANumber` text NOT NULL,
+  `Name` text NOT NULL,
+  `RankId` int(11) NOT NULL,
+  `Status` varchar(50) NOT NULL,
+  `NewPhoneNumber` text NOT NULL,
+  `Address` text NOT NULL,
+  `Gender` varchar(50) NOT NULL,
+  `ConnectedDate` date NOT NULL,
+  `DisconnectedDate` date NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `Rank` (`RankId`),
+  CONSTRAINT `deletedtelephoneusers_ibfk_1` FOREIGN KEY (`RankId`) REFERENCES `menusrank` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+-- Dumping data for table signalappdb.deletedtelephoneusers: ~3 rows (approximately)
+DELETE FROM `deletedtelephoneusers`;
+/*!40000 ALTER TABLE `deletedtelephoneusers` DISABLE KEYS */;
+INSERT INTO `deletedtelephoneusers` (`Id`, `BANumber`, `Name`, `RankId`, `Status`, `NewPhoneNumber`, `Address`, `Gender`, `ConnectedDate`, `DisconnectedDate`) VALUES
+	(8, 'BA558300', 'Reza', 3, 'Connected', '123456', 'Rangpur', 'male', '2015-11-22', '0000-00-00'),
+	(9, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '2015-11-23'),
+	(10, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '2015-11-23');
+/*!40000 ALTER TABLE `deletedtelephoneusers` ENABLE KEYS */;
+
+
+-- Dumping structure for table signalappdb.equipemntdescription
+DROP TABLE IF EXISTS `equipemntdescription`;
+CREATE TABLE IF NOT EXISTS `equipemntdescription` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `TypeId` int(11) NOT NULL DEFAULT '0',
+  `Amount` int(11) NOT NULL DEFAULT '0',
+  `Description` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `FK__equipmnttype` (`TypeId`),
+  CONSTRAINT `FK__equipmnttype` FOREIGN KEY (`TypeId`) REFERENCES `equipmnttype` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table signalappdb.equipemntdescription: ~5 rows (approximately)
+DELETE FROM `equipemntdescription`;
+/*!40000 ALTER TABLE `equipemntdescription` DISABLE KEYS */;
+INSERT INTO `equipemntdescription` (`Id`, `TypeId`, `Amount`, `Description`) VALUES
+	(1, 1, 50, 'good'),
+	(3, 4, 900, 'very good tooo'),
+	(4, 4, 60, 'Quality Product'),
+	(5, 1, 10, '10 feet'),
+	(6, 7, 30, 'Ericsson');
+/*!40000 ALTER TABLE `equipemntdescription` ENABLE KEYS */;
+
+
+-- Dumping structure for table signalappdb.equipmnttype
+DROP TABLE IF EXISTS `equipmnttype`;
+CREATE TABLE IF NOT EXISTS `equipmnttype` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `TypeName` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table signalappdb.equipmnttype: ~7 rows (approximately)
+DELETE FROM `equipmnttype`;
+/*!40000 ALTER TABLE `equipmnttype` DISABLE KEYS */;
+INSERT INTO `equipmnttype` (`Id`, `TypeName`) VALUES
+	(1, 'E1 Link'),
+	(2, 'Voice Musk'),
+	(3, 'ONUs'),
+	(4, 'MicroWave'),
+	(5, 'PDH'),
+	(6, 'onsu'),
+	(7, 'SDH');
+/*!40000 ALTER TABLE `equipmnttype` ENABLE KEYS */;
+
+
+-- Dumping structure for table signalappdb.maildata
+DROP TABLE IF EXISTS `maildata`;
+CREATE TABLE IF NOT EXISTS `maildata` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `MailID` text NOT NULL,
+  `MailDescription` text NOT NULL,
+  `Date` date NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table signalappdb.maildata: ~0 rows (approximately)
+DELETE FROM `maildata`;
+/*!40000 ALTER TABLE `maildata` DISABLE KEYS */;
+INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `Date`) VALUES
+	(1, 'MID0001', 'DHK to CTG', '2015-11-24'),
+	(2, 'MID0002', 'CTG to DHK', '2015-11-24'),
+	(3, 'MID0003', 'CTG to BOG', '2015-11-24'),
+	(4, 'MID0004', 'DHK to DHK', '2015-11-24'),
+	(5, 'MID0005', 'BOG to DHK', '2015-11-24'),
+	(6, 'MID0006', 'Jess to DHK', '2015-11-24'),
+	(7, 'MID0007', 'BOG to DHK', '2015-11-24'),
+	(8, 'MID0007', 'BOG to RAJ', '2015-11-24'),
+	(9, 'MID0008', 'DHK to Saidpur', '2015-11-24'),
+	(10, 'MID0009', 'Saidpur to Rangpur', '2015-11-24'),
+	(11, 'MID00010', 'RAJ to CTG', '2015-11-24');
+/*!40000 ALTER TABLE `maildata` ENABLE KEYS */;
 
 
 -- Dumping structure for table signalappdb.menucomplaintype
@@ -100,16 +236,18 @@ CREATE TABLE IF NOT EXISTS `menucomplaintype` (
   `Value` text NOT NULL,
   `Name` text NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.menucomplaintype: ~4 rows (approximately)
+-- Dumping data for table signalappdb.menucomplaintype: ~6 rows (approximately)
 DELETE FROM `menucomplaintype`;
 /*!40000 ALTER TABLE `menucomplaintype` DISABLE KEYS */;
 INSERT INTO `menucomplaintype` (`Id`, `Value`, `Name`) VALUES
 	(1, 'Disconnected', 'Complain'),
 	(2, 'Unclear Sound', 'Complain'),
 	(3, 'Phone Faulty', 'Complain'),
-	(4, 'Other', 'Complain');
+	(4, 'Other', 'Complain'),
+	(5, 'NewConnection', 'Complain'),
+	(6, 'DiscardConnection', 'Complain');
 /*!40000 ALTER TABLE `menucomplaintype` ENABLE KEYS */;
 
 
@@ -194,15 +332,20 @@ CREATE TABLE IF NOT EXISTS `telephoneusers` (
   PRIMARY KEY (`Id`),
   KEY `Rank` (`RankId`),
   CONSTRAINT `FK__menus` FOREIGN KEY (`RankId`) REFERENCES `menusrank` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.telephoneusers: ~3 rows (approximately)
+-- Dumping data for table signalappdb.telephoneusers: ~8 rows (approximately)
 DELETE FROM `telephoneusers`;
 /*!40000 ALTER TABLE `telephoneusers` DISABLE KEYS */;
 INSERT INTO `telephoneusers` (`Id`, `BANumber`, `Name`, `RankId`, `Status`, `NewPhoneNumber`, `Address`, `Gender`, `ConnectedDate`, `DisconnectedDate`) VALUES
-	(2, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '0000-00-00'),
-	(3, 'BA123456', 'Test User', 1, 'Connected', '987654', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
-	(4, 'BA123456', 'Test User1', 1, 'Connected', '9876547', 'Dhaka', 'male', '2015-11-07', '0000-00-00');
+	(3, 'BA123456', 'Test User', 1, 'Disconnected', '987654', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
+	(4, 'BA123456', 'Test User1', 1, 'Connected', '9876547', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
+	(5, 'BA123457\r\n', 'Test User1hhkk jjhdfdfdsfsdfl fdfdfdfd dfdfdf', 1, 'Connected', '98765478889999999', 'Dhaka', 'male', '2015-11-07', '0000-00-00'),
+	(6, 'BA558300', 'Reza', 3, 'Connected', '123456', 'Rangpur', 'male', '2015-11-22', '0000-00-00'),
+	(9, 'BA112345', 'User101', 7, 'Disconnected', '1125568', 'Comilla', 'male', '0000-00-00', '0000-00-00'),
+	(10, 'BA445789', 'Kazi ', 6, 'Disconnected', '99807', 'Comilla', 'male', '0000-00-00', '0000-00-00'),
+	(12, 'BA445789', 'Akkasur', 8, 'Connected', '995527', 'Rangpur', 'male', '2015-11-23', '0000-00-00'),
+	(13, 'BA123555', 'Khairul', 5, 'Connected', '123456', 'Cox\'s Bazar', 'male', '2015-10-17', '0000-00-00');
 /*!40000 ALTER TABLE `telephoneusers` ENABLE KEYS */;
 
 
