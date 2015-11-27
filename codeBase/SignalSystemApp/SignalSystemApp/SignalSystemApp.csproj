@@ -276,6 +276,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\TelephoneController.cs" />
+    <Compile Include="Controllers\TelephoneRequestController.cs" />
+    <Compile Include="Controllers\TelephoneUserController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -334,6 +336,13 @@
     <Content Include="Views\Mail\Index.cshtml" />
     <Content Include="Views\Mail\ListMails.cshtml" />
     <Content Include="Views\Application\Index.cshtml" />
+    <Content Include="Views\TelephoneUser\Index.cshtml" />
+    <Content Include="Views\TelephoneUser\AddNewTelephoneNumber.cshtml" />
+    <Content Include="Views\TelephoneRequest\Index.cshtml" />
+    <Content Include="Views\TelephoneRequest\PendingRequest.cshtml" />
+    <Content Include="Views\TelephoneRequest\ResolveRequest.cshtml" />
+    <Content Include="Views\TelephoneUser\ViewActiveTelephoneUsers.cshtml" />
+    <Content Include="Views\TelephoneUser\ViewTerminatedTelephoneHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -358,7 +367,7 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
+          <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>53561</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:53561/</IISUrl>

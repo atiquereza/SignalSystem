@@ -58,11 +58,21 @@
         string collapseMail = "collapse";
         string collapseTechnical = "collapse";
         string collapseEquipments = "collapse";
+        string collapseManageTelephoneUser = "collapse";
+        string collapseRequest = "collapse";
 
         string contorller = UtilityLibrary.GetControllerName();
+        if (contorller == "TelephoneRequest")
+        {
+            collapseRequest = string.Empty;
+        }
         if (contorller == "User")
         {
             collapseUser = string.Empty;
+        }
+        if (contorller == "TelephoneUser")
+        {
+            collapseManageTelephoneUser = string.Empty;
         }
         if (contorller == "Telephone")
         {
@@ -99,7 +109,7 @@
                 <ul id="active" class="nav navbar-nav side-nav" style="width: 200px!important">
                     <li class="selected"><a href="@Url.Action("Index", "Home")"><i class="fa fa-bullseye"></i> Dashboard</a></li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Manage Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Manage LogIn Users <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="@collapseUser" style="list-style: none">
                             <li>
                                 <a href="@Url.Action("Registration", "User")"><i class="fa fa-fw fa-plus"></i> Register User</a>
@@ -109,9 +119,43 @@
                             </li>
                         </ul>
                     </li>
+
+                   <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-user"></i> Manage Telephones & Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo1" class="@collapseManageTelephoneUser" style="list-style: none">
+                            <li>
+                                <a href="@Url.Action("AddTelephoneUser", "TelephoneUser")"><i class="fa fa-fw fa-plus"></i>New Telephone User</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("AddNewTelephoneNumber", "TelephoneUser")"><i class="fa fa-fw fa-plus"></i>Add New Telephone Number</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ViewActiveTelephoneUsers", "TelephoneUser")"><i class="fa fa-fw fa-eye"></i>Active Telephone Users</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ViewTerminatedTelephoneHistory", "TelephoneUser")"><i class="fa fa-fw fa-eye"></i>Telephone Termination History</a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo1" class="@collapseTelephone" style="list-style: none">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo6"><i class="fa fa-fw fa-user"></i>Telephone Requests <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo6" class="@collapseRequest" style="list-style: none">
+                            <li>
+                                <a href="@Url.Action("Index", "TelephoneRequest")"><i class="fa fa-fw fa-plus"></i>New Request</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("PendingRequest", "TelephoneRequest")"><i class="fa fa-fw fa-eye"></i>Pending Request</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ResolveRequest", "TelephoneRequest")"><i class="fa fa-fw fa-check"></i>Resolved Requests</a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-phone"></i>Telephone Complains<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo2" class="@collapseTelephone" style="list-style: none">
                             <li>
                                 <a href="@Url.Action("AddTelephone", "Telephone")"><i class="fa fa-fw fa-plus"></i> Add Phone</a>
                             </li>
@@ -169,9 +213,11 @@
                     </li>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right navbar-user">
-                   
-                    
+
+
+
+
+                <ul class="nav navbar-nav navbar-right navbar-user">  
                     <li class="dropdown user-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @sessionDictionary["LoggedIn"]<b class="caret"></b></a>
                         <ul class="dropdown-menu">
