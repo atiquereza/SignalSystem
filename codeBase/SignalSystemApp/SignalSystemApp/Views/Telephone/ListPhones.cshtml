@@ -8,12 +8,6 @@
     string testAction = UtilityLibrary.GetBaseURL() + "Telephone/DataProviderAction";
 }
 
-<h2>ListPhones</h2>
-
-
-
-
-
 
 <div id="page-wrapper">
     <div class="row">
@@ -70,13 +64,12 @@
 
                                 <div class="col-xs-2">
                                     <div id="address"></div>
-                                </div>
+                                </div>                            
+                            </div></br>
+                            <div class="row">
                                 <div class="col-xs-2">
                                     <div id="gender"></div>
                                 </div>
-                               
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-2">
                                     <div id="phoneStatus"></div>
                                 </div>
@@ -521,7 +514,7 @@
             var phoneUser_id = $(this).attr('phoneUser_id').trim();
 
             var myData = ({ "id": phoneUser_id });
-            alert(phoneUser_id);
+            //alert(phoneUser_id);
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetSinglePhoneData", "Telephone")",

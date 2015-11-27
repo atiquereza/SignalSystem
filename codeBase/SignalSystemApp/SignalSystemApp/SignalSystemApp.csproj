@@ -271,8 +271,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\TelephoneController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -291,9 +293,11 @@
     <Compile Include="Libs\UtilityLibrary.cs" />
     <Compile Include="Libs\ZipFiles.cs" />
     <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\Application\ApplicationConfiguration.cs" />
     <Compile Include="Models\Equipment\EquipmentDetails.cs" />
     <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\JQueryDataTableParamModel.cs" />
+    <Compile Include="Models\Mail\Mail.cs" />
     <Compile Include="Models\Telephone\TelephoneComplain.cs" />
     <Compile Include="Models\Telephone\Telephone.cs" />
     <Compile Include="Models\User\User.cs" />
@@ -327,6 +331,9 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Equipment\Index.cshtml" />
     <Content Include="Views\Telephone\ListPhones.cshtml" />
+    <Content Include="Views\Mail\Index.cshtml" />
+    <Content Include="Views\Mail\ListMails.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

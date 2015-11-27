@@ -2,21 +2,18 @@
 @using SignalSystemApp.Models.Equipment
 
 @{
-    
+
 
 }
-
-
-
 <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Mail <small>List of mails</small></h1>
-               
-            </div>
-        </div>
     <div class="row">
-        
+        <div class="col-lg-12">
+            <h1>Mail <small>List of mails</small></h1>
+
+        </div>
+    </div>
+    <div class="row">
+
         <div class="col-lg-12">
             <div class="panel panel-primary">
 
@@ -28,63 +25,64 @@
 
                 <div class="panel-body">
 
+
                 <div>  
                     @*Search filter starts*@
                     <div class="row">
                         <div class="col-xs-2">
                             <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
                         </div>
-                    </div><br>
-                    <div id="filter" style="">
+                    </div>
+                    <div id="filter" style="display: none">
                         <div class="row">
                             <div class="col-xs-2">
                                 <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
                             </div>
                             <div class="col-xs-2">
-                                <br>
                                 <div id="externalContainer"></div>
                             </div>
-                        </div><br/>
-
+                        </div><br />
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                                 <div id="mailDBid"></div>
-                            </div> <br>
-                            <div class="col-xs-2">
-                                <div id="mailId"></div>
-                            </div> <br>
-                            <div class="col-xs-2">
+                            </div><label>&nbsp;</label>
+                            <div class="col-xs-3">
+                                <div id="mailID"></div>
+                            </div>
+                            <div class="col-xs-3">
                                 <div id="mailDescription"></div>
+                            </div><br>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5"><br>
+                                <label>Search by Complain Date:</label>
+                                <div id="mailDate"></div>
                             </div> <br>
-                           <div class="col-xs-5">
-                                    <label>Search by Complain Date:</label>
-                                    <div id="mailDate"></div>
-                           </div> <br>
                         </div>
                     </div>
 
-                    @*Search filter ends*@
-                    <table id="MainDataTable" name="entryMainDataTables_table" border="1" class="table table-condensed table-striped ">
-                        <thead>
-                        <tr>
-                            <th class="col-sm-1">ID</th>
-                            <th class="col-sm-1">MailID</th>
-                            <th class="col-sm-1">Mail Description</th>
-                            <th class="col-sm-1">Date</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
+                        @*Search filter ends*@
+                        <table id="MainDataTable" name="entryMainDataTables_table" border="1" class="table table-condensed table-striped ">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-1">ID</th>
+                                    <th class="col-sm-1">MailID</th>
+                                    <th class="col-sm-1">Mail Description</th>
+                                    <th class="col-sm-1">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
 
-                    </table>
-                    @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
+                        </table>
+                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
+                    </div>
+
                 </div>
-            
             </div>
         </div>
     </div>
-  </div>
 
- </div>
+</div>
 
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
@@ -94,8 +92,75 @@
 
 
 <style>
-    
+
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--MainDataTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--MainDataTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--MainDataTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #MainDataTable_length select {
+        background: green;
+    }
+
+    #MainDataTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #MainDataTable_filter {
+        background: #222222;
+        color: black;
+    }    
+
      
+
 </style>
 
 
@@ -114,11 +179,11 @@
                             function (nRow, aData, iDisplayIndex) {
                                 return nRow;
                             },
-          
+
 
         });
 
-        
+
         $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
         $.datepicker.setDefaults($.datepicker.regional['']);
         $.datepicker.setDefaults({
@@ -132,7 +197,7 @@
 
             showWeek: true,
             weekHeader: "Wk",
-            autoSize:true
+            autoSize: true
 
 
         });
@@ -142,7 +207,7 @@
             showClear: true
         };
 
-    
+
 
 
         $('#MainDataTable_filter input').unbind();
@@ -158,32 +223,37 @@
                             column_number: 0,
                             filter_type: "text",
                             filter_container_id: "mailDBid",
-                            filter_default_label: "Select ID",
-                            
+                            filter_delay: 1000,
+                            filter_default_label: "Select ID"
 
                         },
                          {
                              column_number: 1,
                              filter_type: "text",
                              filter_default_label: "Mail ID",
+                             filter_delay: 1000,
                              filter_container_id: "mailID"
                          },
                         {
                             column_number: 2,
                             filter_type: "text",
                             filter_default_label: "mailDescription",
+
+                            filter_delay: 1000,
+
+                            filter_delay:1000,
+
                             filter_container_id: "mailDescription"
 
                         },
                         {
                             column_number: 3,
-                            filter_type:  "range_date",
+                            filter_type: "range_date",
                             date_format: "mm/dd/yyyy",
-                            filter_default_label: "Mail Date",
                             filter_delay: 500,
                             filter_container_id: "mailDate"
-                        }  
-                   
+                        }
+
         ]);
 
 
@@ -203,35 +273,35 @@
 
         $('#ExportExcelButton').click(function () {
 
-        var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
-        var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
-        var name = $('#yadcf-filter--MainDataTable-1').val();
-        var phone = $('#yadcf-filter--MainDataTable-3').val();
-        var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
-        var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
-        var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-        var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-        var overAllSearch=$("#MainDataTable_filter :input").val();
+            var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
+            var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
+            var name = $('#yadcf-filter--MainDataTable-1').val();
+            var phone = $('#yadcf-filter--MainDataTable-3').val();
+            var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
+            var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
+            var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+            var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+            var overAllSearch = $("#MainDataTable_filter :input").val();
 
-        window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter+"&status=pending";
-    });
+            window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=pending";
+        });
 
-  
-    var tableWidth = $('#MainDataTable').width() + 25;
 
-    //document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+        var tableWidth = $('#MainDataTable').width() + 25;
 
-    //Make DateTime picker dropdown to work on a Modal//
-    var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+        //document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
 
-    $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+        //Make DateTime picker dropdown to work on a Modal//
+        //var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 
-    //$confModal.on('hidden', function () {
-    //    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
-    //});
+        //$.fn.modal.Constructor.prototype.enforceFocus = function () { };
 
-    //$confModal.modal({ backdrop: false });
-    //Make DateTime picker dropdown to work on a Modal//
+        //$confModal.on('hidden', function () {
+        //    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+        //});
+
+        //$confModal.modal({ backdrop: false });
+        //Make DateTime picker dropdown to work on a Modal//
 
     });
 </script>
