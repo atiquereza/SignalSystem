@@ -118,16 +118,55 @@
                         <label>Telephone Number:&nbsp</label>@telephoneNumber</br>
                         <label>Rank:&nbsp</label>@rank</br>
                         <label>Address:&nbsp</label>@address</br>
-                        <label>Complain Type:</label><select class="form-control" name="type" width="200px">
-                            <option>--Please Select--</option>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <label>Complain Type:</label><select class="form-control " name="type" width="180px">
+                                    <option>--Please Select--</option>
                                     @Html.Raw(complainDropdown)
-                            </select></br>
+                                </select>
+                            </div></br>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
+                            </div>                        
+                        </div>
+                        </br>
                         <label> Date:</label>@date</br>
                         <label>Write your complain below:</label></br>
                         <textarea class="form-control" id="complain" name="description"></textarea></br>
                         <input type="submit" class="btn btn-info btn-block" id="" value="Submit Complain">
                     </div>
                 </form>
+ <!--Add Rank Modal statrs-->
+                <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Complain Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="col-xs-4 control-label">Complain Type</label>
+                                        <div class="col-xs-5">
+                                            <input type="text" class="form-control" id="addRank" name="rank" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+<!--Add Rank Modal ends-->
+
             </div>
         </div>
     </div>

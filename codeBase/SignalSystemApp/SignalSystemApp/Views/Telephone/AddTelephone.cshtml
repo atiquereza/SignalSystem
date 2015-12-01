@@ -92,6 +92,9 @@
                     <option>--Please Select--</option>
                     @Html.Raw(optionsRank)
                 </select>
+             </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
             </div>
         </div>
         <div>
@@ -153,6 +156,37 @@
             </div>
         </div>
     </form>
+
+<!--Add Rank Modal statrs-->
+    <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Rank</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Rank</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="addRank" name="rank"/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<!--Add Rank Modal ends-->
 
 
 </div>
