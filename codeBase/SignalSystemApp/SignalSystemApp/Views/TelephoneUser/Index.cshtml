@@ -1,1 +1,228 @@
-﻿<h1> TelephoneUser/AddTelephoneUserForm</h1>
+﻿<style>
+    div {
+        padding-bottom: 20px;
+    }
+</style>
+
+
+
+
+
+<div>
+    <div class="row text-center">
+        <h2>Add Telephone User</h2>
+    </div>
+    <div>
+      
+    </div>
+
+    <form method="post" action="">
+
+        <div>
+            <label for="banumber" class="col-md-2">
+                BA Number:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="banumber" placeholder="Enter BA Number" name="baNumber">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="name" class="col-md-2">
+                Name:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="appointment" class="col-md-2">
+                Appointment:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="appointment" placeholder="Enter Appointment" name="appointment">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+
+        <div>
+            <label for="plate-name" class="col-md-2">
+                Plate Name:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="plate-name" placeholder="Enter Plate Name" name="plate-name">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="rank" class="col-md-2">
+                Rank:
+            </label>
+            <div class="col-md-9">
+                <select name="rank" id="rank" class="form-control" name="rank">
+                    <option>--Please Select--</option>           
+                    <option>Second Lieutenant</option>
+                    <option>First Lieutenant</option>
+                    <option>Captain</option>
+                    <option>Major</option>
+                    <option>Others</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="unit" class="col-md-2">
+                Unit:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="unit" placeholder="Enter Unit Name" name="unit">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="service-status" class="col-md-2">
+                Service Status:
+            </label>
+            <div class="col-md-9">
+                <select id="user-role" class="form-control" name="role">
+                    <option>--Please Select--</option>
+                    <option>On Service</option>
+                    <option>LPR</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="joining-date" class="col-md-2">
+                Joining Date:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="joining-date" placeholder="Enter Joining Date" name="joining-date">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+     <div>
+            <label for="office-address" class="col-md-2">
+               Office Address:
+            </label>
+            <div class="col-md-9">
+                <textarea type="text" class="form-control" id="office-address" placeholder="Enter Office Address" name="office-address"></textarea>
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+     <div>
+            <label for="home-address" class="col-md-2">
+               Home Address:
+            </label>
+            <div class="col-md-9">
+                <textarea type="text" class="form-control" id="home-address" placeholder="Enter Home Address" name="home-address"></textarea>
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+     <div>
+            <label for="permanent-address" class="col-md-2">
+               Permanent Address:
+            </label>
+            <div class="col-md-9">
+                <textarea type="text" class="form-control" id="permanent-address" placeholder="Enter Permanent Address" name="permanent-address"></textarea>
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+     <div>
+            <label for="personal-phone" class="col-md-2">
+               Personal Phone:
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="personal-phone" placeholder="Enter Personal" name="personal-phone">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="emailaddress" class="col-md-2">
+                Email address:
+            </label>
+            <div class="col-md-9">
+                <input type="email" class="form-control" id="emailaddress" placeholder="Enter email address" name="email">
+                <p class="help-block">
+                    Example: yourname@domain.com
+                </p>
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+        <div>
+            <label for="sex" class="col-md-2">
+                Gender:
+            </label>
+            <div class="col-md-10">
+                <label class="radio">
+                    <input type="radio" name="sex" id="sex" value="male" name="male" checked >
+                    Male
+                </label>
+                <label class="radio">
+                    <input type="radio" name="sex" id="sex" value="female">
+                    Female
+                </label>
+            </div>
+        </div>
+        <div>
+            <label for="marriage" class="col-md-2">
+                Marritial Status:
+            </label>
+            <div class="col-md-10">
+                <label class="radio">
+                    <input type="radio" name="marriage" id="sex" value="male" name="unmarried" checked >
+                    Unmarried
+                </label>
+                <label class="radio">
+                    <input type="radio" name="marriage" id="sex" value="married">
+                    Married
+                </label>
+            </div>
+        </div>
+        <div>
+            <label for="uploadimage" class="col-md-2">
+                Upload Image:
+            </label>
+            <div class="col-md-10">
+                <input type="file" name="uploadimage" id="uploadimage">
+                <p class="help-block">
+                    Allowed formats: jpeg, jpg, gif, png
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-info" style="width: 200px;">
+                    Add
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
