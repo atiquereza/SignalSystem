@@ -36,15 +36,43 @@
                         <label>BA Number:&nbsp</label> </br>
                         <input type="hidden" name="userId" value="">
                         <label>Name:&nbsp</label><span name="name"> </span></br>
-                        <label>Telephone Number:&nbsp</label></br>
-                        <label>Rank:&nbsp</label></br>
-                        <label>Address:&nbsp</label></br>
+            <div class="row">
+             <div class="col-md-1">
+                        <label>Telephone Number:&nbsp</label>
+              </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="telephone-number" placeholder="Enter Telephone Number" name="telephone-number"></br>          
+             </div>
+            </div>
+                       <label>Rank:&nbsp</label></br>
                         <label>Request Type:</label><select class="form-control" name="type" width="200px">
                             <option>--Please Select--</option>
                              <option>Connect</option>
                              <option>Shift</option>  
                              <option>Terminate</option>     
                             </select></br>
+<div class="row">
+             <div class="col-md-3">
+                        <label>Connection Type:</label><select class="form-control" name="type" width="200px">
+                            <option>--Please Select--</option>
+                             <option>Army</option>
+                             <option>BTCL</option>     
+                            </select></br>
+</div>
+</div>
+
+            <div class="row">
+             <div class="col-md-3">
+                       <label>Address Type:&nbsp</label></br>
+                        <select class="form-control" name="type" width="200px">
+                            <option>--Please Select--</option>
+                             <option>Home</option>
+                             <option>Office</option>       
+                            </select></br>
+               </div>
+            </div>
+                         <label>Address:&nbsp</label></br>
+                        <textarea class="form-control" id="address" name="address"></textarea></br>
                         <label> Date:</label></br>
                         <label>Comment:</label></br>
                         <textarea class="form-control" id="complain" name="description"></textarea></br>
