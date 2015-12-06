@@ -1,7 +1,7 @@
 ﻿<div id="page-wrapper">
 <div class="row">
     <div class="col-lg-12">
-        <h1>Add Request <small>Search Phone Number and Add Request</small></h1>
+        <h1>Add Request <small>Search BA Number and Add Request</small></h1>
 
     </div>
 </div>
@@ -36,50 +36,156 @@
                         <label>BA Number:&nbsp</label> </br>
                         <input type="hidden" name="userId" value="">
                         <label>Name:&nbsp</label><span name="name"> </span></br>
-            <div class="row">
-             <div class="col-md-1">
-                        <label>Telephone Number:&nbsp</label>
-              </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" id="telephone-number" placeholder="Enter Telephone Number" name="telephone-number"></br>          
-             </div>
-            </div>
-                       <label>Rank:&nbsp</label></br>
-                        <label>Request Type:</label><select class="form-control" name="type" width="200px">
-                            <option>--Please Select--</option>
-                             <option>Connect</option>
-                             <option>Shift</option>  
-                             <option>Terminate</option>     
-                            </select></br>
-                <label>Current Address:&nbsp</label> </br>
-           <div class="row">
-             <div class="col-md-3">
-                        <label>Connection Type:</label><select class="form-control" name="type" width="200px">
-                            <option>--Please Select--</option>
-                             <option>Army</option>
-                             <option>BTCL</option>     
-                            </select></br>
-                </div>
-            </div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label>Telephone Number:&nbsp</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="telephone-number" placeholder="Enter Telephone Number" name="telephone-number"></br>
+                            </div>
+                        </div>
+                        <label>Rank:&nbsp</label></br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Request Type:</label><select class="form-control" name="type" width="200px">
+                                    <option>--Please Select--</option>
+                                    <option>Connect</option>
+                                    <option>Shift</option>
+                                    <option>Terminate</option>
+                                </select>
+                                </div></br>
+                            <div class="col-md-1" style="padding-top:5px;">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
+                            </div>
+                            </div></br>
+                                <label>Current Address:&nbsp</label> </br>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Connection Type:</label><select class="form-control" name="type" width="200px">
+                                            <option>--Please Select--</option>
+                                            <option>Army</option>
+                                            <option>BTCL</option>
+                                        </select>
+                                    </div></br>
+                                    <div class="col-md-1" style="padding-top:5px;">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal2"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div></br>
 
-            <div class="row">
-             <div class="col-md-3">
-                       <label>Address Type:&nbsp</label></br>
-                        <select class="form-control" name="type" width="200px">
-                            <option>--Please Select--</option>
-                             <option>Home</option>
-                             <option>Office</option>       
-                            </select></br>
-               </div>
-            </div>
-                         <label>Address:&nbsp</label></br>
-                        <textarea class="form-control" id="address" name="address"></textarea></br>
-                        <label> Date:</label></br>
-                        <label>Comment:</label></br>
-                        <textarea class="form-control" id="complain" name="description"></textarea></br>
-                        <input type="submit" class="btn btn-info btn-block" id="" value="Submit Request">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Address Type:&nbsp</label></br>
+                                        <select class="form-control" name="type" width="200px">
+                                            <option>--Please Select--</option>
+                                            <option>Home</option>
+                                            <option>Office</option>
+                                        </select>
+                                    </div>
+                                    </br>
+                                    <div class="col-md-1" style="padding-top:5px;">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal3"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div></br>
+                                <label>Address:&nbsp</label></br>
+                                <textarea class="form-control" id="address" name="address"></textarea></br>
+                                <label> Date:</label></br>
+                                <label>Comment:</label></br>
+                                <textarea class="form-control" id="complain" name="description"></textarea></br>
+                                <input type="submit" class="btn btn-info btn-block" id="" value="Submit Request">
+                            </div>
+</form>
+
+<!--Add Request Type Modal statrs-->
+                <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Request Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="col-xs-4 control-label">Request Type</label>
+                                        <div class="col-xs-5">
+                                            <input type="text" class="form-control" id="addRank" name="rank" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
+<!--Add Request Type Modal ends-->
+
+<!--Add Connection Type Modal statrs-->
+                <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+                    <div class="modal fade" id="addModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Connection Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="col-xs-4 control-label">Connection Type</label>
+                                        <div class="col-xs-5">
+                                            <input type="text" class="form-control" id="addRank" name="rank" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+<!--Add Connection Type Modal ends-->
+
+<!--Add Address Type Modal statrs-->
+                <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+                    <div class="modal fade" id="addModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Address Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="col-xs-4 control-label">Address Type</label>
+                                        <div class="col-xs-5">
+                                            <input type="text" class="form-control" id="addRank" name="rank" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+<!--Add Address Type Modal ends-->
+
+
             </div>
         </div>
     </div>
