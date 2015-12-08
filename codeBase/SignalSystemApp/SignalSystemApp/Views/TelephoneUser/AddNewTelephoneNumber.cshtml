@@ -1,1 +1,132 @@
-﻿<h1> TelephoneUser/AddNewTelephoneNumberForm</h1>
+﻿@using SignalSystem.Libs;
+@using SignalSystemApp.Views.Classes;
+@{
+    string formAction = UtilityLibrary.GetBaseURL() + "Telephone/AssignTelephone";
+    List<Dictionary<string, string>> ranks = FrameworkItems.GetRanks();
+
+    List<UserRole> roles = FrameworkItems.GetRoles(Session);
+
+
+    string optionsRank = string.Empty;
+    foreach (Dictionary<string, string> rank in ranks)
+    {
+        optionsRank += "<option value=\"" + rank["ID"] + "\">" + rank["Value"] + "</option>";
+    }
+
+
+
+    string message = string.Empty;
+    if (ViewData["Message"] != null)
+    {
+
+        if (ViewData["Message"].ToString().Contains("Error"))
+        {
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\"> "
+            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+        }
+        else
+        {
+            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;;\"> "
+            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+<style>
+    div {
+        padding-bottom: 20px;
+    }
+</style>
+
+
+
+
+<div id="page-wrapper">
+    <div class="row text-center">
+        <h2>Add New Number</h2>
+    </div>
+    <div>
+        @Html.Raw(message)
+    </div>
+    <form method="post" action="@formAction">
+        <div class="row">
+            
+                <label for="connectionType" class="col-md-2">Connection Type:</label>
+            <div class="col-md-3">
+                <select class="form-control" name="type" width="200px">
+                    <option>--Please Select--</option>
+                    <option>Army</option>
+                    <option>BTCL</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <label for="phone" class="col-md-2">
+                New Phone Number:
+            </label>
+            <div class="col-md-3">
+                <input class="form-control" id="phone" placeholder="Enter Phone Number Here" name="telephoneNumber">
+            </div>
+            <div class="col-md-1">
+                <i class="fa fa-lock fa-2x"></i>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-info" style="width: 200px;">
+                    Add Telephone
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!--Add Rank Modal statrs-->
+    <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Connection Type</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Connection Type</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="addRank" name="rank" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class=" col-xs-5 btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!--Add Rank Modal ends-->
+
+
+</div>

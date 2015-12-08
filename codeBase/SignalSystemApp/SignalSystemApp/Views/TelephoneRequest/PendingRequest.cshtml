@@ -1,1 +1,122 @@
-﻿<h1> TelephoneRequest/PendingRequstView</h1>
+﻿@*<h1> TelephoneRequest/PendingRequstView</h1>*@
+<style>
+    div {
+        padding-bottom: 20px;
+    }
+</style>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+
+
+
+            <h1>
+                Pending Request<small>&nbsp List of Pending Request</small>
+            </h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div id="table-container-div">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="margin-left: -190px;">
+                        <i class="fa fa-bar-chart-o"></i> Pending Requests
+                    </h3>
+                </div>
+                <div class="panel-body">
+
+                    <div>
+                        <table id="mytestDatatable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
+
+
+                            <thead>
+                                <tr>
+
+                                    <th class="col-sm-1">BA Number</th>
+                                    <th class="col-sm-1">Name</th>
+                                    <th class="col-sm-1">Rank</th>
+                                    <th class="col-sm-1">Phone</th>
+                                    <th class="col-sm-1">Activation Date</th>
+                                    <th class="col-sm-1">Request Date</th>
+                                    <th class="col-sm-1">Home Address</th>
+                                    <th class="col-sm-1">Office Address</th>
+                                    <th class="col-sm-1">Connection Type</th>
+                                    <th class="col-sm-1">Click to Resolve</th>
+
+
+                                </tr>
+                            </thead>
+
+                            <tr>
+
+                                <td class="col-sm-1">123097</td>
+                                <td class="col-sm-1">Habib</td>
+                                <td class="col-sm-1">Major</td>
+                                <td class="col-sm-1">8756322</td>
+                                <td class="col-sm-1">10/03/2015 9PM</td>
+                                <td class="col-sm-1">10/05/2015 9PM</td>
+                                <td class="col-sm-1">Banani</td>
+                                <td class="col-sm-1">Uttara</td>
+                                <td class="col-sm-1">Army</td>
+                                <td class="col-sm-1"><button type="button" class="bbtn btn-xs btn-success" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-check"></span></button></td>
+
+                            </tr>
+                        </table>
+                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Terminate Modal statrs-->
+<form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Resolve Request</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Date</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="terminationDate" name="terminationDate" />
+                        </div>
+                        <div>
+                            <label class="col-xs-4 control-label">Resolved By</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="resolvedBy" name="resolvedBy" />
+                            </div></br>
+                        </div>
+                        <div>
+                            <label class="col-xs-4 control-label">Action Taken</label>
+                            <div class="col-xs-5">
+                                <textarea type="text" class="form-control" id="actionTaken" name="actionTaken"></textarea>
+                            </div></br>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class=" col-xs-5 btn btn-success">Resolve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--Add Rank Modal ends-->
+@section head{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+
+}
