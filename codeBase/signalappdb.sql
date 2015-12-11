@@ -72,13 +72,19 @@ CREATE TABLE IF NOT EXISTS `allphoneinfo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `PhoneNumber` text NOT NULL,
   `ServiceStatus` varchar(50) NOT NULL,
-  `ConnectionType` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ConnectionTypeID` int(11) NOT NULL,
+  `Remarks` text NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_allphoneinfo_menuconnectiontype` (`ConnectionTypeID`),
+  CONSTRAINT `FK_allphoneinfo_menuconnectiontype` FOREIGN KEY (`ConnectionTypeID`) REFERENCES `menuconnectiontype` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.allphoneinfo: ~0 rows (approximately)
 DELETE FROM `allphoneinfo`;
 /*!40000 ALTER TABLE `allphoneinfo` DISABLE KEYS */;
+INSERT INTO `allphoneinfo` (`ID`, `PhoneNumber`, `ServiceStatus`, `ConnectionTypeID`, `Remarks`) VALUES
+	(2, '12345678', 'Terminated', 1, 'New Phone'),
+	(3, '123456789', 'Terminated', 2, 'New Phone');
 /*!40000 ALTER TABLE `allphoneinfo` ENABLE KEYS */;
 
 
@@ -333,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `menuconnectiontype` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.menuconnectiontype: ~0 rows (approximately)
+-- Dumping data for table signalappdb.menuconnectiontype: ~2 rows (approximately)
 DELETE FROM `menuconnectiontype`;
 /*!40000 ALTER TABLE `menuconnectiontype` DISABLE KEYS */;
 INSERT INTO `menuconnectiontype` (`ID`, `Value`, `Name`) VALUES
@@ -359,24 +365,6 @@ INSERT INTO `menurequesttype` (`ID`, `Name`, `Value`) VALUES
 	(2, 'Request', 'Shifting'),
 	(3, 'Request', 'Termination');
 /*!40000 ALTER TABLE `menurequesttype` ENABLE KEYS */;
-
-
--- Dumping structure for table signalappdb.menuservicestatus
-DROP TABLE IF EXISTS `menuservicestatus`;
-CREATE TABLE IF NOT EXISTS `menuservicestatus` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Value` varchar(50) NOT NULL,
-  `Name` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
--- Dumping data for table signalappdb.menuservicestatus: ~2 rows (approximately)
-DELETE FROM `menuservicestatus`;
-/*!40000 ALTER TABLE `menuservicestatus` DISABLE KEYS */;
-INSERT INTO `menuservicestatus` (`ID`, `Value`, `Name`) VALUES
-	(1, 'On Service', 'Service Status'),
-	(2, 'LPR', 'Service Status');
-/*!40000 ALTER TABLE `menuservicestatus` ENABLE KEYS */;
 
 
 -- Dumping structure for table signalappdb.menusrank
