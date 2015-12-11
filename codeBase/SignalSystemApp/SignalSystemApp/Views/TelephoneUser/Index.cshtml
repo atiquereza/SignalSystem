@@ -1,4 +1,41 @@
-﻿<style>
+﻿@using SignalSystem.Libs;
+@using SignalSystemApp.Views.Classes;
+
+@{
+    string message = string.Empty;
+
+    string formAction = UtilityLibrary.GetBaseURL() + "TelephoneUser/AddNewTelephoneUser";
+    if (ViewData["Message"] != null)
+    {
+
+        if (ViewData["Message"].ToString().Contains("Error"))
+        {
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\"> "
+            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+        }
+        else
+        {
+            message = "<div class=\"alert alert-dismissible alert-success\" style=\"color: black;;\"> "
+            + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
+        }
+
+    }
+
+    List<Dictionary<string, string>> ranks = FrameworkItems.GetRanks();    
+    string optionsRank = string.Empty;
+    foreach (Dictionary<string, string> rank in ranks)
+    {
+        optionsRank += "<option value=\"" + rank["ID"] + "\">" + rank["Value"] + "</option>";
+    }
+    List<Dictionary<string, string>> serviceStatus = FrameworkItems.GetServiceStatus();
+    string optionsServiceStatus = string.Empty;
+    foreach (Dictionary<string, string> aserviceStatus in serviceStatus)
+    {
+        optionsServiceStatus += "<option value=\"" + aserviceStatus["ID"] + "\">" + aserviceStatus["Value"] + "</option>";
+    }
+}
+
+<style>
     div {
         padding-bottom: 20px;
     }
@@ -12,18 +49,18 @@
     <div class="row text-center">
         <h2>Add Telephone User</h2>
     </div>
-    <div>
-      
+     <div>
+        @Html.Raw(message)
     </div>
 
-    <form method="post" action="">
+    <form method="post" action="@formAction">
 
         <div>
             <label for="banumber" class="col-md-2">
                 BA Number:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="banumber" placeholder="Enter BA Number" name="baNumber">
+                <input type="text" class="form-control" id="banumber" placeholder="Enter BA Number" name="BANumber" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -34,7 +71,7 @@
                 Name:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="FullName" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -45,7 +82,7 @@
                 Appointment:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="appointment" placeholder="Enter Appointment" name="appointment">
+                <input type="text" class="form-control" id="appointment" placeholder="Enter Appointment" name="Appointment" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -57,7 +94,7 @@
                 Plate Name:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="plate-name" placeholder="Enter Plate Name" name="plate-name">
+                <input type="text" class="form-control" id="plate-name" placeholder="Enter Plate Name" name="PlateName" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -70,12 +107,9 @@
             <div class="col-md-9">
                 <select name="rank" id="rank" class="form-control" name="rank">
                     <option>--Please Select--</option>           
-                    <option>Second Lieutenant</option>
-                    <option>First Lieutenant</option>
-                    <option>Captain</option>
-                    <option>Major</option>
-                    <option>Others</option>
+                    @Html.Raw(optionsRank)
                 </select>
+            <input type="hidden" class="form-control" id="rankID" name="RankID" required>
             </div>
         </div>
         <div>
@@ -83,44 +117,65 @@
                 Unit:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="unit" placeholder="Enter Unit Name" name="unit">
+                <input type="text" class="form-control" id="unit" placeholder="Enter Unit Name" name="Unit">
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
         <div>
-            <label for="service-status" class="col-md-2">
+            <label for="ServiceStatus" class="col-md-2">
                 Service Status:
             </label>
             <div class="col-md-9">
-                <select id="user-role" class="form-control" name="role">
-                    <option>--Please Select--</option>
-                    <option>On Service</option>
-                    <option>LPR</option>
-                </select>
+                <label class="radio">
+                    <input type="radio" name="ServiceStatus" id="OnService" value="On Service" name="OnService"  checked>
+                    On Service
+                </label>
+                <label class="radio">
+                    <input type="radio" name="ServiceStatus" id="LPR" value="LPR" >
+                    LPR
+                </label>
             </div>
+            @*<div class="col-md-9">
+                <select id="user-role" class="form-control" name="ServiceStatus">
+                    <option>--Please Select--</option>
+                    @Html.Raw(optionsServiceStatus)
+                </select>
+            </div>*@
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
-        <div>
-            <label for="joining-date" class="col-md-2">
-                Joining Date:
+    <div>
+        <label for="joining-date" class="col-md-2">
+            Joining Date:
+        </label>
+        <div class="col-md-9">
+            <input type="text" id='datepicker1' class="form-control" placeholder="Enter Joining Date" name="JoiningDate"style="color: black;width: 200px;" required> 
+        </div>
+        <div class="col-md-1">
+               
+            @*  <i class="fa fa-lock fa-2x"></i>*@
+        </div>
+    </div>
+    <div id="LPRDate">
+            <label for="lpr-date" class="col-md-2">
+                LPR Date:
             </label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" id="joining-date" placeholder="Enter Joining Date" name="joining-date">
+            <div class="col-md-9" >
+                <input type="text" id='datepicker2' class="form-control" placeholder="Enter LPR Date" name="LPRDate" style="color: black; width: 200px;"> 
             </div>
-            <div class="col-md-1">
-                <i class="fa fa-lock fa-2x"></i>
-            </div>
+        <div class="col-md-1">  
+            @*<i class="fa fa-lock fa-2x"></i>*@
+        </div>
         </div>
      <div>
             <label for="office-address" class="col-md-2">
                Office Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="office-address" placeholder="Enter Office Address" name="office-address"></textarea>
+                <textarea type="text" class="form-control" id="office-address" placeholder="Enter Office Address" name="OfficeAddress" required></textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -128,10 +183,10 @@
         </div>
      <div>
             <label for="home-address" class="col-md-2">
-               Home Address:
+               Presenet Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="home-address" placeholder="Enter Home Address" name="home-address"></textarea>
+                <textarea type="text" class="form-control" id="home-address" placeholder="Enter Home Address" name="PresentAddress" required></textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -142,7 +197,7 @@
                Permanent Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="permanent-address" placeholder="Enter Permanent Address" name="permanent-address"></textarea>
+                <textarea type="text" class="form-control" id="permanent-address" placeholder="Enter Permanent Address" name="PermanentAddress" required></textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -153,7 +208,7 @@
                Personal Phone:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="personal-phone" placeholder="Enter Personal" name="personal-phone">
+                <input type="text" class="form-control" id="personal-phone" placeholder="Enter Personal" name="PersonalPhoneNumber" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -164,7 +219,7 @@
                 Email address:
             </label>
             <div class="col-md-9">
-                <input type="email" class="form-control" id="emailaddress" placeholder="Enter email address" name="email">
+                <input type="email" class="form-control" id="emailaddress" placeholder="Enter email address" name="EmailAddress" required>
                 <p class="help-block">
                     Example: yourname@domain.com
                 </p>
@@ -179,11 +234,11 @@
             </label>
             <div class="col-md-10">
                 <label class="radio">
-                    <input type="radio" name="sex" id="sex" value="male" name="male" checked >
+                    <input type="radio" name="Sex" id="sex" value="male" name="male" checked >
                     Male
                 </label>
                 <label class="radio">
-                    <input type="radio" name="sex" id="sex" value="female">
+                    <input type="radio" name="Sex" id="sex" value="female">
                     Female
                 </label>
             </div>
@@ -194,16 +249,16 @@
             </label>
             <div class="col-md-10">
                 <label class="radio">
-                    <input type="radio" name="marriage" id="sex" value="male" name="unmarried" checked >
+                    <input type="radio" name="MaritalStatus" id="sex" value="unmarried" name="unmarried" checked >
                     Unmarried
                 </label>
                 <label class="radio">
-                    <input type="radio" name="marriage" id="sex" value="married">
+                    <input type="radio" name="MaritalStatus" id="sex" value="married">
                     Married
                 </label>
             </div>
         </div>
-        <div>
+       @* <div>
             <label for="uploadimage" class="col-md-2">
                 Upload Image:
             </label>
@@ -213,7 +268,7 @@
                     Allowed formats: jpeg, jpg, gif, png
                 </p>
             </div>
-        </div>
+        </div>*@
 
         <div class="row">
             <div class="col-md-2">
@@ -225,4 +280,39 @@
             </div>
         </div>
     </form>
-</div>
+</div>     
+
+ <script type="text/javascript"> 
+
+     $(document).ready(function () {
+         $('#LPRDate').hide();  
+         $("#rank").on("change", function () {
+             $("#rankID").val(jQuery("#rank option:selected").val());
+         }); 
+         $("input[name='ServiceStatus'").change(function () {
+             if ($("input[name='ServiceStatus']:checked").val() != "LPR") {
+                 $("#datepicker2").val("");
+                 $('#LPRDate').hide(0);
+             } else {
+                 $('#LPRDate').show(0);
+             }
+         });                                  
+         
+     });
+
+     $(function() {
+         $('#datepicker1').datepicker({
+             changeMonth: true,
+             changeYear: true,
+             yearRange: '1950:2050' ,
+             dateFormat: 'dd/mm/yy'
+
+         });
+         $('#datepicker2').datepicker({
+             changeMonth: true,
+             changeYear: true,
+             yearRange: '1950:2050',
+             dateFormat: 'dd/mm/yy'
+         });
+     });
+ </script>

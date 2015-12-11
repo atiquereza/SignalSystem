@@ -31,6 +31,26 @@ namespace SignalSystemApp.Views.Classes
         }
 
 
+        public static List<Dictionary<string, string>> GetServiceStatus()
+        {
+            List<Dictionary<string, string>> serviceStatus = new List<Dictionary<string, string>>();
+            DBGateway gateway = new DBGateway("SignalSystemConnectionString");
+            string query = "select * from menuservicestatus;";
+
+            DataSet aSet = gateway.Select(query);
+
+            foreach (DataRow aRow in aSet.Tables[0].Rows)
+            {
+                Dictionary<string, string> aDictionary = new Dictionary<string, string>();
+                aDictionary.Add("ID", aRow["id"].ToString());
+                aDictionary.Add("Value", aRow["Value"].ToString());
+                serviceStatus.Add(aDictionary);
+
+            }
+
+            return serviceStatus;
+        }
+
         public static List<UserRole> GetRoles(HttpSessionStateBase session)
         {
            UserRoleManager aManager = new SignalSystem.Libs.UserRoleManager();

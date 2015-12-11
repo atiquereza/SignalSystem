@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SignalSystem.Libs;
-using SignalSystemApp.Libs;
+//using SignalSystemApp.Libs;
 using SignalSystemApp.Models;
 using SignalSystemApp.Models.Telephone;
 
@@ -264,7 +264,7 @@ namespace SignalSystemApp.Controllers
             List<TelephoneComplain> filteredComplaneList = Telephone.GetFilteredComplaneList(sSearch, complanList, banumberFilter,
                 phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
 
-            SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
+            //SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
 
 
 
@@ -586,7 +586,7 @@ namespace SignalSystemApp.Controllers
                 banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate, resolverFilter,
                 resolvefromDate, resolvetoDate, actionTakenFilter, remarksFilter);
 
-            SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
+            //SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
 
           
             List<TelephoneComplain> displayedCompanies =
@@ -874,7 +874,7 @@ namespace SignalSystemApp.Controllers
             // List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
 
 
-            SortList.GetSortedList(aModel, filterTelphoneUsers, columnlist);
+            //SortList.GetSortedList(aModel, filterTelphoneUsers, columnlist);
 
 
 

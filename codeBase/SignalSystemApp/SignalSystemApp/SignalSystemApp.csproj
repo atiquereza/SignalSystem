@@ -300,6 +300,7 @@
     <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\JQueryDataTableParamModel.cs" />
     <Compile Include="Models\Mail\Mail.cs" />
+    <Compile Include="Models\TelephoneNumberAndUser\TelephoneUser.cs" />
     <Compile Include="Models\Telephone\TelephoneComplain.cs" />
     <Compile Include="Models\Telephone\Telephone.cs" />
     <Compile Include="Models\User\User.cs" />
