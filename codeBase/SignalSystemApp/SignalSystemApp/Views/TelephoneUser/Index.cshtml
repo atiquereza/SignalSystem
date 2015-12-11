@@ -27,12 +27,7 @@
     {
         optionsRank += "<option value=\"" + rank["ID"] + "\">" + rank["Value"] + "</option>";
     }
-    List<Dictionary<string, string>> serviceStatus = FrameworkItems.GetServiceStatus();
-    string optionsServiceStatus = string.Empty;
-    foreach (Dictionary<string, string> aserviceStatus in serviceStatus)
-    {
-        optionsServiceStatus += "<option value=\"" + aserviceStatus["ID"] + "\">" + aserviceStatus["Value"] + "</option>";
-    }
+    
 }
 
 <style>

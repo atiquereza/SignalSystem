@@ -1,27 +1,23 @@
 ﻿@using SignalSystem.Libs;
 @using SignalSystemApp.Views.Classes;
 @{
-    string formAction = UtilityLibrary.GetBaseURL() + "Telephone/AssignTelephone";
-    List<Dictionary<string, string>> ranks = FrameworkItems.GetRanks();
+    string formAction = UtilityLibrary.GetBaseURL() + "TelephoneUser/SubmitNewTelephoneNumber";
+    string message = string.Empty;
 
-    List<UserRole> roles = FrameworkItems.GetRoles(Session);
-
-
-    string optionsRank = string.Empty;
-    foreach (Dictionary<string, string> rank in ranks)
+    List<Dictionary<string, string>> connectionType = FrameworkItems.ConnectionType();    
+    string optionConnectionType = string.Empty;
+    foreach (Dictionary<string, string> aType in connectionType)
     {
-        optionsRank += "<option value=\"" + rank["ID"] + "\">" + rank["Value"] + "</option>";
+        optionConnectionType += "<option value=\"" + aType["ID"] + "\">" + aType["Value"] + "</option>";
     }
 
 
-
-    string message = string.Empty;
     if (ViewData["Message"] != null)
     {
 
-        if (ViewData["Message"].ToString().Contains("Error"))
+      if (ViewData["Message"].ToString().Contains("Error"))
         {
-            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green;\"> "
+            message = "<div class=\"alert alert-dismissible alert-danger\" style=\"color: green; width:100%;\"> "
             + "<button data-dismiss=\"alert\" class=\"close\" type=\"button\">&times;</button>" + ViewData["Message"].ToString() + "</div>";
         }
         else
@@ -49,7 +45,7 @@
 
 
 
-<div id="page-wrapper">
+<div>
     <div class="row text-center">
         <h2>Add New Number</h2>
     </div>
@@ -61,11 +57,11 @@
             
                 <label for="connectionType" class="col-md-2">Connection Type:</label>
             <div class="col-md-3">
-                <select class="form-control" name="type" width="200px">
+                <select class="form-control" name="type" width="200px" id="connectionType">
                     <option>--Please Select--</option>
-                    <option>Army</option>
-                    <option>BTCL</option>
+                    @Html.Raw(optionConnectionType)
                 </select>
+            <input type="hidden" class="form-control" id="ConnectionTypeID" name="ConnectionTypeID" required>
             </div>
             <div class="col-md-1">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
@@ -78,7 +74,7 @@
                 New Phone Number:
             </label>
             <div class="col-md-3">
-                <input class="form-control" id="phone" placeholder="Enter Phone Number Here" name="telephoneNumber">
+                <input class="form-control" id="phone" placeholder="Enter Phone Number Here" name="PhoneNumber">
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -130,3 +126,11 @@
 
 
 </div>
+<script>
+    $(document).ready(function () {
+        $("#connectionType").on("change", function () {
+            
+            $("#ConnectionTypeID").val(jQuery("#connectionType option:selected").val());
+        });
+    });
+</script>

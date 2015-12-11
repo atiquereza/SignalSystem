@@ -30,12 +30,11 @@ namespace SignalSystemApp.Views.Classes
             return ranks;
         }
 
-
-        public static List<Dictionary<string, string>> GetServiceStatus()
+        public static List<Dictionary<string, string>> ConnectionType()
         {
-            List<Dictionary<string, string>> serviceStatus = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> connectionTypes = new List<Dictionary<string, string>>();
             DBGateway gateway = new DBGateway("SignalSystemConnectionString");
-            string query = "select * from menuservicestatus;";
+            string query = "select * from menuconnectiontype;";
 
             DataSet aSet = gateway.Select(query);
 
@@ -44,11 +43,11 @@ namespace SignalSystemApp.Views.Classes
                 Dictionary<string, string> aDictionary = new Dictionary<string, string>();
                 aDictionary.Add("ID", aRow["id"].ToString());
                 aDictionary.Add("Value", aRow["Value"].ToString());
-                serviceStatus.Add(aDictionary);
+                connectionTypes.Add(aDictionary);
 
             }
 
-            return serviceStatus;
+            return connectionTypes;
         }
 
         public static List<UserRole> GetRoles(HttpSessionStateBase session)

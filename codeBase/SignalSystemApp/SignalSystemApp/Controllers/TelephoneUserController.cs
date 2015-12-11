@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SignalSystemApp.Models.TelephoneNumberAndUser;
 using SignalSystemApp.Models.TelephoneUser;
 
 namespace SignalSystemApp.Controllers
@@ -62,6 +63,21 @@ namespace SignalSystemApp.Controllers
         public ActionResult AddNewTelephoneNumber()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult SubmitNewTelephoneNumber(TelephoneNumberInfo aTelephoneNumberInfo)
+        {
+            if (aTelephoneNumberInfo.ConnectionTypeID.Trim().Length == 0
+                || aTelephoneNumberInfo.PhoneNumber.Trim().Length == 0)
+            {
+                ViewData["Message"] = "Error! Fill All Fields";
+                return View("AddNewTelephoneNumber");
+            }
+
+            TelephoneNumber aNumber = new TelephoneNumber();
+            string message = aNumber.AddNewTelephoneNumber(aTelephoneNumberInfo);
+            ViewData["Message"] = message;
+            return View("AddNewTelephoneNumber");
         }
 
         public ActionResult ViewActiveTelephoneUsers()
