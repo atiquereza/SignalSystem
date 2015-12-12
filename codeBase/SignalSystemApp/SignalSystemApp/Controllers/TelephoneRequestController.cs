@@ -38,21 +38,21 @@ namespace SignalSystemApp.Controllers
             TelephoneNumber aTelephoneNumber = new TelephoneNumber();
             TelephoneUser aUser = new TelephoneUser();
             TelephoneUserInfo aInfo = aUser.GetTelephoneUserInfo(baNumber);
+            ViewData["UserInfo"] = aInfo;
             if (reqType == "1")
-            { 
-                
+            {   
                 ViewData["AvailableNumbers"] = aTelephoneNumber.GetAvailableTelephoneNumberForNewConnection();
                 return View("NewConnecton");
-            }            
+            }
             if (reqType == "2")
             {
-                return View("NewConnecton");
+                return View("Shifting");
             }
             if (reqType == "3")
             {
-                return View("NewConnecton");
+                return View("Termination");
             }
-
+           
             return View("Index");
         }
     }

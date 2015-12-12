@@ -10,7 +10,7 @@ namespace SignalSystemApp.Views.Classes
 {
     public class FrameworkItems
     {
-        public static List<Dictionary<string, string>> GetRequestTypes()
+        public static List<Dictionary<string, string>> GetTelephoneRequestTypes()
         {
             List<Dictionary<string, string>> menurequesttype = new List<Dictionary<string, string>>();
             DBGateway gateway = new DBGateway("SignalSystemConnectionString");
