@@ -73,10 +73,10 @@ namespace SignalSystemApp.Models.TelephoneNumberAndUser
 
         }
 
-        public List<Dictionary<string,string>> GetAvailableTelephoneNumberForNewConnection()
+        public List<Dictionary<string,string>> GetAvailableTelephoneNumberForNewConnection(string connectionType)
         {
             List<Dictionary<string,string> > availablePhones = new List<Dictionary<string, string>>();
-            string query = "select * from allphoneinfo where ServiceStatus='Terminated'";
+            string query = "select * from allphoneinfo left join menuconnectiontype on menuconnectiontype.ID=allPhoneInfo.ConnectionTypeID where menuconnectiontype.Value='" + connectionType + "' and allPhoneInfo.ServiceStatus='Terminated';";
             DataSet aSet = aGateway.Select(query);
 
             foreach (DataRow dataRow in aSet.Tables[0].Rows)
@@ -91,6 +91,36 @@ namespace SignalSystemApp.Models.TelephoneNumberAndUser
             }
 
             return availablePhones;
+        }
+
+        public List<Dictionary<string, string>> GetAllotedNumbersForExistingUser(string connectionType, string addressType, string baNumber)
+        {
+            List<Dictionary<string,string>> aList = new List<Dictionary<string, string>>();
+
+            string query = "select allActivePhoneInfo.PhoneUsedFor, allphoneinfo.ID,allPhoneInfo.PhoneNumber," +
+                           "menuconnectiontype.Value from phoneuserpersonalInfo  left join " +
+                           "allactivephoneinfo  on allactivephoneinfo.PhoneUserPersonalInfoId=phoneuserpersonalInfo.Id " +
+                           "left join allphoneinfo on allphoneinfo.ID=allactivephoneinfo.AllPhoneInfoID left join" +
+                           " menuconnectiontype on menuconnectiontype.ID=allphoneinfo.ConnectionTypeID where " +
+                           "phoneuserpersonalInfo.BANumber='"+baNumber+"';";
+
+            DataSet aSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                if (dataRow["PhoneUsedFor"].ToString().ToLower() == addressType.ToLower() && dataRow["Value"].ToString().ToLower()==connectionType.ToLower())
+                {
+                    Dictionary<string, string> aDictionary = new Dictionary<string, string>()
+                    {
+                        {"ID",dataRow["ID"].ToString()},
+                        {"Value",dataRow["PhoneNumber"].ToString()},
+
+                    };
+                    aList.Add(aDictionary);
+                }
+                
+            }
+
+            return aList;
         }
     }
 }

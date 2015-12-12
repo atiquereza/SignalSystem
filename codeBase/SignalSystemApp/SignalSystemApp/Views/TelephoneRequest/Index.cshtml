@@ -1,14 +1,14 @@
-﻿
-@using System.Runtime
-@using SignalSystem.Libs;
+﻿@using SignalSystem.Libs;
+@using SignalSystem.Models;
+@using SignalSystemApp.Models.TelephoneUser
 @using SignalSystemApp.Views.Classes;
 
 @{
     string message = string.Empty;
 
     string formActionSearch = UtilityLibrary.GetBaseURL() + "TelephoneRequest/SearchRequestNewForm";
-    if (ViewData["Message"] != null)
-    {
+    string formActionSubmitNewReqest = UtilityLibrary.GetBaseURL() + "TelephoneRequest/AddNewRequest";
+    if (ViewData["Message"] != null) {
 
         if (ViewData["Message"].ToString().Contains("Error"))
         {
@@ -29,7 +29,74 @@
     {
         optionsReq += "<option value=\"" + req["ID"] + "\">" + req["Value"] + "</option>";
     }
+
     
+
+    string BANumberID = string.Empty;
+    string BANumber = string.Empty;
+    string FullName = string.Empty;
+    string AddressType = string.Empty;
+    string Rank = string.Empty;
+    string Address = string.Empty;
+    string ConnectionType = string.Empty;
+    string RequestType = string.Empty;
+
+    if (ViewData["UserInfo"] != null)
+    {
+        TelephoneUserInfo aInfo = (TelephoneUserInfo)ViewData["UserInfo"] ;
+        BANumber = aInfo.BANumber;
+        FullName = aInfo.FullName;
+        Rank = aInfo.RankID;
+        BANumberID = aInfo.Id.ToString();
+
+    }
+    if (ViewData["AddressType"] != null)
+    {
+        AddressType = ViewData["AddressType"].ToString();
+    }
+    if (ViewData["Address"] != null)
+    {
+        Address = ViewData["Address"].ToString();
+    }
+    if (ViewData["ConnectionType"] != null)
+    {
+        ConnectionType = ViewData["ConnectionType"].ToString();
+    }
+    if (ViewData["RequestType"] != null)
+    {
+        RequestType = ViewData["RequestType"].ToString();
+    }
+
+    string optionNumbers = string.Empty;
+
+    if (RequestType.Trim().Length != 0)
+    {
+        List<Dictionary<string, string>> aList = (List<Dictionary<string, string>>) ViewData["AvailableNumbers"];
+
+        optionNumbers += "<div class=\"row\">" +
+
+                         "<div class=\"col-md-2\">" +
+                         "<label>Phone Number :</label>" +
+                         "</div>" +
+                         "<div class=\"col-md-3\">" +
+                         "<select class=\"form-control\" name=\"PhoneNumber\" width=\"50px;\">"; 
+                        
+        if (ViewData["AvailableNumbers"] != null)
+        {
+
+            foreach (Dictionary<string, string> dictionary in aList)
+            {
+                optionNumbers += "<option value=\"" + dictionary["ID"] + "\">" + dictionary["Value"] + "</option>";
+            }
+
+        }
+        optionNumbers += "</select>" +
+                         "</div>" +
+                         "</div><br>";
+    }
+   
+
+
 }
 
 
@@ -40,7 +107,7 @@
         </h1>
     </div>
 </div>
- <div>
+<div class="row">
         @Html.Raw(message)
     </div>
 <div class="row">
@@ -54,8 +121,7 @@
                     <option>--Request Type--</option>
                     @Html.Raw(optionsReq)
                     </select>
-            </div>
-          
+            </div> 
                <div>
                 <label for="ConnectionType" class="col-md-1">
                     Connection Type:
@@ -105,40 +171,81 @@
                 <h3 class="panel-title" style="margin-left: -190px;"><i class="fa fa-bar-chart-o"></i> Add Request for BA Number: </h3>
             </div>
             <div class="panel-body">
-                <form method="post" action="">
+                <form method="post" action="@formActionSubmitNewReqest">
                     <div id="shieldui-grid1">
                         <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-md-2">
+                                <label>BA Number:&nbsp</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="BANumber" name="BANumber" value="@BANumber" readonly><br>
+                                <input type="hidden" class="form-control" id="BANumber" name="BANumberID" value="@BANumberID" readonly><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Name:&nbsp</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="FullName" name="FullName" value="@FullName" readonly><br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">                                                                   
                                 <label>Application Number:&nbsp</label>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" id="application-number" placeholder="Enter Application Number" name="telephone-number"><br>
+                                <input type="text" class="form-control" id="application-number" placeholder="Enter Application Number" name="ApplicationNumber" required><br>
                             </div>
-                            
                         </div>
 
-                        <label>BA Number:&nbsp</label> <br>
-                        <input type="hidden" name="userId" value="">
-                        <label>Name:&nbsp</label><span name="name"> </span><br>
+
                         <div class="row">
-                            <div class="col-md-1">
-                                <label>Telephone Number:&nbsp</label>
+                            <div class="col-md-2">
+                                <label>Request Type:&nbsp</label>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" id="telephone-number" placeholder="Enter Telephone Number" name="telephone-number"><br>
+                                <input type="text" class="form-control" id="RequestType" name="RequestType" value="@RequestType" readonly><br>
                             </div>
                         </div>
-                        <label>Rank:&nbsp</label><br>
-                        
-                                <label>Current Address:&nbsp</label> <br>
-                                <label>Address:&nbsp</label><br>
-                                <textarea class="form-control" id="address" name="address"></textarea><br>
-                                <label> Date:</label><br>
-                                <label>Comment:</label><br>
-                                <textarea class="form-control" id="complain" name="description"></textarea><br>
-                                <input type="submit" class="btn btn-info btn-block" id="" value="Submit Request">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Connection Type:&nbsp</label>
                             </div>
-</form>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="ConnectionType" name="ConnectionType" value="@ConnectionType" readonly><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Address Type:&nbsp</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="AddressType" name="AddressType" value="@AddressType" name="AddressType" readonly><br>
+                            </div>
+                        </div>
+
+                        @Html.Raw(optionNumbers)
+                       
+                        
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Rank:&nbsp</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="Rank" name="Rank" value="@Rank" readonly><br>
+                            </div>
+                        </div>
+                       @* <label>Current Address:&nbsp</label> <br>*@
+                        <label>Address:&nbsp</label><br>
+                        <textarea class="form-control" id="address" name="Address" >@Address</textarea><br>
+                        <label> Date:</label><br>
+                        <label>Comment/Remarks:</label><br>
+                        <textarea class="form-control" id="complain" name="Comment"></textarea><br>
+                        <input type="submit" class="btn btn-info btn-block" id="" value="Submit Request">
+                    </div>
+                  </form>
 
 <!--Add Request Type Modal statrs-->
                 <form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
@@ -237,11 +344,11 @@
 </div>
 </div>
 
-<script>    
+<script>
     $("#reqType").on("change", function () {
         //alert(jQuery("#reqType option:selected").val());
         if ("--Request Type--" == jQuery("#reqType option:selected").val()) {
-            
+
         }
         //$("#rankID").val(jQuery("#rank option:selected").val());
     });

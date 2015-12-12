@@ -22,22 +22,27 @@ CREATE TABLE IF NOT EXISTS `allactivephoneinfo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `PhoneUserPersonalInfoId` bigint(20) NOT NULL,
   `AllPhoneInfoID` int(11) NOT NULL,
-  `PhoneUsedFor` int(11) NOT NULL,
+  `PhoneUsedFor` varchar(50) NOT NULL,
   `HomeAddress` text NOT NULL,
   `OfficeAddress` text NOT NULL,
   `RequestDate` date NOT NULL,
-  `LetterNo` date NOT NULL,
+  `LetterNo` text NOT NULL,
   `ConnectDate` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `PersonInfo` (`PhoneUserPersonalInfoId`),
   KEY `PhoneInfo` (`AllPhoneInfoID`),
   CONSTRAINT `PersonInfo` FOREIGN KEY (`PhoneUserPersonalInfoId`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `PhoneInfo` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allactivephoneinfo: ~0 rows (approximately)
+-- Dumping data for table signalappdb.allactivephoneinfo: ~4 rows (approximately)
 DELETE FROM `allactivephoneinfo`;
 /*!40000 ALTER TABLE `allactivephoneinfo` DISABLE KEYS */;
+INSERT INTO `allactivephoneinfo` (`ID`, `PhoneUserPersonalInfoId`, `AllPhoneInfoID`, `PhoneUsedFor`, `HomeAddress`, `OfficeAddress`, `RequestDate`, `LetterNo`, `ConnectDate`) VALUES
+	(1, 3, 2, 'Home', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
+	(2, 3, 3, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
+	(3, 3, 7, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
+	(4, 3, 8, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01');
 /*!40000 ALTER TABLE `allactivephoneinfo` ENABLE KEYS */;
 
 
@@ -77,14 +82,20 @@ CREATE TABLE IF NOT EXISTS `allphoneinfo` (
   PRIMARY KEY (`ID`),
   KEY `FK_allphoneinfo_menuconnectiontype` (`ConnectionTypeID`),
   CONSTRAINT `FK_allphoneinfo_menuconnectiontype` FOREIGN KEY (`ConnectionTypeID`) REFERENCES `menuconnectiontype` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allphoneinfo: ~0 rows (approximately)
+-- Dumping data for table signalappdb.allphoneinfo: ~8 rows (approximately)
 DELETE FROM `allphoneinfo`;
 /*!40000 ALTER TABLE `allphoneinfo` DISABLE KEYS */;
 INSERT INTO `allphoneinfo` (`ID`, `PhoneNumber`, `ServiceStatus`, `ConnectionTypeID`, `Remarks`) VALUES
-	(2, '12345678', 'Terminated', 1, 'New Phone'),
-	(3, '123456789', 'Terminated', 2, 'New Phone');
+	(2, '5000', 'Active', 1, 'New Phone'),
+	(3, '5001', 'Active', 1, 'New Phone'),
+	(4, '5002', 'Active', 1, 'New Phone'),
+	(5, '5003', 'Terminated', 1, 'New Phone'),
+	(6, '5004', 'Terminated', 1, 'New Phone'),
+	(7, '6001', 'Active', 2, 'New Phone'),
+	(8, '6002', 'Terminated', 2, 'New Phone'),
+	(9, '6003', 'Terminated', 2, 'New Phone');
 /*!40000 ALTER TABLE `allphoneinfo` ENABLE KEYS */;
 
 
@@ -343,8 +354,8 @@ CREATE TABLE IF NOT EXISTS `menuconnectiontype` (
 DELETE FROM `menuconnectiontype`;
 /*!40000 ALTER TABLE `menuconnectiontype` DISABLE KEYS */;
 INSERT INTO `menuconnectiontype` (`ID`, `Value`, `Name`) VALUES
-	(1, 'Army Phone', 'Connection Type'),
-	(2, 'BTCL Phone', 'Connection Type');
+	(1, 'Army', 'Connection Type'),
+	(2, 'BTCL', 'Connection Type');
 /*!40000 ALTER TABLE `menuconnectiontype` ENABLE KEYS */;
 
 
@@ -352,18 +363,18 @@ INSERT INTO `menuconnectiontype` (`ID`, `Value`, `Name`) VALUES
 DROP TABLE IF EXISTS `menurequesttype`;
 CREATE TABLE IF NOT EXISTS `menurequesttype` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) DEFAULT NULL,
   `Value` varchar(50) DEFAULT NULL,
+  `Name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table signalappdb.menurequesttype: ~3 rows (approximately)
 DELETE FROM `menurequesttype`;
 /*!40000 ALTER TABLE `menurequesttype` DISABLE KEYS */;
-INSERT INTO `menurequesttype` (`ID`, `Name`, `Value`) VALUES
-	(1, 'Request', 'New Connection'),
-	(2, 'Request', 'Shifting'),
-	(3, 'Request', 'Termination');
+INSERT INTO `menurequesttype` (`ID`, `Value`, `Name`) VALUES
+	(1, 'New Connection', 'Request'),
+	(2, 'Shifting', 'Request'),
+	(3, 'Termination', 'Request');
 /*!40000 ALTER TABLE `menurequesttype` ENABLE KEYS */;
 
 
@@ -398,20 +409,30 @@ CREATE TABLE IF NOT EXISTS `pendingrequest` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `MenuRequestTypeID` int(11) NOT NULL,
   `PhoneUserPersonalInfoID` bigint(20) NOT NULL,
-  `PhoneNumber` int(11) NOT NULL,
+  `AllPhoneInfoID` int(11) NOT NULL,
   `LetterNo` text NOT NULL,
+  `AddressType` varchar(50) NOT NULL,
+  `Comment` varchar(50) NOT NULL,
+  `RequestDate` date NOT NULL,
+  `NewAddressForShifting` text,
   PRIMARY KEY (`ID`),
   KEY `Request` (`MenuRequestTypeID`),
-  KEY `PhoneNumber_AllPhones` (`PhoneNumber`),
   KEY `PersonalInfo_PhoneUserPersonalInfo` (`PhoneUserPersonalInfoID`),
+  KEY `PhoneNumber_AllPhones` (`AllPhoneInfoID`),
   CONSTRAINT `PersonalInfo_PhoneUserPersonalInfo` FOREIGN KEY (`PhoneUserPersonalInfoID`) REFERENCES `phoneuserpersonalinfo` (`ID`),
-  CONSTRAINT `PhoneNumber_AllPhones` FOREIGN KEY (`PhoneNumber`) REFERENCES `allphoneinfo` (`ID`),
+  CONSTRAINT `PhoneNumber_AllPhones` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
   CONSTRAINT `Request` FOREIGN KEY (`MenuRequestTypeID`) REFERENCES `menurequesttype` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.pendingrequest: ~0 rows (approximately)
+-- Dumping data for table signalappdb.pendingrequest: ~4 rows (approximately)
 DELETE FROM `pendingrequest`;
 /*!40000 ALTER TABLE `pendingrequest` DISABLE KEYS */;
+INSERT INTO `pendingrequest` (`ID`, `MenuRequestTypeID`, `PhoneUserPersonalInfoID`, `AllPhoneInfoID`, `LetterNo`, `AddressType`, `Comment`, `RequestDate`, `NewAddressForShifting`) VALUES
+	(2, 1, 3, 3, 'Letter_1', 'Office', 'Temporary Number require', '2015-12-13', NULL),
+	(3, 1, 3, 7, 'Letter_2', 'Home', 'Permanent Type', '2015-12-13', NULL),
+	(4, 2, 3, 3, 'Shifting Letter _1', 'Office', 'Jhe he he', '2015-12-13', 'Mohakhali to Newyork'),
+	(5, 3, 3, 8, 'Termination_Letter _ 1', 'Office', 'Terminate', '2015-12-13', NULL),
+	(6, 1, 3, 4, 'New Connection 5002', 'Office', '', '2015-12-13', NULL);
 /*!40000 ALTER TABLE `pendingrequest` ENABLE KEYS */;
 
 

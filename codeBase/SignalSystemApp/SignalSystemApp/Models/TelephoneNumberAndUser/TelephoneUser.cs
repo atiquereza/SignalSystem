@@ -98,7 +98,22 @@ namespace SignalSystemApp.Models.TelephoneUser
         public TelephoneUserInfo GetTelephoneUserInfo(string baNumber)
         {
             TelephoneUserInfo aInfo = new TelephoneUserInfo();
-            //string query = "select * from "
+            string query =
+                "select * from phoneuserpersonalinfo " +
+                "left join menusrank on menusrank.id = phoneuserpersonalinfo.RankId " +
+                "where phoneuserpersonalinfo.BANumber='"+baNumber+"';";
+          
+            DataSet aSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                aInfo.Id = Convert.ToInt32(dataRow["ID"].ToString().Trim());
+                aInfo.BANumber = dataRow["BANumber"].ToString().Trim();
+                aInfo.FullName = dataRow["FullName"].ToString().Trim();
+                aInfo.RankID = dataRow["Value"].ToString().Trim();
+                aInfo.OfficeAddress = dataRow["OfficeAddress"].ToString().Trim();
+                aInfo.PresentAddress = dataRow["PresentAddress"].ToString().Trim();
+                
+            }
             return aInfo;
         }
     }

@@ -1,11 +1,14 @@
-﻿@using SignalSystem.Libs;
+﻿
+@using System.Runtime
+@using SignalSystem.Libs;
 @using SignalSystemApp.Views.Classes;
 
 @{
     string message = string.Empty;
 
     string formActionSearch = UtilityLibrary.GetBaseURL() + "TelephoneRequest/SearchRequestNewForm";
-    if (ViewData["Message"] != null) {
+    if (ViewData["Message"] != null)
+    {
 
         if (ViewData["Message"].ToString().Contains("Error"))
         {
@@ -26,30 +29,20 @@
     {
         optionsReq += "<option value=\"" + req["ID"] + "\">" + req["Value"] + "</option>";
     }
-
-    string optionNumbers = string.Empty;
-    if (ViewData["AvailableNumbers"] != null)
-    {
-        List<Dictionary<string, string>> aList = ( List<Dictionary<string, string>>)ViewData["AvailableNumbers"];
-
-        foreach (Dictionary<string, string> dictionary in aList)
-        {
-                  optionNumbers += "<option value=\"" + dictionary["ID"] + "\">" + dictionary["Value"] + "</option>";
-        }
-    }
-
     
 }
- 
+
+
 <div id="page-wrapper">
 <div class="row">
     <div class="col-lg-12">
-        <h1>Add Request <small>Search BA Number and Add Request</small></h1>
+        <h1>Add Request <small>Search BA Number and Add Request</small>
+        </h1>
     </div>
+</div>
  <div>
         @Html.Raw(message)
     </div>
-</div>
 <div class="row">
     <form method="post" action="@formActionSearch">
         <div class="col-lg-2">
@@ -115,7 +108,7 @@
                 <form method="post" action="">
                     <div id="shieldui-grid1">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <label>Application Number:&nbsp</label>
                             </div>
                             <div class="col-md-3">
@@ -124,30 +117,16 @@
                             
                         </div>
 
+                        <label>BA Number:&nbsp</label> <br>
+                        <input type="hidden" name="userId" value="">
+                        <label>Name:&nbsp</label><span name="name"> </span><br>
                         <div class="row">
-                            <div class="col-md-2">
-                                <label>Name:&nbsp</label> <br>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>BA Number:&nbsp</label> <br>
-                            </div>
-                        </div>
-    
-
-                       
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>Phone Number :</label>
+                            <div class="col-md-1">
+                                <label>Telephone Number:&nbsp</label>
                             </div>
                             <div class="col-md-3">
-                                 <select class="form-control" name="type" width="50px;">
-                                     <option>--Please Select--</option>
-                                     @Html.Raw(optionNumbers)
-                                 </select>
+                                <input type="text" class="form-control" id="telephone-number" placeholder="Enter Telephone Number" name="telephone-number"><br>
                             </div>
- 
                         </div>
                         <label>Rank:&nbsp</label><br>
                         
@@ -258,11 +237,11 @@
 </div>
 </div>
 
-<script>
+<script>    
     $("#reqType").on("change", function () {
         //alert(jQuery("#reqType option:selected").val());
         if ("--Request Type--" == jQuery("#reqType option:selected").val()) {
-
+            
         }
         //$("#rankID").val(jQuery("#rank option:selected").val());
     });
