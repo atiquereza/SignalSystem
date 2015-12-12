@@ -8,7 +8,7 @@ using SignalSystem.Libs;
 
 namespace SignalSystemApp.Models.TelephoneUser
 {
-    public partial class TelephoneUserInfo
+    public class TelephoneUserInfo
     {
         public int Id { set; get; }
         public string BANumber { set; get; }
@@ -93,6 +93,13 @@ namespace SignalSystemApp.Models.TelephoneUser
                 return true;
             }
             return false;
+        }
+
+        public TelephoneUserInfo GetTelephoneUserInfo(string baNumber)
+        {
+            TelephoneUserInfo aInfo = new TelephoneUserInfo();
+            //string query = "select * from "
+            return aInfo;
         }
     }
 }

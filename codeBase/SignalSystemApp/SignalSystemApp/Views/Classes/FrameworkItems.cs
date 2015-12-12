@@ -10,6 +10,26 @@ namespace SignalSystemApp.Views.Classes
 {
     public class FrameworkItems
     {
+        public static List<Dictionary<string, string>> GetRequestTypes()
+        {
+            List<Dictionary<string, string>> menurequesttype = new List<Dictionary<string, string>>();
+            DBGateway gateway = new DBGateway("SignalSystemConnectionString");
+            string query = "select * from menurequesttype;";
+
+            DataSet aSet = gateway.Select(query);
+
+            foreach (DataRow aRow in aSet.Tables[0].Rows)
+            {
+                Dictionary<string, string> aDictionary = new Dictionary<string, string>();
+                aDictionary.Add("ID", aRow["id"].ToString());
+                aDictionary.Add("Value", aRow["Value"].ToString());
+                menurequesttype.Add(aDictionary);
+
+            }
+
+            return menurequesttype;
+        }
+
         public static List<Dictionary<string,string>> GetRanks()
         {
             List<Dictionary<string, string>> ranks = new List<Dictionary<string, string>>();

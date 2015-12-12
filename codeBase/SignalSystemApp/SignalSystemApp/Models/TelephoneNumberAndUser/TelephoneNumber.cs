@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -70,6 +71,26 @@ namespace SignalSystemApp.Models.TelephoneNumberAndUser
 
             return true;
 
+        }
+
+        public List<Dictionary<string,string>> GetAvailableTelephoneNumberForNewConnection()
+        {
+            List<Dictionary<string,string> > availablePhones = new List<Dictionary<string, string>>();
+            string query = "select * from allphoneinfo where ServiceStatus='Terminated'";
+            DataSet aSet = aGateway.Select(query);
+
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                Dictionary<string,string> aDictionary = new Dictionary<string, string>()
+                {
+                   { "ID",dataRow["ID"].ToString()},
+                   { "Value",dataRow["PhoneNumber"].ToString() + " Current Status: " + dataRow["ServiceStatus"].ToString()},
+
+                };
+                availablePhones.Add(aDictionary); 
+            }
+
+            return availablePhones;
         }
     }
 }

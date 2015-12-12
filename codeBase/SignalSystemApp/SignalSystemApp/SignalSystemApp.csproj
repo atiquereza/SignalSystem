@@ -345,6 +345,7 @@
     <Content Include="Views\TelephoneRequest\ResolveRequest.cshtml" />
     <Content Include="Views\TelephoneUser\ViewActiveTelephoneUsers.cshtml" />
     <Content Include="Views\TelephoneUser\ViewTerminatedTelephoneHistory.cshtml" />
+    <Content Include="Views\TelephoneRequest\NewConnecton.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
