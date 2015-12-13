@@ -142,7 +142,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
         }
 
         public List<string[]> GetPendingRequest(out int totalRecords, out int filteredRecord, string baNumber, string name, 
-            string letterNumber, string fromDate, string toDate, int start, int length)
+            string letterNumber, string fromDate, string toDate, string phoneNumber,string requestType,int start, int length)
         {
 
 
@@ -170,21 +170,29 @@ namespace SignalSystemApp.Models.TelephoneRequest
             {
                 query += " pendingrequest.LetterNo like '%" + letterNumber + "%' and ";
             }
+            if (phoneNumber.Trim().Length != 0)
+            {
+                query += " allphoneinfo.PhoneNumber like '%" + phoneNumber + "%' and ";
+            }
+            if (requestType.Trim().Length != 0)
+            {
+                query += " menurequesttype.Value like '%" + requestType + "%' and ";
+            }
             if (fromDate.Trim().Length != 0)
             {
                 if (toDate.Trim().Length != 0)
                 {
-                    query += " pendingrequest.RequestDate between '"+Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd")+"' and '"+Convert.ToDateTime(toDate).ToString("yyyy-MM-dd")+"' and";
+                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + " 00:00:00" + "' and '" + Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") + " 23:59:59" + "' and";
                 }
                 else
                 {
-                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + "' and '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and";
+                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + " 00:00:00" + "' and '" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "' and";
                     
                 }
             }
 
             if (baNumber.Trim().Length == 0 && name.Trim().Length == 0 && letterNumber.Trim().Length == 0 &&
-                fromDate.Trim().Length == 0 && toDate.Trim().Length == 0)
+                fromDate.Trim().Length == 0 && toDate.Trim().Length == 0 && phoneNumber.Trim().Length == 0 && requestType.Trim().Length== 0)
             {
                 query = query.Trim().Substring(0, query.Trim().LastIndexOf("where"));
             }
@@ -386,7 +394,8 @@ namespace SignalSystemApp.Models.TelephoneRequest
 
         }
 
-        public List<string[]> GetResolveRequest(out int totalRecords, out int filteredRecord, string baNumber, string name, string letterNumber, string fromDate, string toDate, int start, int length)
+        public List<string[]> GetResolveRequest(out int totalRecords, out int filteredRecord, string baNumber, string name, string letterNumber, string fromDate, string toDate, 
+            string phoneNumber, string requestType, int start, int length)
         {
             List<string[]> aList = new List<string[]>();
             string query = "select * from resolvedrequest where ";
@@ -403,21 +412,30 @@ namespace SignalSystemApp.Models.TelephoneRequest
             {
                 query += " LetterNo like '%" + letterNumber + "%' and ";
             }
+            if (phoneNumber.Trim().Length != 0)
+            {
+                query += " PhoneNumber like '%" + phoneNumber + "%' and ";
+            }
+            if (requestType.Trim().Length != 0)
+            {
+                query += " RequestType like '%" + requestType + "%' and ";
+            }
+
             if (fromDate.Trim().Length != 0)
             {
                 if (toDate.Trim().Length != 0)
                 {
-                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + "' and '" + Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") + "' and";
+                    query += " resolvedrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + " 00:00:00" + "' and '" + Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") + " 23:59:59" + "' and";
                 }
                 else
                 {
-                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + "' and '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and";
+                    query += " resolvedrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + " 00:00:00" + "' and '" + DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59" + "' and";
 
                 }
             }
 
             if (baNumber.Trim().Length == 0 && name.Trim().Length == 0 && letterNumber.Trim().Length == 0 &&
-                fromDate.Trim().Length == 0 && toDate.Trim().Length == 0)
+                fromDate.Trim().Length == 0 && toDate.Trim().Length == 0 && phoneNumber.Trim().Length == 0 && requestType.Trim().Length == 0)
             {
                 query = query.Trim().Substring(0, query.Trim().LastIndexOf("where"));
             }

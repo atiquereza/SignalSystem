@@ -1,14 +1,19 @@
-﻿<style>
-    div {
-        padding-bottom: 20px;
-    }
-</style>
+﻿                              
+
+@using SignalSystem.Libs
+@using SignalSystemApp.Models.Equipment
+
+@{
+
+    string resolveFormAciton = UtilityLibrary.GetBaseURL() + "TelephoneRequest/ResolveActiveRequest";
+}
+
+
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-
             <h1>
-                Active Telephones <small>List of Active Telephones</small>
+                Active Phone Users<small>&nbsp List of Active Phone Users</small>
             </h1>
         </div>
 
@@ -16,39 +21,69 @@
 
     <div class="row">
         <div id="table-container-div">
-           
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" style="margin-left: -190px;">
-                        <i class="fa fa-bar-chart-o"></i> Active Telephones
+                        <i class="fa fa-bar-chart-o"></i> Active Phone Users
                     </h3>
                 </div>
                 <div class="panel-body">
 
                     <div>
-                        <table id="mytestDatatable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
 
-
-                            <thead>
-                                <tr>
-
-                                    <th class="col-sm-1">BA Number</th>
-                                    <th class="col-sm-1">Name</th>
-                                    <th class="col-sm-1">Rank</th>
-                                    <th class="col-sm-1">Phone</th>
-                                    <th class="col-sm-1">Activation Date</th>
-                                    <th class="col-sm-1">Request Date</th>
-                                    <th class="col-sm-1">Home Address</th>
-                                    <th class="col-sm-1">Office Address</th>
-                                    <th class="col-sm-1">Connection Type</th>
-                                    <th class="col-sm-1">Click to Terminate</th>
-
-
-                                </tr>
-                            </thead>
-
+@*Search filter starts*@
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
+                        </div>
+                    </div>
+                    <div id="filter" style="display: none">
+                        <div class="row">
+                           <div class="col-xs-2">
+                                <div id="externalContainer"></div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div id="baNumber"></div>
+                            </div><label>&nbsp;</label>
+                            <div class="col-xs-3">
+                                <div id="fullName"></div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div id="pateName"></div>
+                            </div>
+                            <div class="col-xs-1">
+                                <div id="phoneNumber"></div>
+                            </div><br>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5"><br>
+                                <label>Search by Request Date:</label>
+                                <div id="requestDate"></div>
+                            </div> <br>
+                            <div class="col-xs-2">
+                                <div id="rankSearch"></div>
+                            </div> <br>
+                        </div>
+                    </div>
+                        @*Search filter ends*@
+                         <table id="MainDataTable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
+                           <thead>
                             <tr>
-
+                                <th class="col-sm-1">BA Number</th>
+                                <th class="col-sm-1">Name</th>
+                                <th class="col-sm-1">Plate Name</th>
+                                <th class="col-sm-1">Rank</th>
+                                <th class="col-sm-1">Phone Number</th>
+                                <th class="col-sm-1">Request Date</th>
+                                <th class="col-sm-1">Connect Date</th>
+                                <th class="col-sm-1">Address Type</th>
+                                <th class="col-sm-1">Address</th>
+                                @*<th class="col-sm-1">Click to Terminate</th>*@
+                            </tr>
+                            </thead>
+                            @* <tr>
                                 <td class="col-sm-1">123097</td>
                                 <td class="col-sm-1">Habib</td>
                                 <td class="col-sm-1">Major</td>
@@ -60,7 +95,7 @@
                                 <td class="col-sm-1">Army</td>
                                 <td class="col-sm-1"><button type="button" class="bbtn btn-xs btn-danger" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-remove"></span></button></td>
                               
-                            </tr>
+                            </tr>*@
                         </table>
                         @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
                     </div>
@@ -72,48 +107,211 @@
 </div>
 
 
-
-<!--Terminate Modal statrs-->
-<form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Terminate Connection</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Termination Date</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="terminationDate" name="terminationDate" />
-                        </div>
-                    <div>
-                        <label class="col-xs-4 control-label">Terminated By</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="terminatedBy" name="terminatedBy" />
-                        </div></br>
-                    </div>
-                </div>
-                    </div>
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class=" col-xs-5 btn btn-danger">Terminate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<!--Add Rank Modal ends-->
-
-
-
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
 
-}
+} 
 
+    
+
+<script>
+    $(document).ready(function() {
+   
+        var oTable = $('#MainDataTable').dataTable({
+
+            "order": [[3, "asc"]],
+            "sAjaxSource": "/TelephoneUser/GetActivePhoneDataProviderAction",
+            "bLengthChange": true,
+            dom: 'l<>Bfrtip',
+            "bServerSide": true,
+            "fnRowCallback":
+                function (nRow, aData, iDisplayIndex) {
+                   return nRow;
+                },
+           
+
+
+        });
+
+
+        $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        $.datepicker.setDefaults({
+            buttonImageOnly: true,
+            buttonImage: 'calendar.gif',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:3000',
+
+
+            showWeek: true,
+            weekHeader: "Wk",
+            autoSize: true
+
+
+        });
+
+        var datepickerDefaults = {
+            showTodayButton: true,
+            showClear: true
+        };
+
+
+        $('#MainDataTable_filter input').unbind();
+        $('#MainDataTable_filter input').bind('keyup', function(e) {
+            if (e.keyCode == 13) {
+                oTable.fnFilter(this.value);
+            }
+        });
+
+        oTable.yadcf([
+            {
+                column_number: 0,
+                filter_type: "text",
+                filter_container_id: "baNumber",
+                filter_delay: 1000,
+                filter_default_label: "BA Number"
+
+            },
+            {
+                column_number: 1,
+                filter_type: "text",
+                filter_default_label: "Name",
+                filter_delay: 1000,
+                filter_container_id: "fullName"
+            },
+            {
+                column_number: 2,
+                filter_type: "text",
+                filter_default_label: "Plate Name",
+                filter_delay: 1000,
+                filter_container_id: "pateName"
+
+            },
+            {
+                column_number: 4,
+                filter_type: "text",
+                filter_default_label: "Phone Number",
+                filter_delay: 1000,
+                filter_container_id: "phoneNumber"
+            },
+            {
+                column_number: 5,
+                filter_type: "text",
+                filter_default_label: "Rank",
+                filter_delay: 1000,
+                filter_container_id: "rankSearch"
+            },
+            {
+                column_number: 3,
+                filter_type: "range_date",
+                date_format: "mm/dd/yyyy",
+                filter_delay: 1000,
+                filter_container_id: "requestDate"
+            }
+        ]);
+        $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+          
+        $().tooltip({
+            template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+
+
+        $(".yadcf-filter").css('background', 'black');
+        $(".yadcf-filter-range-date").css('background', 'black');
+        $(".yadcf-filter-range-date").css('font', 'bold');
+
+
+        $(document).on('click', '#resolveEntry', function () {
+            var request_id = $(this).attr('request_id').trim();
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var output = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + d.getFullYear();
+            console.log(output);
+            $("#requestId").val(request_id);
+            $("#resolveDate").val(output);
+
+        });
+        var tableWidth = $('#MainDataTable').width() + 25;
+
+
+    });
+</script>  
+
+   
+
+
+<style>
+
+#MainDataTable_filter {
+    display: none;
+}
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--MainDataTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--MainDataTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--MainDataTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #MainDataTable_length select {
+        background: green;
+    }
+
+    #MainDataTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #MainDataTable_filter {
+        background: #222222;
+        color: black;
+    } 
+
+</style>

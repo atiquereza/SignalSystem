@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1>
-                Pending Request<small>&nbsp List of Pending Request</small>
+                Resolved Request<small>&nbsp List of Resolved Request</small>
             </h1>
         </div>
 
@@ -24,14 +24,14 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" style="margin-left: -190px;">
-                        <i class="fa fa-bar-chart-o"></i> Pending Requests
+                        <i class="fa fa-bar-chart-o"></i> Resolved Requests
                     </h3>
                 </div>
                 <div class="panel-body">
 
                     <div>
 
-@*Search filter starts*@
+                    @*Search filter starts*@
                     <div class="row">
                         <div class="col-xs-2">
                             <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
@@ -52,12 +52,18 @@
                             </div>
                             <div class="col-xs-3">
                                 <div id="letterNumber"></div>
+                            </div>
+                            <div class="col-xs-1">
+                                <div id="phoneNumber"></div>
                             </div><br>
                         </div>
                         <div class="row">
                             <div class="col-xs-5"><br>
                                 <label>Search by Request Date:</label>
                                 <div id="requestDate"></div>
+                            </div> <br>
+                            <div class="col-xs-2">
+                                <div id="requestType"></div>
                             </div> <br>
                         </div>
                     </div>
@@ -104,48 +110,9 @@
     </div>
 </div>
 
-<!--Terminate Modal statrs-->
-<form id="delete-form" class="myModals" method="POST" action="@resolveFormAciton">
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Resolve Request</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Date</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="resolveDate" name="ResolveDate" required/>
-                            <input type="hidden" class="form-control" id="requestId" name="RequestId" required/>  
-                        </div>
-                        <div>
-                            <label class="col-xs-4 control-label">Resolved By</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="resolvedBy" name="ResolveBy" required />
-                            </div><br>
-                        </div>
-                        <div>
-                            <label class="col-xs-4 control-label">Action Taken</label>
-                            <div class="col-xs-5">
-                                <textarea type="text" class="form-control" id="actionTaken" name="ActionTaken" required></textarea>
-                            </div><br>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class=" col-xs-5 btn btn-success">Resolve</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 
-<!--Add Rank Modal ends-->
+
+
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
@@ -166,9 +133,7 @@
             "bServerSide": true,
             "fnRowCallback":
                 function (nRow, aData, iDisplayIndex) {
-                    //$('td:eq(11)', nRow).html('<button request_id=' + aData[0] + ' type="button" data-toggle="modal" data-target="#myModals" name="resoloveRequest" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
-                    //$('td:eq(11)', nRow).html('<button request_id=' + aData[0] + ' class="bbtn btn-xs btn-success" data-toggle="modal" data-target="#addModal" id="resolveEntry"><span class="glyphicon glyphicon-check"></span></button>');
-                    return nRow;
+                   return nRow;
                 },
            
 
@@ -211,7 +176,7 @@
                 column_number: 0,
                 filter_type: "text",
                 filter_container_id: "baNumber",
-                filter_delay: 5000,
+                filter_delay: 1000,
                 filter_default_label: "BA Number"
 
             },
@@ -219,22 +184,36 @@
                 column_number: 1,
                 filter_type: "text",
                 filter_default_label: "Name",
-                filter_delay: 5000,
+                filter_delay: 1000,
                 filter_container_id: "name"
             },
             {
                 column_number: 2,
                 filter_type: "text",
                 filter_default_label: "Letter Number",
-                filter_delay:5000,
+                filter_delay: 1000,
                 filter_container_id: "letterNumber"
 
+            },
+            {
+                column_number: 4,
+                filter_type: "text",
+                filter_default_label: "Phone Number",
+                filter_delay: 1000,
+                filter_container_id: "phoneNumber"
+            },
+            {
+                column_number: 5,
+                filter_type: "text",
+                filter_default_label: "Request Type",
+                filter_delay: 1000,
+                filter_container_id: "requestType"
             },
             {
                 column_number: 3,
                 filter_type: "range_date",
                 date_format: "mm/dd/yyyy",
-                filter_delay: 5000,
+                filter_delay: 1000,
                 filter_container_id: "requestDate"
             }
         ]);
@@ -339,28 +318,6 @@
     #MainDataTable_filter {
         background: #222222;
         color: black;
-    }    
-
-     
+    } 
 
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -25,30 +25,31 @@ CREATE TABLE IF NOT EXISTS `allactivephoneinfo` (
   `PhoneUsedFor` varchar(50) NOT NULL,
   `HomeAddress` text NOT NULL,
   `OfficeAddress` text NOT NULL,
-  `RequestDate` date NOT NULL,
+  `RequestDate` datetime NOT NULL,
   `LetterNo` text NOT NULL,
-  `ConnectDate` date NOT NULL,
+  `ConnectDate` datetime NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `PersonInfo` (`PhoneUserPersonalInfoId`),
   KEY `PhoneInfo` (`AllPhoneInfoID`),
   CONSTRAINT `PersonInfo` FOREIGN KEY (`PhoneUserPersonalInfoId`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `PhoneInfo` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allactivephoneinfo: ~4 rows (approximately)
+-- Dumping data for table signalappdb.allactivephoneinfo: ~5 rows (approximately)
 DELETE FROM `allactivephoneinfo`;
 /*!40000 ALTER TABLE `allactivephoneinfo` DISABLE KEYS */;
 INSERT INTO `allactivephoneinfo` (`ID`, `PhoneUserPersonalInfoId`, `AllPhoneInfoID`, `PhoneUsedFor`, `HomeAddress`, `OfficeAddress`, `RequestDate`, `LetterNo`, `ConnectDate`) VALUES
-	(1, 3, 2, 'Home', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
-	(2, 3, 3, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
-	(3, 3, 7, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01'),
-	(4, 3, 8, 'Office', 'Home Address', 'Office Address', '2014-01-01', 'LetterNo', '2014-01-01');
+	(8, 4, 3, 'Office', 'Dhaka', 'Mirpur_12', '2015-12-13 20:26:57', 'BA0001_Letter_Army_Office_1', '2015-12-13 20:27:45'),
+	(9, 3, 8, 'Home', 'Ibrahim pur', 'Mohakhali', '2015-12-13 22:43:59', 'New Connection 6002', '2015-12-13 23:18:22'),
+	(10, 3, 7, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-10 22:43:10', 'New Connection 6001', '2015-12-13 23:18:27'),
+	(11, 3, 4, 'Home', 'Ibrahim pur', 'Mohakhali', '2015-12-12 22:43:40', 'New Connection 5002', '2015-12-13 23:18:32'),
+	(12, 3, 2, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-11 22:42:36', 'New Connection 5000', '2015-12-13 23:18:38');
 /*!40000 ALTER TABLE `allactivephoneinfo` ENABLE KEYS */;
 
 
--- Dumping structure for table signalappdb.allhistoryphoneinfo
-DROP TABLE IF EXISTS `allhistoryphoneinfo`;
-CREATE TABLE IF NOT EXISTS `allhistoryphoneinfo` (
+-- Dumping structure for table signalappdb.allhistoryphoneinfono_need_this
+DROP TABLE IF EXISTS `allhistoryphoneinfono_need_this`;
+CREATE TABLE IF NOT EXISTS `allhistoryphoneinfono_need_this` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `FullName` text NOT NULL,
   `BANumber` varchar(100) NOT NULL,
@@ -65,10 +66,10 @@ CREATE TABLE IF NOT EXISTS `allhistoryphoneinfo` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allhistoryphoneinfo: ~0 rows (approximately)
-DELETE FROM `allhistoryphoneinfo`;
-/*!40000 ALTER TABLE `allhistoryphoneinfo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `allhistoryphoneinfo` ENABLE KEYS */;
+-- Dumping data for table signalappdb.allhistoryphoneinfono_need_this: ~0 rows (approximately)
+DELETE FROM `allhistoryphoneinfono_need_this`;
+/*!40000 ALTER TABLE `allhistoryphoneinfono_need_this` DISABLE KEYS */;
+/*!40000 ALTER TABLE `allhistoryphoneinfono_need_this` ENABLE KEYS */;
 
 
 -- Dumping structure for table signalappdb.allphoneinfo
@@ -92,22 +93,22 @@ INSERT INTO `allphoneinfo` (`ID`, `PhoneNumber`, `ServiceStatus`, `ConnectionTyp
 	(3, '5001', 'Active', 1, 'New Phone'),
 	(4, '5002', 'Active', 1, 'New Phone'),
 	(5, '5003', 'Active', 1, 'New Phone'),
-	(6, '5004', 'Active', 1, 'New Phone'),
+	(6, '5004', 'Terminated', 1, 'New Phone'),
 	(7, '6001', 'Active', 2, 'New Phone'),
 	(8, '6002', 'Active', 2, 'New Phone'),
 	(9, '6003', 'Active', 2, 'New Phone'),
-	(10, '5005', 'Active', 1, 'New Phone'),
-	(11, '5006', 'Active', 1, 'New Phone'),
-	(12, '5007', 'Active', 1, 'New Phone'),
-	(13, '5008', 'Active', 1, 'New Phone'),
-	(14, '5009', 'Active', 1, 'New Phone'),
-	(15, '5010', 'Active', 1, 'New Phone'),
-	(16, '6004', 'Active', 2, 'New Phone'),
-	(17, '6005', 'Active', 2, 'New Phone'),
-	(18, '6006', 'Active', 2, 'New Phone'),
-	(19, '6007', 'Active', 2, 'New Phone'),
-	(20, '6008', 'Active', 2, 'New Phone'),
-	(21, '6009', 'Active', 2, 'New Phone'),
+	(10, '5005', 'Terminated', 1, 'New Phone'),
+	(11, '5006', 'Terminated', 1, 'New Phone'),
+	(12, '5007', 'Terminated', 1, 'New Phone'),
+	(13, '5008', 'Terminated', 1, 'New Phone'),
+	(14, '5009', 'Terminated', 1, 'New Phone'),
+	(15, '5010', 'Terminated', 1, 'New Phone'),
+	(16, '6004', 'Terminated', 2, 'New Phone'),
+	(17, '6005', 'Terminated', 2, 'New Phone'),
+	(18, '6006', 'Terminated', 2, 'New Phone'),
+	(19, '6007', 'Terminated', 2, 'New Phone'),
+	(20, '6008', 'Terminated', 2, 'New Phone'),
+	(21, '6009', 'Terminated', 2, 'New Phone'),
 	(22, '6010', 'Terminated', 2, 'New Phone');
 /*!40000 ALTER TABLE `allphoneinfo` ENABLE KEYS */;
 
@@ -426,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `pendingrequest` (
   `LetterNo` text NOT NULL,
   `AddressType` varchar(50) NOT NULL,
   `Comment` varchar(50) NOT NULL,
-  `RequestDate` date NOT NULL,
+  `RequestDate` datetime NOT NULL,
   `NewAddressForShifting` text,
   PRIMARY KEY (`ID`),
   KEY `Request` (`MenuRequestTypeID`),
@@ -435,30 +436,15 @@ CREATE TABLE IF NOT EXISTS `pendingrequest` (
   CONSTRAINT `PersonalInfo_PhoneUserPersonalInfo` FOREIGN KEY (`PhoneUserPersonalInfoID`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `PhoneNumber_AllPhones` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
   CONSTRAINT `Request` FOREIGN KEY (`MenuRequestTypeID`) REFERENCES `menurequesttype` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.pendingrequest: ~18 rows (approximately)
+-- Dumping data for table signalappdb.pendingrequest: ~3 rows (approximately)
 DELETE FROM `pendingrequest`;
 /*!40000 ALTER TABLE `pendingrequest` DISABLE KEYS */;
 INSERT INTO `pendingrequest` (`ID`, `MenuRequestTypeID`, `PhoneUserPersonalInfoID`, `AllPhoneInfoID`, `LetterNo`, `AddressType`, `Comment`, `RequestDate`, `NewAddressForShifting`) VALUES
-	(4, 2, 3, 4, 'Shifting Letter _1', 'Office', 'Jhe he he', '2015-12-13', 'Mohakhali to Newyork'),
-	(6, 1, 3, 4, 'New Connection 5002', 'Office', '', '2015-12-13', NULL),
-	(7, 1, 4, 5, 'BA0001_Letter_Army_Office_1', 'Office', 'New Connection, Transfer from CTG', '2015-12-13', NULL),
-	(8, 1, 4, 8, 'BA0001_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
-	(9, 1, 4, 6, 'BA0001_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
-	(10, 1, 4, 9, 'BA0001_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
-	(11, 1, 5, 10, 'BA0002_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
-	(12, 1, 5, 11, 'BA0002_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
-	(13, 1, 5, 16, 'BA0002_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
-	(14, 1, 5, 17, 'BA0002_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
-	(15, 1, 6, 12, 'BA0003_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
-	(16, 1, 6, 13, 'BA0003_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
-	(17, 1, 6, 18, 'BA0003_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
-	(18, 1, 6, 19, 'BA0003_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
-	(19, 1, 7, 14, 'BA0001_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
-	(20, 1, 7, 15, 'BA00042_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
-	(21, 1, 7, 20, 'BA0004_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
-	(22, 1, 7, 21, 'BA0004_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL);
+	(5, 2, 3, 7, 'Shifting Letter _4', 'Office', '', '2015-12-13 00:29:57', 'Mohakhali To DOHS'),
+	(6, 1, 5, 5, '77777', 'Office', '', '2015-12-14 00:30:37', NULL),
+	(7, 1, 5, 9, 'New Connection 6003', 'Office', '', '2015-12-01 00:31:23', NULL);
 /*!40000 ALTER TABLE `pendingrequest` ENABLE KEYS */;
 
 
@@ -492,7 +478,7 @@ DELETE FROM `phoneuserpersonalinfo`;
 /*!40000 ALTER TABLE `phoneuserpersonalinfo` DISABLE KEYS */;
 INSERT INTO `phoneuserpersonalinfo` (`ID`, `BANumber`, `FullName`, `Appointment`, `PlateName`, `ServiceStatus`, `RankId`, `Sex`, `Unit`, `JoiningDate`, `LPRDate`, `MaritalStatus`, `PresentAddress`, `PermanentAddress`, `OfficeAddress`, `PersonalPhoneNumber`, `EmailAddress`) VALUES
 	(3, 'BA123456', 'Atique Reza Chowdhury', 'Appointment', 'Atique', 'On Service', 3, 'male', 'NSN', '2015-02-12', '0001-01-01', 'unmarried', 'Ibrahim pur', 'Kaharol', 'Mohakhali', '01926662260', 'Email.Address@email.com'),
-	(4, 'BA0001', 'HabibUllah Hem', 'SIGNAL', 'Habib', 'On Service', 1, 'male', 'AO', '2015-01-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
+	(4, 'BA0001', 'HabibUllah Hem', 'SIGNAL', 'Habib', 'On Service', 1, 'male', 'AO', '2015-01-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Mirpur_12', '01926662260', 'Email.Address@email.com'),
 	(5, 'BA0002', 'Anwarul Karim', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
 	(6, 'BA0003', 'Anamul Hakim', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
 	(7, 'BA0004', 'Jamil Uddin Khan', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
@@ -512,21 +498,28 @@ CREATE TABLE IF NOT EXISTS `resolvedrequest` (
   `ConnectionType` varchar(50) DEFAULT NULL,
   `RequestType` varchar(100) NOT NULL,
   `LetterNo` varchar(200) NOT NULL,
-  `RequestDate` date NOT NULL,
-  `ResolveDate` date NOT NULL,
+  `RequestDate` datetime NOT NULL,
+  `ResolveDate` datetime NOT NULL,
   `PhoneNumber` varchar(50) NOT NULL,
   `ResolveBy` varchar(50) DEFAULT NULL,
   `ActionTaken` text,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.resolvedrequest: ~3 rows (approximately)
+-- Dumping data for table signalappdb.resolvedrequest: ~10 rows (approximately)
 DELETE FROM `resolvedrequest`;
 /*!40000 ALTER TABLE `resolvedrequest` DISABLE KEYS */;
 INSERT INTO `resolvedrequest` (`ID`, `FullName`, `BANumber`, `Address`, `AddressType`, `Rank`, `ConnectionType`, `RequestType`, `LetterNo`, `RequestDate`, `ResolveDate`, `PhoneNumber`, `ResolveBy`, `ActionTaken`) VALUES
-	(3, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'Army', 'New Connection', 'Letter_1', '2015-12-13', '2015-12-13', '5001', 'Kutub', 'Done'),
-	(4, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'BTCL', 'Termination', 'Termination_Letter _ 1', '2015-12-13', '2015-12-13', '6002', 'Kutub', 'Done'),
-	(5, 'Atique Reza Chowdhury', 'BA123456', 'Ibrahim pur', 'Home', 'Major General', 'BTCL', 'New Connection', 'Letter_2', '2015-12-13', '2015-12-13', '6001', 'habib', 'new connection done');
+	(12, 'HabibUllah Hem', 'BA0001', 'Dhaka', 'Office', 'General', 'Army', 'New Connection', 'BA0001_Letter_Army_Office_1', '2015-12-11 20:26:57', '2015-12-13 20:27:45', '5001', 'Ilias Jamil', 'Done'),
+	(13, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'Army', 'New Connection', 'BA123456_Letter_Army_Office_1', '2015-12-13 20:26:26', '2015-12-13 20:28:22', '5000', 'Azizul Haque', 'done'),
+	(14, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'Army', 'Termination', 'BA123456_Letter_Army_Office_1_Terminate', '2015-12-13 20:29:44', '2015-12-13 20:32:14', '5000', 'Azizul Haque', 'ffff'),
+	(15, 'HabibUllah Hem', 'BA0001', 'Dhaka', 'Office', 'General', 'Army', 'Shifting', 'BA0001_Letter_Army_Office_1_Shifting', '2015-12-12 20:34:10', '2015-12-13 20:34:25', '5001', 'Azizul Haque', 'ffff'),
+	(16, 'HabibUllah Hem', 'BA0001', 'Dhaka', 'Office', 'General', 'Army', 'Shifting', 'Shifting Letter _1', '2015-12-12 20:39:14', '2015-12-13 20:42:03', '5001', 'Azizul Haque', 'fffff'),
+	(17, 'HabibUllah Hem', 'BA0001', 'Mirpur_10', 'Office', 'General', 'Army', 'Shifting', 'Shifting Letter _2', '2015-12-13 20:48:41', '2015-12-13 20:49:06', '5001', 'Ilias Jamil', 'Done'),
+	(18, 'Atique Reza Chowdhury', 'BA123456', 'Ibrahim pur', 'Home', 'Major General', 'BTCL', 'New Connection', 'New Connection 6002', '2015-12-13 22:43:59', '2015-12-13 23:18:22', '6002', 'Ilias Jamil', 'line man'),
+	(19, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'BTCL', 'New Connection', 'New Connection 6001', '2015-12-13 22:43:10', '2015-12-13 23:18:27', '6001', 'Ilias Jamil', 'line man'),
+	(20, 'Atique Reza Chowdhury', 'BA123456', 'Ibrahim pur', 'Home', 'Major General', 'Army', 'New Connection', 'New Connection 5002', '2015-12-10 22:43:40', '2015-12-13 23:18:32', '5002', 'Ilias Jamil', 'line man'),
+	(21, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'Army', 'New Connection', 'New Connection 5000', '2015-12-13 22:42:36', '2015-12-13 23:18:38', '5000', 'Ilias Jamil', 'line man');
 /*!40000 ALTER TABLE `resolvedrequest` ENABLE KEYS */;
 
 

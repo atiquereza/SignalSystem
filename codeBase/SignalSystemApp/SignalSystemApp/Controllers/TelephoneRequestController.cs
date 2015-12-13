@@ -180,6 +180,8 @@ namespace SignalSystemApp.Controllers
             string name = Convert.ToString(Request["sSearch_1"]);
             string letterNumber = Convert.ToString(Request["sSearch_2"]);
             string requestDate = Convert.ToString(Request["sSearch_3"]);
+            string phoneNumber = Convert.ToString(Request["sSearch_4"]);
+            string requestType = Convert.ToString(Request["sSearch_5"]);
 
             string[] dates = Regex.Split(requestDate, "-yadcf_delim-");
             string fromDate = string.Empty;
@@ -196,7 +198,8 @@ namespace SignalSystemApp.Controllers
             TelephoneRequest aRequest = new TelephoneRequest();
             int totalRecords = 0;
             int filteredRecord = 0;
-            List<string[]> pendingRequest = aRequest.GetPendingRequest(out totalRecords,out filteredRecord,baNumber,name,letterNumber,fromDate,toDate,aModel.iDisplayStart,aModel.iDisplayLength);
+            List<string[]> pendingRequest = aRequest.GetPendingRequest(out totalRecords,out filteredRecord,
+                baNumber,name,letterNumber,fromDate,toDate,phoneNumber,requestType,aModel.iDisplayStart,aModel.iDisplayLength);
 
             return Json(new
             {
@@ -214,7 +217,8 @@ namespace SignalSystemApp.Controllers
             string name = Convert.ToString(Request["sSearch_1"]);
             string letterNumber = Convert.ToString(Request["sSearch_2"]);
             string requestDate = Convert.ToString(Request["sSearch_3"]);
-
+            string phoneNumber = Convert.ToString(Request["sSearch_4"]);
+            string requestType = Convert.ToString(Request["sSearch_5"]);
             string[] dates = Regex.Split(requestDate, "-yadcf_delim-");
             string fromDate = string.Empty;
             string toDate = string.Empty;
@@ -230,14 +234,48 @@ namespace SignalSystemApp.Controllers
             TelephoneRequest aRequest = new TelephoneRequest();
             int totalRecords = 0;
             int filteredRecord = 0;
-            List<string[]> pendingRequest = aRequest.GetResolveRequest(out totalRecords, out filteredRecord, baNumber, name, letterNumber, fromDate, toDate, aModel.iDisplayStart, aModel.iDisplayLength);
+            List<string[]> resolvedReqest = aRequest.GetResolveRequest(out totalRecords, out filteredRecord, baNumber, name, letterNumber, fromDate, toDate,phoneNumber,requestType ,aModel.iDisplayStart, aModel.iDisplayLength);
 
             return Json(new
             {
                 sEcho = aModel.sEcho,
                 iTotalRecords = filteredRecord,
                 iTotalDisplayRecords = totalRecords,
-                aaData = pendingRequest
+                aaData = resolvedReqest
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TerminatedConnectionDataProviderAction(JQueryDataTableParamModel aModel)
+        {
+            string baNumber = Convert.ToString(Request["sSearch_0"]);
+            string name = Convert.ToString(Request["sSearch_1"]);
+            string letterNumber = Convert.ToString(Request["sSearch_2"]);
+            string requestDate = Convert.ToString(Request["sSearch_3"]);
+            string phoneNumber = Convert.ToString(Request["sSearch_4"]);
+           
+            string[] dates = Regex.Split(requestDate, "-yadcf_delim-");
+            string fromDate = string.Empty;
+            string toDate = string.Empty;
+            if (dates.Count() == 2)
+            {
+                fromDate = dates[0];
+                toDate = dates[1];
+            }
+            if (dates.Count() == 1)
+            {
+                fromDate = dates[0];
+            }
+            TelephoneRequest aRequest = new TelephoneRequest();
+            int totalRecords = 0;
+            int filteredRecord = 0;
+            List<string[]> terminatedHistory = aRequest.GetResolveRequest(out totalRecords, out filteredRecord, baNumber, name, letterNumber, fromDate, toDate, phoneNumber, "Termination", aModel.iDisplayStart, aModel.iDisplayLength);
+
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                iTotalRecords = filteredRecord,
+                iTotalDisplayRecords = totalRecords,
+                aaData = terminatedHistory
             }, JsonRequestBehavior.AllowGet);
         }
     }
