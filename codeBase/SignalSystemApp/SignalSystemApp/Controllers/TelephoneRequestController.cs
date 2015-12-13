@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using SignalSystem.Libs;
+using SignalSystemApp.Models;
 using SignalSystemApp.Models.TelephoneNumberAndUser;
 using SignalSystemApp.Models.TelephoneRequest;
 using SignalSystemApp.Models.TelephoneUser;
@@ -155,6 +157,88 @@ namespace SignalSystemApp.Controllers
 
             ViewData["Message"] = message;
             return View("Index");
+        }
+
+        public ActionResult ResolveActiveRequest()
+        {
+
+            string requestId = Request["RequestId"].ToString();
+            string resolveDate = Request["ResolveDate"].ToString();
+            string resolvedBy = Request["ResolveBy"].ToString();
+            string actionTaken = Request["ActionTaken"].ToString();
+
+            TelephoneRequest aRequest = new TelephoneRequest();
+            string message = aRequest.ResolveRequest(requestId, resolveDate, resolvedBy,actionTaken);
+
+            return View("PendingRequest");
+        }
+
+
+        public ActionResult PendingDataProviderAction(JQueryDataTableParamModel aModel)
+        {  
+            string baNumber = Convert.ToString(Request["sSearch_0"]);
+            string name = Convert.ToString(Request["sSearch_1"]);
+            string letterNumber = Convert.ToString(Request["sSearch_2"]);
+            string requestDate = Convert.ToString(Request["sSearch_3"]);
+
+            string[] dates = Regex.Split(requestDate, "-yadcf_delim-");
+            string fromDate = string.Empty;
+            string toDate = string.Empty;
+            if (dates.Count() == 2)
+            {
+                fromDate = dates[0];
+                toDate = dates[1];
+            }
+            if (dates.Count() == 1)
+            {
+                fromDate = dates[0]; 
+            } 
+            TelephoneRequest aRequest = new TelephoneRequest();
+            int totalRecords = 0;
+            int filteredRecord = 0;
+            List<string[]> pendingRequest = aRequest.GetPendingRequest(out totalRecords,out filteredRecord,baNumber,name,letterNumber,fromDate,toDate,aModel.iDisplayStart,aModel.iDisplayLength);
+
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                iTotalRecords = filteredRecord,
+                iTotalDisplayRecords = totalRecords ,
+                aaData = pendingRequest
+            }, JsonRequestBehavior.AllowGet);
+  
+        }
+
+        public ActionResult ResolvedDataProviderAction(JQueryDataTableParamModel aModel)
+        {
+            string baNumber = Convert.ToString(Request["sSearch_0"]);
+            string name = Convert.ToString(Request["sSearch_1"]);
+            string letterNumber = Convert.ToString(Request["sSearch_2"]);
+            string requestDate = Convert.ToString(Request["sSearch_3"]);
+
+            string[] dates = Regex.Split(requestDate, "-yadcf_delim-");
+            string fromDate = string.Empty;
+            string toDate = string.Empty;
+            if (dates.Count() == 2)
+            {
+                fromDate = dates[0];
+                toDate = dates[1];
+            }
+            if (dates.Count() == 1)
+            {
+                fromDate = dates[0];
+            }
+            TelephoneRequest aRequest = new TelephoneRequest();
+            int totalRecords = 0;
+            int filteredRecord = 0;
+            List<string[]> pendingRequest = aRequest.GetResolveRequest(out totalRecords, out filteredRecord, baNumber, name, letterNumber, fromDate, toDate, aModel.iDisplayStart, aModel.iDisplayLength);
+
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                iTotalRecords = filteredRecord,
+                iTotalDisplayRecords = totalRecords,
+                aaData = pendingRequest
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

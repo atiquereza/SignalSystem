@@ -5,21 +5,13 @@
 
 @{
 
-
+    string resolveFormAciton = UtilityLibrary.GetBaseURL() + "TelephoneRequest/ResolveActiveRequest";
 }
 
 
-<style>
-    div {
-        padding-bottom: 20px;
-    }
-</style>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-
-
-
             <h1>
                 Pending Request<small>&nbsp List of Pending Request</small>
             </h1>
@@ -47,55 +39,48 @@
                     </div>
                     <div id="filter" style="display: none">
                         <div class="row">
-                           @* <div class="col-xs-2">
-                                <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
-                            </div>*@
-                            <div class="col-xs-2">
+                           <div class="col-xs-2">
                                 <div id="externalContainer"></div>
                             </div>
-                        </div><br />
+                        </div><br>
                         <div class="row">
                             <div class="col-xs-3">
-                                <div id="mailDBid"></div>
+                                <div id="baNumber"></div>
                             </div><label>&nbsp;</label>
                             <div class="col-xs-3">
-                                <div id="mailID"></div>
+                                <div id="name"></div>
                             </div>
                             <div class="col-xs-3">
-                                <div id="mailDescription"></div>
+                                <div id="letterNumber"></div>
                             </div><br>
                         </div>
                         <div class="row">
                             <div class="col-xs-5"><br>
-                                <label>Search by Complain Date:</label>
-                                <div id="mailDate"></div>
+                                <label>Search by Request Date:</label>
+                                <div id="requestDate"></div>
                             </div> <br>
                         </div>
                     </div>
-
                         @*Search filter ends*@
-                        <table id="mytestDatatable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
-
-
+                        <table id="MainDataTable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
                             <thead>
                             <tr>
-
-                                <th class="col-sm-1">BA Number</th>
+                                <th class="col-sm-1">RequestID</th>
+                                <th class="col-sm-1">BANumber</th>
                                 <th class="col-sm-1">Name</th>
                                 <th class="col-sm-1">Rank</th>
-                                <th class="col-sm-1">Phone</th>
-                                <th class="col-sm-1">Activation Date</th>
+                                <th class="col-sm-1">Letter Number</th>
+                                <th class="col-sm-1">Phone Number</th>
+                                <th class="col-sm-1">Address Type</th>
+                                <th class="col-sm-1">Address </th>
+                                <th class="col-sm-1">Request Type</th>
                                 <th class="col-sm-1">Request Date</th>
-                                <th class="col-sm-1">Home Address</th>
-                                <th class="col-sm-1">Office Address</th>
-                                <th class="col-sm-1">Connection Type</th>
-                                <th class="col-sm-1">Click to Resolve</th>
-
-
+                                <th class="col-sm-1">Comment</th>
+                               <th class="col-sm-1">Click to Resolve</th> 
                             </tr>
                             </thead>
-
-                            <tr>
+                            <tbody></tbody>
+                            @*<tr>
 
                                 <td class="col-sm-1">123097</td>
                                 <td class="col-sm-1">Habib</td>
@@ -107,8 +92,7 @@
                                 <td class="col-sm-1">Uttara</td>
                                 <td class="col-sm-1">Army</td>
                                 <td class="col-sm-1"><button type="button" class="bbtn btn-xs btn-success" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-check"></span></button></td>
-
-                            </tr>
+                            </tr>*@
                         </table>
                         @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
                     </div>
@@ -120,7 +104,7 @@
 </div>
 
 <!--Terminate Modal statrs-->
-<form id="delete-form" class="myModals" method="POST" action="" onsubmit="">
+<form id="delete-form" class="myModals" method="POST" action="@resolveFormAciton">
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -132,18 +116,19 @@
                     <div class="form-group">
                         <label class="col-xs-4 control-label">Date</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="terminationDate" name="terminationDate" />
+                            <input type="text" class="form-control" id="resolveDate" name="ResolveDate" required/>
+                            <input type="hidden" class="form-control" id="requestId" name="RequestId" required/>  
                         </div>
                         <div>
                             <label class="col-xs-4 control-label">Resolved By</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="resolvedBy" name="resolvedBy" />
+                                <input type="text" class="form-control" id="resolvedBy" name="ResolveBy" required />
                             </div><br>
                         </div>
                         <div>
                             <label class="col-xs-4 control-label">Action Taken</label>
                             <div class="col-xs-5">
-                                <textarea type="text" class="form-control" id="actionTaken" name="actionTaken"></textarea>
+                                <textarea type="text" class="form-control" id="actionTaken" name="ActionTaken" required></textarea>
                             </div><br>
                         </div>
                     </div>
@@ -169,19 +154,22 @@
 
 <script>
 
-
     $(document).ready(function() {
 
         var oTable = $('#MainDataTable').dataTable({
+
             "order": [[3, "asc"]],
-            "sAjaxSource": "/Mail/DataProviderAction",
+            "sAjaxSource": "/TelephoneRequest/PendingDataProviderAction",
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
             "bServerSide": true,
             "fnRowCallback":
-                function(nRow, aData, iDisplayIndex) {
+                function (nRow, aData, iDisplayIndex) {
+                    //$('td:eq(11)', nRow).html('<button request_id=' + aData[0] + ' type="button" data-toggle="modal" data-target="#myModals" name="resoloveRequest" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
+                    $('td:eq(11)', nRow).html('<button request_id=' + aData[0] + ' class="bbtn btn-xs btn-success" data-toggle="modal" data-target="#addModal" id="resolveEntry"><span class="glyphicon glyphicon-check"></span></button>');
                     return nRow;
                 },
+           
 
 
         });
@@ -213,7 +201,6 @@
         $('#MainDataTable_filter input').unbind();
         $('#MainDataTable_filter input').bind('keyup', function(e) {
             if (e.keyCode == 13) {
-                //alert(1);
                 oTable.fnFilter(this.value);
             }
         });
@@ -222,43 +209,36 @@
             {
                 column_number: 0,
                 filter_type: "text",
-                filter_container_id: "mailDBid",
-                filter_delay: 1000,
-                filter_default_label: "Select ID"
+                filter_container_id: "baNumber",
+                filter_delay: 5000,
+                filter_default_label: "BA Number"
 
             },
             {
                 column_number: 1,
                 filter_type: "text",
-                filter_default_label: "Mail ID",
-                filter_delay: 1000,
-                filter_container_id: "mailID"
+                filter_default_label: "Name",
+                filter_delay: 5000,
+                filter_container_id: "name"
             },
             {
                 column_number: 2,
                 filter_type: "text",
-                filter_default_label: "mailDescription",
-
-                filter_delay: 1000,
-
-                filter_delay: 1000,
-
-                filter_container_id: "mailDescription"
+                filter_default_label: "Letter Number",
+                filter_delay:5000,
+                filter_container_id: "letterNumber"
 
             },
             {
                 column_number: 3,
                 filter_type: "range_date",
                 date_format: "mm/dd/yyyy",
-                filter_delay: 500,
-                filter_container_id: "mailDate"
+                filter_delay: 5000,
+                filter_container_id: "requestDate"
             }
         ]);
-
-
         $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
-
-
+          
         $().tooltip({
             template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
         });
@@ -268,38 +248,99 @@
         $(".yadcf-filter-range-date").css('background', 'black');
         $(".yadcf-filter-range-date").css('font', 'bold');
 
-        $('#ExportExcelButton').click(function() {
 
-            var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
-            var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
-            var name = $('#yadcf-filter--MainDataTable-1').val();
-            var phone = $('#yadcf-filter--MainDataTable-3').val();
-            var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
-            var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
-            var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-            var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-            var overAllSearch = $("#MainDataTable_filter :input").val();
+        $(document).on('click', '#resolveEntry', function () {
+            var request_id = $(this).attr('request_id').trim();
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var output = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + d.getFullYear();
+            console.log(output);
+            $("#requestId").val(request_id);
+            $("#resolveDate").val(output);
 
-            window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=pending";
         });
-
-
         var tableWidth = $('#MainDataTable').width() + 25;
 
-        //document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
-
-        //Make DateTime picker dropdown to work on a Modal//
-        //var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
-
-        //$.fn.modal.Constructor.prototype.enforceFocus = function () { };
-
-        //$confModal.on('hidden', function () {
-        //    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
-        //});
-
-        //$confModal.modal({ backdrop: false });
-        //Make DateTime picker dropdown to work on a Modal//
 
     });
 </script>  
+
+   
+
+
+<style>
+
+#MainDataTable_filter {
+    display: none;
+}
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--MainDataTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--MainDataTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--MainDataTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--MainDataTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    #MainDataTable_length select {
+        background: green;
+    }
+
+    #MainDataTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #MainDataTable_filter {
+        background: #222222;
+        color: black;
+    }    
+
+     
+
+</style>
 
