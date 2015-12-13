@@ -6,6 +6,8 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Security.Policy;
 using System.Web;
+using System.Web.UI.WebControls;
+using Microsoft.Office.Interop.Excel;
 using SignalSystem.Libs;
 
 namespace SignalSystemApp.Models.TelephoneRequest
@@ -62,7 +64,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 {"LetterNo",aInfo.LetterNo},
                 {"AddressType",aInfo.AddressType},
                 {"Comment",aInfo.Comment},
-                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd")}
+                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd")+" " +DateTime.Now.ToString("HH:mm:ss")}
 
             };
             aGateway.Insert(insertString,aHashtable);
@@ -96,7 +98,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 {"LetterNo",aInfo.LetterNo},
                 {"AddressType",aInfo.AddressType},
                 {"Comment",aInfo.Comment},
-                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd")},
+                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd")+" " +DateTime.Now.ToString("HH:mm:ss")},
                 {"NewAddressForShifting",aInfo.Address}
 
             };
@@ -129,7 +131,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 {"LetterNo",aInfo.LetterNo},
                 {"AddressType",aInfo.AddressType},
                 {"Comment",aInfo.Comment},
-                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd")}
+                { "RequestDate",aInfo.RequestDate.ToString("yyyy-MM-dd") +" " +DateTime.Now.ToString("HH:mm:ss")}
 
             };
             aGateway.Insert(insertString, aHashtable);
@@ -147,7 +149,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
             string query = "select pendingrequest.ID as PendingRequestID,pendingrequest.LetterNo,pendingrequest.AddressType," +
                            "menurequesttype.Value as RequestType,allphoneinfo.PhoneNumber,pendingrequest.RequestDate,pendingrequest.`Comment`," +
                            "phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menusrank.Value as Rank," +
-                           "phoneuserpersonalinfo.OfficeAddress,phoneuserpersonalinfo.PresentAddress," +
+                           "phoneuserpersonalinfo.OfficeAddress,phoneuserpersonalinfo.PresentAddress,pendingrequest.NewAddressForShifting," +
                            "menuconnectiontype.Value as ConnectionType from pendingrequest left join menurequesttype on " +
                            "pendingrequest.MenuRequestTypeID=menurequesttype.ID left join phoneuserpersonalinfo on " +
                            "phoneuserpersonalinfo.ID=pendingrequest.PhoneUserPersonalInfoID left join allphoneinfo on " +
@@ -191,7 +193,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 query = query.Trim().Substring(0, query.Trim().LastIndexOf("and"));
 
             }
-            query += " limit " + start + "," + start + length + ";";
+            query += "order by RequestDate DESC limit " + start + "," + start + length + ";";
                    
 
             List<string[]> aList = new List<string[]>();
@@ -209,6 +211,11 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 {
                     address = dataRow["PresentAddress"].ToString();
                 }
+
+                if (dataRow["RequestType"].ToString().ToLower() == "shifting")
+                {
+                    address = "Phone Shifting Form " + address + " To: " + dataRow["NewAddressForShifting"].ToString();
+                }
                 string[] aReqData = new  string[]
                 {
                     dataRow["PendingRequestID"].ToString(),
@@ -220,7 +227,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                     dataRow["AddressType"].ToString(),
                     address,
                     dataRow["RequestType"].ToString(),
-                    dataRow["RequestDate"].ToString(),
+                    Convert.ToDateTime(dataRow["RequestDate"].ToString()).ToString("dd-MM-yyyy HH:mm:ss"),
                     dataRow["Comment"].ToString(),
                     ""
                 };
@@ -243,8 +250,9 @@ namespace SignalSystemApp.Models.TelephoneRequest
             string query =
                 " select pendingrequest.ID as PendingRequestID,phoneuserpersonalinfo.FullName,phoneuserpersonalinfo.BANumber," +
                 "pendingrequest.AddressType,phoneuserpersonalinfo.OfficeAddress,phoneuserpersonalinfo.PresentAddress,menusrank.Value as Rank," +
-                "menurequesttype.Value as RequestType,pendingrequest.LetterNo,allphoneinfo.PhoneNumber," + 
-                "pendingrequest.RequestDate,pendingrequest.`Comment`," +
+                "menurequesttype.Value as RequestType,pendingrequest.LetterNo,allphoneinfo.PhoneNumber,allphoneinfo.ID as PhoneId," +
+                "phoneuserpersonalinfo.ID as PersonId," +
+                "pendingrequest.RequestDate,pendingrequest.`Comment`,pendingrequest.NewAddressForShifting," +
                 "menuconnectiontype.Value as ConnectionType from pendingrequest left join menurequesttype " +
                 "on pendingrequest.MenuRequestTypeID=menurequesttype.ID left join phoneuserpersonalinfo " +
                 "on phoneuserpersonalinfo.ID=pendingrequest.PhoneUserPersonalInfoID left join allphoneinfo " +
@@ -271,7 +279,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 string toFormat = "yyyy-MM-dd";
 
                 DateTime newDate = DateTime.ParseExact(resolveDate, fromFormat, null); 
-                resolveDate = newDate.ToString(toFormat).ToString();
+                resolveDate = newDate.ToString(toFormat).ToString() + " "+DateTime.Now.ToString("HH:mm:ss");
                 aData = new Hashtable()
                 {
                     {"ID" , dataRow["PendingRequestID"].ToString()},
@@ -280,7 +288,7 @@ namespace SignalSystemApp.Models.TelephoneRequest
                     {"AddressType" , dataRow["AddressType"].ToString()},
                     {"Address" , address}, 
                     {"Rank" , dataRow["Rank"].ToString()},
-                    {"RequestDate" , Convert.ToDateTime(dataRow["RequestDate"].ToString()).ToString("yyyy-MM-dd")},
+                    {"RequestDate" , Convert.ToDateTime(dataRow["RequestDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss")},
                     {"LetterNo",dataRow["LetterNo"].ToString()},
                     {"RequestType",dataRow["RequestType"].ToString()},
                     {"Comment" , dataRow["Comment"].ToString()},
@@ -288,10 +296,82 @@ namespace SignalSystemApp.Models.TelephoneRequest
                     {"ResolveDate" ,resolveDate},
                     {"ResolveBy" , resolvedBy},
                     {"ActionTaken" , actionTaken},
-                    {"PhoneNumber",dataRow["PhoneNumber"].ToString()}
+                    {"PhoneNumber",dataRow["PhoneNumber"].ToString()},
+                    {"AllPhoneIfoId",dataRow["PhoneId"].ToString()},
+                    {"PersonId",dataRow["PersonId"].ToString()},
+                    {"PresentAddress",dataRow["PresentAddress"].ToString()},
+                    {"OfficeAddress",dataRow["OfficeAddress"].ToString()},
+                    {"NewAddressForShifting",dataRow["NewAddressForShifting"].ToString()},
+
                 };
                
             }
+
+            if (aData.Count == 0)
+            {
+                return "Error!";
+            }
+
+            #region new Connection
+            if (aData["RequestType"].ToString().ToLower() == "new connection")
+            {
+                string updateActivePhoneList = "INSERT INTO allactivephoneinfo (`PhoneUserPersonalInfoId`, `AllPhoneInfoID`, " +
+                                               "`PhoneUsedFor`, `HomeAddress`, `OfficeAddress`, " +
+                                               "`RequestDate`, `LetterNo`, `ConnectDate`) " +
+                                               "VALUES (@PhoneUserPersonalInfoId, @AllPhoneInfoID, " +
+                                               "@PhoneUsedFor, @HomeAddress, @OfficeAddress, " +
+                                               "@RequestDate, @LetterNo, @ConnectDate);";
+
+                Hashtable aHashtable = new Hashtable();
+                aHashtable.Add("PhoneUserPersonalInfoId", aData["PersonId"].ToString());
+                aHashtable.Add("AllPhoneInfoID", aData["AllPhoneIfoId"].ToString());
+                aHashtable.Add("PhoneUsedFor", aData["AddressType"].ToString());
+                aHashtable.Add("HomeAddress", aData["PresentAddress"].ToString());
+                aHashtable.Add("OfficeAddress", aData["OfficeAddress"].ToString());
+                aHashtable.Add("RequestDate", aData["RequestDate"].ToString());
+                aHashtable.Add("LetterNo", aData["LetterNo"].ToString());
+                aHashtable.Add("ConnectDate", resolveDate);
+                aGateway.Insert(updateActivePhoneList, aHashtable);
+
+
+            }
+
+            #endregion
+            #region Termination
+            if (aData["RequestType"].ToString().ToLower() == "termination")
+            {
+                string deleteTerminationString = "delete from allactivephoneinfo where AllPhoneInfoID='" + aData["AllPhoneIfoId"].ToString() + "';";
+                aGateway.Delete(deleteTerminationString);
+                string terminateApplyInAllPhoneInfo = "UPDATE allphoneinfo SET ServiceStatus='Terminated' WHERE  ID='" + aData["AllPhoneIfoId"] + "';";
+                aGateway.Update(terminateApplyInAllPhoneInfo);
+            }
+            #endregion
+
+            #region Shifting
+            if (aData["RequestType"].ToString().ToLower() == "shifting")
+            {
+                string updateStringActivePhoneTable = "UPDATE allactivephoneinfo ";
+                string updateStringPersonInfoTable = "UPDATE phoneuserpersonalinfo ";
+                if (aData["AddressType"].ToString().ToLower() == "home")
+                {
+                    updateStringActivePhoneTable += "SET `HomeAddress`='" + aData["NewAddressForShifting"].ToString() + "'";
+                    updateStringPersonInfoTable += "SET `PresentAddress`='" + aData["NewAddressForShifting"].ToString() + "'";
+
+                }
+                else
+                {
+                    updateStringActivePhoneTable += "SET `OfficeAddress`='" + aData["NewAddressForShifting"].ToString() + "'";
+                    updateStringPersonInfoTable += "SET `OfficeAddress`='" + aData["NewAddressForShifting"].ToString() + "'";
+
+                }
+                updateStringActivePhoneTable += "WHERE  AllPhoneInfoID='" + aData["AllPhoneIfoId"] + "';";
+                updateStringPersonInfoTable += "WHERE  ID='" + aData["PersonId"] + "';";
+
+                aGateway.Update(updateStringActivePhoneTable);
+                aGateway.Update(updateStringPersonInfoTable);
+            }
+            #endregion
+
             string insertString = "INSERT INTO resolvedrequest (`FullName`, `BANumber`, `Address`, `AddressType`, " +
                            "`Rank`,`RequestType`, `LetterNo`, `RequestDate`, `ResolveDate`, `PhoneNumber`,  " +
                            "`ResolveBy`, `ActionTaken`,`ConnectionType`) VALUES (  @FullName, @BANumber, @Address, @AddressType, " +
@@ -309,7 +389,45 @@ namespace SignalSystemApp.Models.TelephoneRequest
         public List<string[]> GetResolveRequest(out int totalRecords, out int filteredRecord, string baNumber, string name, string letterNumber, string fromDate, string toDate, int start, int length)
         {
             List<string[]> aList = new List<string[]>();
-            string query = "select * from resolvedrequest limit " + start + "," + start + length + ";";
+            string query = "select * from resolvedrequest where ";
+            
+            if (baNumber.Trim().Length != 0)
+            {
+                query += " BANumber like '%" + baNumber + "%' and ";
+            }
+            if (name.Trim().Length != 0)
+            {
+                query += " FullName like '%" + name + "%' and ";
+            }
+            if (letterNumber.Trim().Length != 0)
+            {
+                query += " LetterNo like '%" + letterNumber + "%' and ";
+            }
+            if (fromDate.Trim().Length != 0)
+            {
+                if (toDate.Trim().Length != 0)
+                {
+                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + "' and '" + Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") + "' and";
+                }
+                else
+                {
+                    query += " pendingrequest.RequestDate between '" + Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") + "' and '" + DateTime.Now.ToString("yyyy-MM-dd") + "' and";
+
+                }
+            }
+
+            if (baNumber.Trim().Length == 0 && name.Trim().Length == 0 && letterNumber.Trim().Length == 0 &&
+                fromDate.Trim().Length == 0 && toDate.Trim().Length == 0)
+            {
+                query = query.Trim().Substring(0, query.Trim().LastIndexOf("where"));
+            }
+            else
+            {
+                query = query.Trim().Substring(0, query.Trim().LastIndexOf("and"));
+
+            }
+            query += " order by RequestDate DESC limit " + start + "," + start + length + ";";
+
 
             DataSet aSet = aGateway.Select(query);
             foreach (DataRow dataRow in aSet.Tables[0].Rows)
@@ -320,12 +438,13 @@ namespace SignalSystemApp.Models.TelephoneRequest
                     dataRow["FullName"].ToString(),
                     dataRow["Rank"].ToString(),
                     dataRow["PhoneNumber"].ToString(),
-                    dataRow["RequestDate"].ToString(),
-                    dataRow["ResolveDate"].ToString(),
+                    Convert.ToDateTime(dataRow["RequestDate"].ToString()).ToString("dd-MM-yyyy HH:mm:ss"),
+                    Convert.ToDateTime(dataRow["ResolveDate"].ToString()).ToString("dd-MM-yyyy HH:mm:ss"),
+                  
                     dataRow["AddressType"].ToString(),
                     dataRow["Address"].ToString(),
                     dataRow["LetterNo"].ToString(),
-                    dataRow["ConnectionType"].ToString(),
+                    //dataRow["ConnectionType"].ToString(),
                     dataRow["RequestType"].ToString(),
                     dataRow["ResolveBy"].ToString(),
                     dataRow["ActionTaken"].ToString(),

@@ -52,12 +52,20 @@
                             </div>
                             <div class="col-xs-3">
                                 <div id="letterNumber"></div>
+                            </div>
+                            <div class="col-xs-1">
+                                <div id="phoneNumber"></div>
                             </div><br>
+                           
                         </div>
                         <div class="row">
                             <div class="col-xs-5"><br>
                                 <label>Search by Request Date:</label>
                                 <div id="requestDate"></div>
+                            </div> <br>
+
+                            <div class="col-xs-2">
+                                <div id="requestType"></div>
                             </div> <br>
                         </div>
                     </div>
@@ -72,7 +80,7 @@
                                 <th class="col-sm-1">Letter Number</th>
                                 <th class="col-sm-1">Phone Number</th>
                                 <th class="col-sm-1">Address Type</th>
-                                <th class="col-sm-1">Address </th>
+                                <th class="col-sm-1">Address(New Address For Shifting)</th>
                                 <th class="col-sm-1">Request Type</th>
                                 <th class="col-sm-1">Request Date</th>
                                 <th class="col-sm-1">Comment</th>
@@ -225,9 +233,23 @@
                 column_number: 2,
                 filter_type: "text",
                 filter_default_label: "Letter Number",
-                filter_delay:5000,
+                filter_delay: 5000,
                 filter_container_id: "letterNumber"
 
+            },
+            {
+                column_number: 4,
+                filter_type: "text",
+                filter_default_label: "Phone Number",
+                filter_delay: 5000,
+                filter_container_id: "phoneNumber"
+            },
+            {
+                column_number: 5,
+                filter_type: "text",
+                filter_default_label: "Request Type",
+                filter_delay: 5000,
+                filter_container_id: "requestType"
             },
             {
                 column_number: 3,
