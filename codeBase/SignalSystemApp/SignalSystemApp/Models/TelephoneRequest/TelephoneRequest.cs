@@ -333,7 +333,9 @@ namespace SignalSystemApp.Models.TelephoneRequest
                 });
             }
 
-            totalRecords = 100;
+            query = "select Count(*) as TotalData from resolvedrequest;";
+            
+            totalRecords = Convert.ToInt32(aGateway.Select(query).Tables[0].Rows[0]["TotalData"].ToString());
             filteredRecord = aList.Count;
             return aList;
         }

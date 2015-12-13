@@ -82,20 +82,33 @@ CREATE TABLE IF NOT EXISTS `allphoneinfo` (
   PRIMARY KEY (`ID`),
   KEY `FK_allphoneinfo_menuconnectiontype` (`ConnectionTypeID`),
   CONSTRAINT `FK_allphoneinfo_menuconnectiontype` FOREIGN KEY (`ConnectionTypeID`) REFERENCES `menuconnectiontype` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allphoneinfo: ~8 rows (approximately)
+-- Dumping data for table signalappdb.allphoneinfo: ~21 rows (approximately)
 DELETE FROM `allphoneinfo`;
 /*!40000 ALTER TABLE `allphoneinfo` DISABLE KEYS */;
 INSERT INTO `allphoneinfo` (`ID`, `PhoneNumber`, `ServiceStatus`, `ConnectionTypeID`, `Remarks`) VALUES
 	(2, '5000', 'Active', 1, 'New Phone'),
 	(3, '5001', 'Active', 1, 'New Phone'),
 	(4, '5002', 'Active', 1, 'New Phone'),
-	(5, '5003', 'Terminated', 1, 'New Phone'),
-	(6, '5004', 'Terminated', 1, 'New Phone'),
+	(5, '5003', 'Active', 1, 'New Phone'),
+	(6, '5004', 'Active', 1, 'New Phone'),
 	(7, '6001', 'Active', 2, 'New Phone'),
-	(8, '6002', 'Terminated', 2, 'New Phone'),
-	(9, '6003', 'Terminated', 2, 'New Phone');
+	(8, '6002', 'Active', 2, 'New Phone'),
+	(9, '6003', 'Active', 2, 'New Phone'),
+	(10, '5005', 'Active', 1, 'New Phone'),
+	(11, '5006', 'Active', 1, 'New Phone'),
+	(12, '5007', 'Active', 1, 'New Phone'),
+	(13, '5008', 'Active', 1, 'New Phone'),
+	(14, '5009', 'Active', 1, 'New Phone'),
+	(15, '5010', 'Active', 1, 'New Phone'),
+	(16, '6004', 'Active', 2, 'New Phone'),
+	(17, '6005', 'Active', 2, 'New Phone'),
+	(18, '6006', 'Active', 2, 'New Phone'),
+	(19, '6007', 'Active', 2, 'New Phone'),
+	(20, '6008', 'Active', 2, 'New Phone'),
+	(21, '6009', 'Active', 2, 'New Phone'),
+	(22, '6010', 'Terminated', 2, 'New Phone');
 /*!40000 ALTER TABLE `allphoneinfo` ENABLE KEYS */;
 
 
@@ -422,17 +435,30 @@ CREATE TABLE IF NOT EXISTS `pendingrequest` (
   CONSTRAINT `PersonalInfo_PhoneUserPersonalInfo` FOREIGN KEY (`PhoneUserPersonalInfoID`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `PhoneNumber_AllPhones` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
   CONSTRAINT `Request` FOREIGN KEY (`MenuRequestTypeID`) REFERENCES `menurequesttype` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.pendingrequest: ~4 rows (approximately)
+-- Dumping data for table signalappdb.pendingrequest: ~18 rows (approximately)
 DELETE FROM `pendingrequest`;
 /*!40000 ALTER TABLE `pendingrequest` DISABLE KEYS */;
 INSERT INTO `pendingrequest` (`ID`, `MenuRequestTypeID`, `PhoneUserPersonalInfoID`, `AllPhoneInfoID`, `LetterNo`, `AddressType`, `Comment`, `RequestDate`, `NewAddressForShifting`) VALUES
-	(2, 1, 3, 3, 'Letter_1', 'Office', 'Temporary Number require', '2015-12-13', NULL),
-	(3, 1, 3, 7, 'Letter_2', 'Home', 'Permanent Type', '2015-12-13', NULL),
-	(4, 2, 3, 3, 'Shifting Letter _1', 'Office', 'Jhe he he', '2015-12-13', 'Mohakhali to Newyork'),
-	(5, 3, 3, 8, 'Termination_Letter _ 1', 'Office', 'Terminate', '2015-12-13', NULL),
-	(6, 1, 3, 4, 'New Connection 5002', 'Office', '', '2015-12-13', NULL);
+	(4, 2, 3, 4, 'Shifting Letter _1', 'Office', 'Jhe he he', '2015-12-13', 'Mohakhali to Newyork'),
+	(6, 1, 3, 4, 'New Connection 5002', 'Office', '', '2015-12-13', NULL),
+	(7, 1, 4, 5, 'BA0001_Letter_Army_Office_1', 'Office', 'New Connection, Transfer from CTG', '2015-12-13', NULL),
+	(8, 1, 4, 8, 'BA0001_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
+	(9, 1, 4, 6, 'BA0001_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
+	(10, 1, 4, 9, 'BA0001_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
+	(11, 1, 5, 10, 'BA0002_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
+	(12, 1, 5, 11, 'BA0002_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
+	(13, 1, 5, 16, 'BA0002_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
+	(14, 1, 5, 17, 'BA0002_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
+	(15, 1, 6, 12, 'BA0003_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
+	(16, 1, 6, 13, 'BA0003_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
+	(17, 1, 6, 18, 'BA0003_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
+	(18, 1, 6, 19, 'BA0003_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL),
+	(19, 1, 7, 14, 'BA0001_Letter_Army_Office_1', 'Office', '', '2015-12-13', NULL),
+	(20, 1, 7, 15, 'BA00042_Letter_Army_Home_1', 'Home', '', '2015-12-13', NULL),
+	(21, 1, 7, 20, 'BA0004_Letter_BTCL_Office_1', 'Office', '', '2015-12-13', NULL),
+	(22, 1, 7, 21, 'BA0004_Letter_BTCL_Home_1', 'Home', '', '2015-12-13', NULL);
 /*!40000 ALTER TABLE `pendingrequest` ENABLE KEYS */;
 
 
@@ -459,13 +485,18 @@ CREATE TABLE IF NOT EXISTS `phoneuserpersonalinfo` (
   PRIMARY KEY (`ID`),
   KEY `RankId` (`RankId`),
   CONSTRAINT `RankId` FOREIGN KEY (`RankId`) REFERENCES `menusrank` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.phoneuserpersonalinfo: ~1 rows (approximately)
+-- Dumping data for table signalappdb.phoneuserpersonalinfo: ~6 rows (approximately)
 DELETE FROM `phoneuserpersonalinfo`;
 /*!40000 ALTER TABLE `phoneuserpersonalinfo` DISABLE KEYS */;
 INSERT INTO `phoneuserpersonalinfo` (`ID`, `BANumber`, `FullName`, `Appointment`, `PlateName`, `ServiceStatus`, `RankId`, `Sex`, `Unit`, `JoiningDate`, `LPRDate`, `MaritalStatus`, `PresentAddress`, `PermanentAddress`, `OfficeAddress`, `PersonalPhoneNumber`, `EmailAddress`) VALUES
-	(3, 'BA123456', 'Atique Reza Chowdhury', 'Appointment', 'Atique', 'On Service', 3, 'male', 'NSN', '2015-02-12', '0001-01-01', 'unmarried', 'Ibrahim pur', 'Kaharol', 'Mohakhali', '01926662260', 'Email.Address@email.com');
+	(3, 'BA123456', 'Atique Reza Chowdhury', 'Appointment', 'Atique', 'On Service', 3, 'male', 'NSN', '2015-02-12', '0001-01-01', 'unmarried', 'Ibrahim pur', 'Kaharol', 'Mohakhali', '01926662260', 'Email.Address@email.com'),
+	(4, 'BA0001', 'HabibUllah Hem', 'SIGNAL', 'Habib', 'On Service', 1, 'male', 'AO', '2015-01-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
+	(5, 'BA0002', 'Anwarul Karim', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
+	(6, 'BA0003', 'Anamul Hakim', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
+	(7, 'BA0004', 'Jamil Uddin Khan', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com'),
+	(8, 'BA0005', 'Shaheb Patwari', 'SIGNAL', 'Anwar', 'On Service', 5, 'male', 'SS', '2015-02-12', '0001-01-01', 'unmarried', 'Dhaka', 'Dhaka', 'Dhaka', '01926662260', 'Email.Address@email.com');
 /*!40000 ALTER TABLE `phoneuserpersonalinfo` ENABLE KEYS */;
 
 
@@ -473,20 +504,29 @@ INSERT INTO `phoneuserpersonalinfo` (`ID`, `BANumber`, `FullName`, `Appointment`
 DROP TABLE IF EXISTS `resolvedrequest`;
 CREATE TABLE IF NOT EXISTS `resolvedrequest` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `AllPhoneInfoId` int(11) NOT NULL,
+  `FullName` text,
+  `BANumber` text,
+  `Address` text,
+  `AddressType` text,
+  `Rank` varchar(50) DEFAULT NULL,
+  `ConnectionType` varchar(50) DEFAULT NULL,
   `RequestType` varchar(100) NOT NULL,
   `LetterNo` varchar(200) NOT NULL,
   `RequestDate` date NOT NULL,
   `ResolveDate` date NOT NULL,
   `PhoneNumber` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `phone number` (`AllPhoneInfoId`),
-  CONSTRAINT `phone number` FOREIGN KEY (`AllPhoneInfoId`) REFERENCES `allphoneinfo` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ResolveBy` varchar(50) DEFAULT NULL,
+  `ActionTaken` text,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.resolvedrequest: ~0 rows (approximately)
+-- Dumping data for table signalappdb.resolvedrequest: ~3 rows (approximately)
 DELETE FROM `resolvedrequest`;
 /*!40000 ALTER TABLE `resolvedrequest` DISABLE KEYS */;
+INSERT INTO `resolvedrequest` (`ID`, `FullName`, `BANumber`, `Address`, `AddressType`, `Rank`, `ConnectionType`, `RequestType`, `LetterNo`, `RequestDate`, `ResolveDate`, `PhoneNumber`, `ResolveBy`, `ActionTaken`) VALUES
+	(3, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'Army', 'New Connection', 'Letter_1', '2015-12-13', '2015-12-13', '5001', 'Kutub', 'Done'),
+	(4, 'Atique Reza Chowdhury', 'BA123456', 'Mohakhali', 'Office', 'Major General', 'BTCL', 'Termination', 'Termination_Letter _ 1', '2015-12-13', '2015-12-13', '6002', 'Kutub', 'Done'),
+	(5, 'Atique Reza Chowdhury', 'BA123456', 'Ibrahim pur', 'Home', 'Major General', 'BTCL', 'New Connection', 'Letter_2', '2015-12-13', '2015-12-13', '6001', 'habib', 'new connection done');
 /*!40000 ALTER TABLE `resolvedrequest` ENABLE KEYS */;
 
 
