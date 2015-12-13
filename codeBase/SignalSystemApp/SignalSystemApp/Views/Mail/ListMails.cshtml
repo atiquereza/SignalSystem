@@ -167,7 +167,7 @@
 <script>
 
 
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         var oTable = $('#MainDataTable').dataTable({
             "order": [[3, "asc"]],
@@ -176,9 +176,9 @@
             dom: 'l<>Bfrtip',
             "bServerSide": true,
             "fnRowCallback":
-                            function (nRow, aData, iDisplayIndex) {
-                                return nRow;
-                            },
+                function(nRow, aData, iDisplayIndex) {
+                    return nRow;
+                },
 
 
         });
@@ -187,7 +187,6 @@
         $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
         $.datepicker.setDefaults($.datepicker.regional['']);
         $.datepicker.setDefaults({
-
             buttonImageOnly: true,
             buttonImage: 'calendar.gif',
             changeMonth: true,
@@ -208,10 +207,8 @@
         };
 
 
-
-
         $('#MainDataTable_filter input').unbind();
-        $('#MainDataTable_filter input').bind('keyup', function (e) {
+        $('#MainDataTable_filter input').bind('keyup', function(e) {
             if (e.keyCode == 13) {
                 //alert(1);
                 oTable.fnFilter(this.value);
@@ -219,44 +216,41 @@
         });
 
         oTable.yadcf([
-                        {
-                            column_number: 0,
-                            filter_type: "text",
-                            filter_container_id: "mailDBid",
-                            filter_delay: 1000,
-                            filter_default_label: "Select ID"
+            {
+                column_number: 0,
+                filter_type: "text",
+                filter_container_id: "mailDBid",
+                filter_delay: 1000,
+                filter_default_label: "Select ID"
 
-                        },
-                         {
-                             column_number: 1,
-                             filter_type: "text",
-                             filter_default_label: "Mail ID",
-                             filter_delay: 1000,
-                             filter_container_id: "mailID"
-                         },
-                        {
-                            column_number: 2,
-                            filter_type: "text",
-                            filter_default_label: "mailDescription",
+            },
+            {
+                column_number: 1,
+                filter_type: "text",
+                filter_default_label: "Mail ID",
+                filter_delay: 1000,
+                filter_container_id: "mailID"
+            },
+            {
+                column_number: 2,
+                filter_type: "text",
+                filter_default_label: "mailDescription",
 
-                            filter_delay: 1000,
+                filter_delay: 1000,
 
-                            filter_delay:1000,
+                filter_delay: 1000,
 
-                            filter_container_id: "mailDescription"
+                filter_container_id: "mailDescription"
 
-                        },
-                        {
-                            column_number: 3,
-                            filter_type: "range_date",
-                            date_format: "mm/dd/yyyy",
-                            filter_delay: 500,
-                            filter_container_id: "mailDate"
-                        }
-
+            },
+            {
+                column_number: 3,
+                filter_type: "range_date",
+                date_format: "mm/dd/yyyy",
+                filter_delay: 500,
+                filter_container_id: "mailDate"
+            }
         ]);
-
-
 
 
         $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
@@ -271,7 +265,7 @@
         $(".yadcf-filter-range-date").css('background', 'black');
         $(".yadcf-filter-range-date").css('font', 'bold');
 
-        $('#ExportExcelButton').click(function () {
+        $('#ExportExcelButton').click(function() {
 
             var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
             var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
@@ -304,4 +298,5 @@
         //Make DateTime picker dropdown to work on a Modal//
 
     });
-</script>
+</script>  
+

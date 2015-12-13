@@ -1,4 +1,14 @@
 ﻿@*<h1> TelephoneRequest/PendingRequstView</h1>*@
+
+@using SignalSystem.Libs
+@using SignalSystemApp.Models.Equipment
+
+@{
+
+
+}
+
+
 <style>
     div {
         padding-bottom: 20px;
@@ -19,7 +29,6 @@
 
     <div class="row">
         <div id="table-container-div">
-
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" style="margin-left: -190px;">
@@ -29,25 +38,61 @@
                 <div class="panel-body">
 
                     <div>
+
+@*Search filter starts*@
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
+                        </div>
+                    </div>
+                    <div id="filter" style="display: none">
+                        <div class="row">
+                           @* <div class="col-xs-2">
+                                <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
+                            </div>*@
+                            <div class="col-xs-2">
+                                <div id="externalContainer"></div>
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div id="mailDBid"></div>
+                            </div><label>&nbsp;</label>
+                            <div class="col-xs-3">
+                                <div id="mailID"></div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div id="mailDescription"></div>
+                            </div><br>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5"><br>
+                                <label>Search by Complain Date:</label>
+                                <div id="mailDate"></div>
+                            </div> <br>
+                        </div>
+                    </div>
+
+                        @*Search filter ends*@
                         <table id="mytestDatatable" name="entrymytestDatatables_table" border="1" class="table table-condensed table-striped ">
 
 
                             <thead>
-                                <tr>
+                            <tr>
 
-                                    <th class="col-sm-1">BA Number</th>
-                                    <th class="col-sm-1">Name</th>
-                                    <th class="col-sm-1">Rank</th>
-                                    <th class="col-sm-1">Phone</th>
-                                    <th class="col-sm-1">Activation Date</th>
-                                    <th class="col-sm-1">Request Date</th>
-                                    <th class="col-sm-1">Home Address</th>
-                                    <th class="col-sm-1">Office Address</th>
-                                    <th class="col-sm-1">Connection Type</th>
-                                    <th class="col-sm-1">Click to Resolve</th>
+                                <th class="col-sm-1">BA Number</th>
+                                <th class="col-sm-1">Name</th>
+                                <th class="col-sm-1">Rank</th>
+                                <th class="col-sm-1">Phone</th>
+                                <th class="col-sm-1">Activation Date</th>
+                                <th class="col-sm-1">Request Date</th>
+                                <th class="col-sm-1">Home Address</th>
+                                <th class="col-sm-1">Office Address</th>
+                                <th class="col-sm-1">Connection Type</th>
+                                <th class="col-sm-1">Click to Resolve</th>
 
 
-                                </tr>
+                            </tr>
                             </thead>
 
                             <tr>
@@ -93,13 +138,13 @@
                             <label class="col-xs-4 control-label">Resolved By</label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="resolvedBy" name="resolvedBy" />
-                            </div></br>
+                            </div><br>
                         </div>
                         <div>
                             <label class="col-xs-4 control-label">Action Taken</label>
                             <div class="col-xs-5">
                                 <textarea type="text" class="form-control" id="actionTaken" name="actionTaken"></textarea>
-                            </div></br>
+                            </div><br>
                         </div>
                     </div>
                 </div>
@@ -119,4 +164,142 @@
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
 
-}
+} 
+
+
+<script>
+
+
+    $(document).ready(function() {
+
+        var oTable = $('#MainDataTable').dataTable({
+            "order": [[3, "asc"]],
+            "sAjaxSource": "/Mail/DataProviderAction",
+            "bLengthChange": true,
+            dom: 'l<>Bfrtip',
+            "bServerSide": true,
+            "fnRowCallback":
+                function(nRow, aData, iDisplayIndex) {
+                    return nRow;
+                },
+
+
+        });
+
+
+        $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        $.datepicker.setDefaults({
+            buttonImageOnly: true,
+            buttonImage: 'calendar.gif',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:3000',
+
+
+            showWeek: true,
+            weekHeader: "Wk",
+            autoSize: true
+
+
+        });
+
+        var datepickerDefaults = {
+            showTodayButton: true,
+            showClear: true
+        };
+
+
+        $('#MainDataTable_filter input').unbind();
+        $('#MainDataTable_filter input').bind('keyup', function(e) {
+            if (e.keyCode == 13) {
+                //alert(1);
+                oTable.fnFilter(this.value);
+            }
+        });
+
+        oTable.yadcf([
+            {
+                column_number: 0,
+                filter_type: "text",
+                filter_container_id: "mailDBid",
+                filter_delay: 1000,
+                filter_default_label: "Select ID"
+
+            },
+            {
+                column_number: 1,
+                filter_type: "text",
+                filter_default_label: "Mail ID",
+                filter_delay: 1000,
+                filter_container_id: "mailID"
+            },
+            {
+                column_number: 2,
+                filter_type: "text",
+                filter_default_label: "mailDescription",
+
+                filter_delay: 1000,
+
+                filter_delay: 1000,
+
+                filter_container_id: "mailDescription"
+
+            },
+            {
+                column_number: 3,
+                filter_type: "range_date",
+                date_format: "mm/dd/yyyy",
+                filter_delay: 500,
+                filter_container_id: "mailDate"
+            }
+        ]);
+
+
+        $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+
+
+        $().tooltip({
+            template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+
+
+        $(".yadcf-filter").css('background', 'black');
+        $(".yadcf-filter-range-date").css('background', 'black');
+        $(".yadcf-filter-range-date").css('font', 'bold');
+
+        $('#ExportExcelButton').click(function() {
+
+            var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
+            var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
+            var name = $('#yadcf-filter--MainDataTable-1').val();
+            var phone = $('#yadcf-filter--MainDataTable-3').val();
+            var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
+            var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
+            var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+            var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+            var overAllSearch = $("#MainDataTable_filter :input").val();
+
+            window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=pending";
+        });
+
+
+        var tableWidth = $('#MainDataTable').width() + 25;
+
+        //document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+
+        //Make DateTime picker dropdown to work on a Modal//
+        //var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+        //$.fn.modal.Constructor.prototype.enforceFocus = function () { };
+
+        //$confModal.on('hidden', function () {
+        //    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+        //});
+
+        //$confModal.modal({ backdrop: false });
+        //Make DateTime picker dropdown to work on a Modal//
+
+    });
+</script>  
+
