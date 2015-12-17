@@ -359,44 +359,57 @@ public class TelephoneComplain
         public Dictionary<string, string> GetUserInfo(string telephoneNumber)
         {
             Dictionary<string,string> aDictionary = new Dictionary<string, string>();
-            string query =
-                "select telephoneUsers.Id,telephoneUsers.BANumber,telephoneUsers.Name,telephoneUsers.NewPhoneNumber," +
-                "telephoneUsers.Address,menusrank.Value,telephoneUsers.Status from telephoneUsers,menusrank " +
-                "where telephoneusers.RankId = menusrank.id and telephoneUsers.Status='Connected' and " +
-                "telephoneUsers.NewPhoneNumber=@NewPhoneNumber;";
+
+            string query = "select api.ID as AllPhoneInfoID,api.PhoneNumber,pupi.ID as " +
+                           "PhoneUserPersoanlInfoID,pupi.BANumber,pupi.FullName,mr.Value as Rank,aapi.PhoneUsedFor," +
+                           "aapi.HomeAddress,aapi.OfficeAddress from  allphoneinfo as api left join allactivephoneinfo " +
+                           "as aapi on aapi.AllPhoneInfoID=api.ID left join phoneuserpersonalinfo as pupi on pupi.ID=aapi.PhoneUserPersonalInfoId  " +
+                           "left join menusrank as mr on mr.id=pupi.RankId  where api.ServiceStatus='Active' " +
+                           "and api.PhoneNumber=@PhoneNumber";
+         
             Hashtable hashtable = new Hashtable()
             {
-                {"NewPhoneNumber",telephoneNumber}
+                {"PhoneNumber",telephoneNumber}
             };
 
             DataSet aSet = aGateway.Select(query, hashtable);
             foreach (DataRow dataRow in aSet.Tables[0].Rows)
             {
-                aDictionary.Add("ID", dataRow["Id"].ToString());
-                aDictionary.Add("Name", dataRow["Name"].ToString());
+                aDictionary.Add("AllPhoneInfoID", dataRow["AllPhoneInfoID"].ToString());
+                aDictionary.Add("PhoneNumber", dataRow["PhoneNumber"].ToString());
                 aDictionary.Add("BANumber", dataRow["BANumber"].ToString());
-                aDictionary.Add("NewPhoneNumber", dataRow["NewPhoneNumber"].ToString());
-                aDictionary.Add("Address", dataRow["Address"].ToString());
-                aDictionary.Add("Rank", dataRow["Value"].ToString());
-                
+                aDictionary.Add("FullName", dataRow["FullName"].ToString());
+                aDictionary.Add("PhoneUserPersoanlInfoID", dataRow["PhoneUserPersoanlInfoID"].ToString());
+
+                aDictionary.Add("Rank", dataRow["Rank"].ToString()); 
+                if (dataRow["PhoneUsedFor"].ToString().ToLower() == "home")
+                {
+                    aDictionary.Add("Address", dataRow["HomeAddress"].ToString());
+                }
+                else
+                {
+                    aDictionary.Add("Address", dataRow["OfficeAddress"].ToString());
+                }  
             }
             return aDictionary;
         }
 
-        public bool SubmitNewComplain(string userId, string description, string complainTypeId)
+        public bool SubmitNewComplain(string phoneUserInfoId, string allPhoneInfoID, string description, string complainTypeId)
         {
             string nonQuery =
                 "INSERT INTO `signalappdb`.`complains` (`Description`, `Status`, " +
-                "`TelephoneUserId`, `MenuComplainTypeId`,`ComplainDate`) " +
-                "VALUES (@Description, @Status, @UserId, @MenuComplainTypeId,@ComplainDate);";
+                "`TelephoneUserId`, `MenuComplainTypeId`,`ComplainDate`,`AllPhoneInfoID`) " +
+                "VALUES (@Description, @Status, @UserId, @MenuComplainTypeId,@ComplainDate,@AllPhoneInfoID);";
 
             Hashtable aHashtable = new Hashtable()
             {
                 {"Description",description},
                 {"Status", "Pending"},
-                {"UserId",userId},
+                {"UserId",phoneUserInfoId},
                 {"MenuComplainTypeId",complainTypeId},
-                {"ComplainDate",DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}
+                {"ComplainDate",DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")},
+                {"AllPhoneInfoID",allPhoneInfoID}
+
 
             };
             aGateway.Insert(nonQuery, aHashtable);

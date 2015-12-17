@@ -47,12 +47,15 @@ namespace SignalSystemApp.Controllers
                 ViewData["Message"] = "Error! Telephone Number Not in use....";
                 return View("NewComplain");
             }
-            ViewData["ID"] = userInfo["ID"];
-            ViewData["Name"] = userInfo["Name"];
+            ViewData["AllPhoneInfoID"] = userInfo["AllPhoneInfoID"];
+            ViewData["PhoneNumber"] = userInfo["PhoneNumber"];
             ViewData["BANumber"] = userInfo["BANumber"];
-            ViewData["TelephoneNumber"] = userInfo["NewPhoneNumber"];
-            ViewData["Address"] = userInfo["Address"];
+         
+            ViewData["FullName"] = userInfo["FullName"];
+            ViewData["PhoneUserPersoanlInfoID"] = userInfo["PhoneUserPersoanlInfoID"];
             ViewData["Rank"] = userInfo["Rank"];
+            ViewData["Address"] = userInfo["Address"];
+
 
 
             ViewData["Message"] = "Searched Result";
@@ -63,13 +66,15 @@ namespace SignalSystemApp.Controllers
         public ActionResult SubmitComplains()
         {
 
-            string userId = Request["userId"].ToString();
+            string phoneUserInfoId = Request["phoneUserInfoId"].ToString();
+            string allPhoneInfoID = Request["allPhoneInfoID"].ToString();
+
 
             string complainTypeId = Request["type"].ToString();
             string description = Request["description"].ToString();
 
             Telephone aTelephone = new Telephone();
-            bool success = aTelephone.SubmitNewComplain(userId, description, complainTypeId);
+            bool success = aTelephone.SubmitNewComplain(phoneUserInfoId, allPhoneInfoID, description, complainTypeId);
 
 
             ViewData["Message"] = "Submitted Complains";

@@ -16,12 +16,27 @@
     }
 
 
+
+
+
+    string allPhoneInfoID = string.Empty;
     string baNumber = string.Empty;
     string name = string.Empty;
     string telephoneNumber = string.Empty;
     string rank = string.Empty;
     string address = string.Empty;
     string date = DateTime.Now.ToString("yyyy-MM-dd");
+    string phoneUserInfoId = string.Empty;
+
+
+    if (ViewData["AllPhoneInfoID"] != null)
+    {
+        allPhoneInfoID = ViewData["AllPhoneInfoID"].ToString();
+    }
+    if (ViewData["PhoneUserPersoanlInfoID"] != null)
+    {
+        phoneUserInfoId = ViewData["PhoneUserPersoanlInfoID"].ToString();
+    }
 
 
     if (ViewData["BANumber"] != null)
@@ -29,14 +44,14 @@
         baNumber = ViewData["BANumber"].ToString();
     }
     
-    if (ViewData["Name"] != null)
+    if (ViewData["FullName"] != null)
     {
-        name = ViewData["Name"].ToString();
+        name = ViewData["FullName"].ToString();
     }
 
-    if (ViewData["TelephoneNumber"] != null)
+    if (ViewData["PhoneNumber"] != null)
     {
-        telephoneNumber = ViewData["TelephoneNumber"].ToString();
+        telephoneNumber = ViewData["PhoneNumber"].ToString();
     }
 
     if (ViewData["Rank"] != null)
@@ -49,11 +64,11 @@
         address = ViewData["Address"].ToString();
     }
 
-    string userId = string.Empty;
+   @* string userId = string.Empty;
     if (ViewData["ID"] != null)
     {
         userId = ViewData["ID"].ToString();
-    }
+    }*@
     
 
     string message = string.Empty;
@@ -112,19 +127,21 @@
             <div class="panel-body">
                 <form method="post" action="@submitComplainAction">
                     <div id="shieldui-grid1">
-                        <label>BA Number:&nbsp</label> @baNumber</br>
-                        <input type="hidden" name="userId" value="@userId">
-                        <label>Name:&nbsp</label><span name="name"> @name</span></br>
-                        <label>Telephone Number:&nbsp</label>@telephoneNumber</br>
-                        <label>Rank:&nbsp</label>@rank</br>
-                        <label>Address:&nbsp</label>@address</br>
+                        <label>BA Number:&nbsp</label> @baNumber<br>
+                        <input type="hidden" name="phoneUserInfoId" value="@phoneUserInfoId">
+                        <input type="hidden" name="allPhoneInfoID" value="@allPhoneInfoID">
+
+                        <label>Name:&nbsp</label><span name="name"> @name</span><br>
+                        <label>Telephone Number:&nbsp</label>@telephoneNumber<br>
+                        <label>Rank:&nbsp</label>@rank<br>
+                        <label>Address:&nbsp</label>@address<br>
                         <div class="row">
                             <div class="col-md-10">
                                 <label>Complain Type:</label><select class="form-control " name="type" width="180px">
                                     <option>--Please Select--</option>
                                     @Html.Raw(complainDropdown)
                                 </select>
-                            </div></br>
+                            </div><br>
                             <div class="col-md-1">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i></button>
                             </div>                        

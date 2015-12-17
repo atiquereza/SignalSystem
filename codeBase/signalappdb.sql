@@ -47,31 +47,6 @@ INSERT INTO `allactivephoneinfo` (`ID`, `PhoneUserPersonalInfoId`, `AllPhoneInfo
 /*!40000 ALTER TABLE `allactivephoneinfo` ENABLE KEYS */;
 
 
--- Dumping structure for table signalappdb.allhistoryphoneinfono_need_this
-DROP TABLE IF EXISTS `allhistoryphoneinfono_need_this`;
-CREATE TABLE IF NOT EXISTS `allhistoryphoneinfono_need_this` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `FullName` text NOT NULL,
-  `BANumber` varchar(100) NOT NULL,
-  `Rank` varchar(200) NOT NULL,
-  `Appointment` varchar(100) NOT NULL,
-  `Address` text NOT NULL,
-  `PhoneNumber` varchar(100) NOT NULL,
-  `ConnectionLetterNo` varchar(200) NOT NULL,
-  `TerminationLetterNo` varchar(200) NOT NULL,
-  `HomeAddress` text NOT NULL,
-  `OfficeAddress` text NOT NULL,
-  `ConnectionDate` date NOT NULL,
-  `TerminationDate` date NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table signalappdb.allhistoryphoneinfono_need_this: ~0 rows (approximately)
-DELETE FROM `allhistoryphoneinfono_need_this`;
-/*!40000 ALTER TABLE `allhistoryphoneinfono_need_this` DISABLE KEYS */;
-/*!40000 ALTER TABLE `allhistoryphoneinfono_need_this` ENABLE KEYS */;
-
-
 -- Dumping structure for table signalappdb.allphoneinfo
 DROP TABLE IF EXISTS `allphoneinfo`;
 CREATE TABLE IF NOT EXISTS `allphoneinfo` (
@@ -165,66 +140,27 @@ CREATE TABLE IF NOT EXISTS `complains` (
   `Description` text NOT NULL,
   `Status` varchar(50) NOT NULL,
   `MenuComplainTypeId` int(11) NOT NULL,
-  `TelephoneUserId` int(11) NOT NULL,
+  `TelephoneUserId` bigint(20) NOT NULL,
   `ComplainDate` datetime NOT NULL,
   `ResolvedDate` datetime NOT NULL,
   `Remarks` text NOT NULL,
   `ActionTaken` text NOT NULL,
   `ResolvedBy` text NOT NULL,
+  `AllPhoneInfoID` int(11) NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `MenuComplainTypeId` (`MenuComplainTypeId`),
   KEY `TelephoneUserId` (`TelephoneUserId`),
-  CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
-  CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `telephoneusers` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
+  KEY `FK_complains_allphoneinfo` (`AllPhoneInfoID`),
+  CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `phoneuserpersonalinfo` (`ID`),
+  CONSTRAINT `FK_complains_allphoneinfo` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
+  CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.complains: ~43 rows (approximately)
+-- Dumping data for table signalappdb.complains: ~1 rows (approximately)
 DELETE FROM `complains`;
 /*!40000 ALTER TABLE `complains` DISABLE KEYS */;
-INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`) VALUES
-	(8, 'asdfasdf', 'Resolved', 2, 3, '2015-11-07 14:33:27', '2015-11-23 11:43:00', 'N/A', 'Cable changed', 'jubayer'),
-	(9, 'Bad kotha', 'Resolve', 3, 4, '2015-11-07 14:35:37', '2015-11-08 14:35:37', '', 'Changed Line', 'Habib'),
-	(10, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(11, 'hhjjklllfgfgfg helloooo', 'Resolved', 3, 3, '2015-09-17 17:17:04', '2015-11-23 11:25:00', '', 'gghhuujj', 'Habib'),
-	(12, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(18, 'asdfasdf', 'Resolved', 3, 3, '2015-11-07 14:33:27', '2015-11-23 12:11:00', 'No Issue', 'Solved it', 'jubayer'),
-	(36, 'bnbnbmbn', 'Resolved', 4, 5, '2015-11-13 05:47:53', '2015-11-21 16:16:00', '', 'Wire changed', 'Habib'),
-	(39, 'New Connection Activation', 'Resolved', 5, 9, '2015-11-23 16:57:02', '2015-11-23 16:57:07', 'Addition Remark', 'Connection Provided', 'Atique'),
-	(40, 'New Connection Activation', 'Resolved', 5, 12, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Checking Done', 'Connection Provided', 'jubayer'),
-	(41, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-11-21 13:50:00', 'Some remarks', '', 'Habib'),
-	(42, 'asdfasdf', 'Pending', 2, 3, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
-	(43, 'Bad kotha', 'Resolve', 3, 4, '2015-11-07 14:35:37', '2015-11-08 14:35:37', '', 'Changed Line', 'Habib'),
-	(44, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(45, 'hhjjklll', 'Resolved', 1, 3, '2015-09-17 17:17:04', '2015-11-24 20:28:00', 'asdf', 'fasdf', 'jubayer'),
-	(46, 'bnbnbmbn', 'Pending', 3, 4, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(47, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(48, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(49, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(50, 'bnbnbmbn', 'Pending', 4, 13, '2015-11-13 05:47:53', '2015-11-13 05:47:56', '', '', ''),
-	(51, 'bnbnbmbn', 'Resolved', 4, 13, '2015-11-13 05:47:53', '2015-11-21 03:46:00', '', 'jhhjh', 'Habib'),
-	(52, 'asdfasdf', 'Pending', 2, 3, '2015-11-07 14:33:27', '0000-00-00 00:00:00', '', '', ''),
-	(53, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-11-20 22:19:00', 'Some remarks', 'Phone Ste Changed', 'Habib'),
-	(54, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(55, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(56, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(57, 'Unclear sound, bad voice quality, Silent Call, noise', 'Resolved', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(58, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(59, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(60, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(61, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(62, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(63, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(64, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(65, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(66, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(67, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(68, 'Unclear sound, bad voice quality, Silent Call, noise', 'Pending', 3, 13, '2015-10-17 17:17:04', '2015-10-17 23:17:04', 'Some remarks', ' Some ActionTaken', 'Habib'),
-	(69, 'bnbnbmbn', 'Resolved', 4, 5, '2015-11-13 05:47:53', '2015-11-21 16:16:00', '', 'Wire changed', 'Habib'),
-	(70, 'cannot hear', 'Resolved', 2, 13, '2015-11-16 05:20:01', '0000-00-00 00:00:00', '', 'can hear now', 'Habib'),
-	(71, 'Stolen by Zahurul', 'Pending', 7, 13, '2015-11-24 16:26:53', '0000-00-00 00:00:00', '', '', ''),
-	(72, 'Disconnected', 'Pending', 1, 13, '2015-11-24 16:30:38', '0000-00-00 00:00:00', '', '', ''),
-	(73, 'New Connection Activation', 'Resolved', 5, 10, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'temp', 'Connection Provided', 'jubayer'),
-	(74, 'tesw', 'Pending', 2, 13, '2015-11-24 20:28:01', '0000-00-00 00:00:00', '', '', '');
+INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`, `AllPhoneInfoID`) VALUES
+	(76, 'Test unclear sound', 'Pending', 2, 4, '2015-12-17 23:07:26', '0000-00-00 00:00:00', '', '', '', 3);
 /*!40000 ALTER TABLE `complains` ENABLE KEYS */;
 
 
