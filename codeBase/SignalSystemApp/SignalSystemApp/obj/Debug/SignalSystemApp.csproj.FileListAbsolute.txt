@@ -210,3 +210,4 @@ D:\GitZ\SignalCore_BangladeshArmy\SignalSystem\SignalSystem\codeBase\SignalSyste
 D:\GitZ\SignalCore_BangladeshArmy\SignalSystem\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\obj\Debug\SignalSystemApp.dll
 D:\GitZ\SignalCore_BangladeshArmy\SignalSystem\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\obj\Debug\SignalSystemApp.pdb
 D:\GitZ\SignalSystem\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\bin\Newtonsoft.Json.dll
+G:\Projects\BinaryFarmers\SignalSystem\codeBase\SignalSystemApp\SignalSystemApp\bin\MySql.Data.dll

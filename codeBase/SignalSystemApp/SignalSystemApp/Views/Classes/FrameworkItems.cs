@@ -5,6 +5,7 @@ using System.Web;
 using SignalSystem.Libs;
 using System.Data;
 using SignalSystem.Libs;
+using SignalSystemApp.Models.Mail;
 
 namespace SignalSystemApp.Views.Classes
 {
@@ -97,6 +98,24 @@ namespace SignalSystemApp.Views.Classes
             }
 
             return ranks;
+        }
+
+        public static List<Station> GetLocations()
+        {
+            List<Station> aList = new List<Station>();
+            DBGateway aGateway = new DBGateway();
+            DataSet aSet = aGateway.Select("select * from stations;");
+
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                Station aData = new Station();
+                aData.ID = dataRow["ID"].ToString();
+                aData.Name = (dataRow["Name"].ToString());
+                aData.Address = dataRow["Address"].ToString();
+
+                aList.Add(aData);
+            }
+            return aList;
         }
     
     }

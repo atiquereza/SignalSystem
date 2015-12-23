@@ -63,15 +63,24 @@
                                 </div>
 
                                 <div class="col-xs-2">
-                                    <div id="address"></div>
-                                </div>                            
+                                    <div id="homeAddress"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="officeAddress"></div>
+                                </div> 
                             </div></br>
                             <div class="row">
                                 <div class="col-xs-2">
                                     <div id="gender"></div>
                                 </div>
+                                <div class="col-xs-4">
+                                    <div id="connectedDate"></div>
+                                </div>
                                 <div class="col-xs-2">
-                                    <div id="phoneStatus"></div>
+                                    <div id="phoneType"></div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div id="phonestatus"></div>
                                 </div>
 
                             </div><br/>
@@ -88,11 +97,12 @@
                                     <th class="col-sm-1">Name</th>
                                     <th class="col-sm-1">Rank</th>
                                     <th class="col-sm-1">Phone</th>
-                                    <th class="col-sm-2">Address</th>
+                                    <th class="col-sm-1">Phone Type</th>
+                                    <th class="col-sm-2">Home Address</th>
+                                    <th class="col-sm-2">Office Address</th>
                                     <th class="col-sm-1">Gender</th>
-                                    <th class="col-sm-1">Status</th>
                                     <th class="col-sm-1">Connected Date</th>
-                                    <th class="col-sm-1">Change Status</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -413,21 +423,21 @@
            
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
-            "bServerSide":true,
-            "fnRowCallback":
-                function (nRow, aData, iDisplayIndex) {
+            "bServerSide":true
+            //"fnRowCallback":
+            //    function (nRow, aData, iDisplayIndex) {
 
-                    if (aData[6] == "Disconnected"){
-                        $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Connect_Edit" name="ConnectEntry" class="ConnectEntry btn btn-xs btn-success">Connect/Edit</span></button>');
+            //        if (aData[6] == "Disconnected"){
+            //            $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Connect_Edit" name="ConnectEntry" class="ConnectEntry btn btn-xs btn-success">Connect/Edit</span></button>');
                     
-                    }
-                    if (aData[6] == "Connected") {
-                        $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Disconnect_Edit" name="DisconnectEntry" class="DisconnectEntry btn btn-xs btn-danger">Disonnect/Edit</span></button>');
+            //        }
+            //        if (aData[6] == "Connected") {
+            //            $('td:eq(8)', nRow).html('<button phoneUser_id=' + aData[9] + ' type="button" data-toggle="modal" data-target="#Disconnect_Edit" name="DisconnectEntry" class="DisconnectEntry btn btn-xs btn-danger">Disonnect/Edit</span></button>');
                     
-                    }
+            //        }
 
-                    return nRow;
-                }
+            //        return nRow;
+            //    }
 
 
         });
@@ -469,26 +479,43 @@
                         {
                             column_number: 4,
                             filter_type: "text",
-                            filter_default_label: "Search Address",
-                           
-                            
+                            filter_default_label: "Phone Type",
                             filter_delay: 500,
-                            filter_container_id: "address"
+                            filter_container_id: "phoneType"
+                        },
+                        {
+                            column_number: 5,
+                            filter_type: "text",
+                            filter_default_label: "Home Address",
+                           filter_delay: 500,
+                            filter_container_id: "homeAddress"
+                        },
+                        {
+                            column_number: 6,
+                            filter_type: "text",
+                            filter_default_label: "Office Address",
+
+
+                            filter_delay: 500,
+                            filter_container_id: "officeAddress"
                         },
 
                         {
-                            column_number: 5,
+                            column_number: 7,
                             filter_type: "select",
                             filter_container_id: "gender",
                             filter_default_label: "Select Gender"
 
                         },
+                   
                         {
-                            column_number: 6,
-                            filter_type: "select",
-                           
-                            filter_default_label: "Select Status",
-                            filter_container_id: "phoneStatus"
+                            column_number: 8,
+                            filter_type: "range_date",
+                            //datepicker_type: 'bootstrap-datetimepicker',
+                            date_format: "mm/dd/yyyy",
+                            //filter_plugin_options: datepickerDefaults,
+                            filter_delay: 500,
+                            filter_container_id: "connectedDate"
                         }
                    
         ]);

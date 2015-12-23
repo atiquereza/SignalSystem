@@ -421,6 +421,15 @@
 
     $(document).ready(function () {
 
+        function refresh() {
+           
+                window.location.reload(true);
+         
+        }
+        //setTimeout("refresh()", 30000);
+        //setTimeout(refresh(), 30000);
+        // setInterval(page_refresh,30000);
+        setInterval(function () { window.location.reload(true); }, 60000);
         $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
         $.datepicker.setDefaults($.datepicker.regional['']);
         $.datepicker.setDefaults({
@@ -681,7 +690,10 @@
         var name = $('#yadcf-filter--mytestDatatable-1').val();
         var phone = $('#yadcf-filter--mytestDatatable-3').val();
         var rank = $("#yadcf-filter--mytestDatatable-2 option:selected").text();
-        var complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
+        var complainType = "";
+        if ($("#yadcf-filter--mytestDatatable-5").val() != "-1") {
+            complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
+        }
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var overAllSearch=$("#mytestDatatable_filter :input").val();

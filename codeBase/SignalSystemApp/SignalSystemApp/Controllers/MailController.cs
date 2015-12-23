@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,15 +27,38 @@ namespace SignalSystemApp.Controllers
             {
                 string mailId = Request["mailId"].ToString();
                 string mailDescription = Request["mailDescription"].ToString();
+                string dateArrival = Request["dateArrival"].ToString();
+                string dateDepurture = Request["dateDepurture"].ToString();
+                string mailFrom = Request["mailFrom"].ToString();
+                string mailTo = Request["mailTo"].ToString();
 
-                if (mailId.Trim().Length == 0 || mailDescription.Trim().Length == 0)
+                if (mailId.Trim().Length == 0 || mailDescription.Trim().Length == 0 || dateDepurture.Length == 0 || dateArrival.Length == 0 || mailFrom=="-1" || mailTo=="-1")
                 {
-                    ViewData["message"] = "Error! Fields shold not be empty.";
+                    ViewData["message"] = "Error! Fields should not be empty.";
                     return View("Index");
                 }
+                
 
+                MailData aMailData = new MailData();
                 Mail aMail = new Mail();
-                string message = aMail.AddNewMail(mailId.Trim(), mailDescription.Trim());
+                if (!aMail.CheckMailID(mailId))
+                {
+                    ViewData["message"] = "Error! Mail ID should Be Unique";
+                    return View("Index");
+                }
+                aMailData.MailID = mailId;
+                aMailData.MailDescription = mailDescription;
+                aMailData.MailFrom = mailFrom;
+                aMailData.MailTo = mailTo;
+              //  DateTime dateValue = DateTime.Parse(dateArrival);
+                //DateTime dateValue = Convert.ToDateTime(dateArrival);
+                DateTime dt = DateTime.ParseExact(dateArrival, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+               
+                aMailData.MailArrival = dt;
+                dt = DateTime.ParseExact(dateDepurture, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                //dateValue = Convert.ToDateTime(dateDepurture);
+                aMailData.MailDeparture = dt;
+                string message = aMail.AddNewMail(aMailData);
                 ViewData["message"] = message;
                 return View("Index");
             }
@@ -66,7 +90,7 @@ namespace SignalSystemApp.Controllers
                     aMailData.ID,
                     aMailData.MailID,
                     aMailData.MailDescription,
-                    aMailData.MailDate.ToString("dd-MM-yyyy").ToString()
+                    aMailData.MailArrival.ToString("dd-MM-yyyy").ToString()
 
                 };
 

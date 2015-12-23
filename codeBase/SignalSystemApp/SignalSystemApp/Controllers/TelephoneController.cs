@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SignalSystem.Libs;
+using SignalSystemApp.Libs;
 //using SignalSystemApp.Libs;
 using SignalSystemApp.Models;
 using SignalSystemApp.Models.Telephone;
@@ -127,11 +128,7 @@ namespace SignalSystemApp.Controllers
 
         public ActionResult PendingComplains()
         {
-            Telephone telephone = new Telephone();
-
-            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
-            pendingComplains = telephone.GetPendingComplains();
-            ViewData["PendingComplains"] = pendingComplains;
+         
             return View();
         }
 
@@ -160,7 +157,19 @@ namespace SignalSystemApp.Controllers
         {
             List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
 
-            List<TelephoneComplain> aTelephoneComplainList = Telephone.GetTelephoneComplain(id);
+            List<TelephoneComplain> aTelephoneComplainList = Telephone.GetTelephoneComplain(id,"pending");
+
+
+            return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        public ActionResult GetSingleResolvedComplainData(string id)
+        {
+            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+
+            List<TelephoneComplain> aTelephoneComplainList = Telephone.GetTelephoneComplain(id,"resolved");
 
 
             return Json(aTelephoneComplainList, JsonRequestBehavior.AllowGet);
@@ -245,7 +254,8 @@ namespace SignalSystemApp.Controllers
                     string a1 = dateFilter.Replace("-yadcf_delim-", "~");
                     //Split date range filters with ~
                     fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
-                    toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]);
+                    toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]).AddHours(23.99);
+                   // toDate = toDate.AddHours(23.99);
                 }
             }
             else if (hourlyFilter.Trim() == "Last 12 Hour Data")
@@ -260,25 +270,12 @@ namespace SignalSystemApp.Controllers
                 fromDate = DateTime.Now.AddHours(-24.5);
             }
 
-            Telephone aTelephone = new Telephone();
-            List<TelephoneComplain> complanList = aTelephone.GetVariousComplainList("pending");
+            FilteredLists filteredComplaneList = Telephone.GetFilteredComplaneList(sSearch, banumberFilter,
+                phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate, aModel.iDisplayStart, aModel.iDisplayLength, aModel.sSortDir_0, aModel.iSortCol_0);
 
+          
 
-
-
-            List<TelephoneComplain> filteredComplaneList = Telephone.GetFilteredComplaneList(sSearch, complanList, banumberFilter,
-                phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
-
-            //SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
-
-
-
-
-            List<TelephoneComplain> displayedCompanies =
-                filteredComplaneList.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
-
-
-            var result = from c in displayedCompanies
+            var result = from c in filteredComplaneList.aComplainList
                 select new[]
                 {
 
@@ -293,41 +290,16 @@ namespace SignalSystemApp.Controllers
                     Convert.ToString(c.ComplainId)
                 };
             List<string[]> resultList = result.ToList();
-            List<string> aRankList = new List<string>();
-            List<string> banumberList = new List<string>();
-            List<string> complainTypeList = new List<string>();
-
-
-            foreach (TelephoneComplain a1 in complanList)
-            {
-                if (!aRankList.Contains(a1.Rank))
-                {
-                    aRankList.Add(a1.Rank);
-                }
-                if (!banumberList.Contains(a1.BANumber))
-                {
-                    banumberList.Add(a1.BANumber);
-
-                }
-                if (!complainTypeList.Contains(a1.ComplainType))
-                {
-                    complainTypeList.Add(a1.ComplainType);
-                }
-
-            }
-
-
-
-
+          
             return Json(new
             {
                 sEcho = aModel.sEcho,
-                yadcf_data_0 = banumberList,
-                yadcf_data_2 = aRankList,
-                yadcf_data_5 = complainTypeList,
+                yadcf_data_0 = filteredComplaneList.BaNumberList,
+                yadcf_data_2 = filteredComplaneList.RankList,
+                yadcf_data_5 = filteredComplaneList.ComplainTypeList,
 
-                iTotalRecords = complanList.Count(),
-                iTotalDisplayRecords = filteredComplaneList.Count(),
+                iTotalRecords = filteredComplaneList.TotalSize,
+                iTotalDisplayRecords = filteredComplaneList.FilteredSize,
                 aaData = resultList
             },
                 JsonRequestBehavior.AllowGet);
@@ -341,53 +313,7 @@ namespace SignalSystemApp.Controllers
         }
 
 
-        public List<TelphoneUser> GetFilteredPhoneList(string sSearch, List<TelphoneUser> phoneUserList,
-            string banumberFilter, string phoneFilter,string nameFilter, string rankFilter, string addressFilter,string genderFilter,string statusFilter, DateTime fromDate, DateTime toDate)
-        {
-            List<TelphoneUser> searchedPhones;
 
-            sSearch = sSearch.Trim();
-
-            if ((sSearch == ""))
-            {
-                searchedPhones = phoneUserList;
-            }
-            else
-            {
-                searchedPhones =
-                    phoneUserList.Where(c => c.BANumber.ToLower().Contains(sSearch.ToLower())
-                                           || c.Rank.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Name.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.NewPhoneNumber.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Gender.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.PhoneStatus.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Address.ToLower().Contains(sSearch.ToLower())).ToList();
-            }
-
-
-            var filteredPhones = searchedPhones
-                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.ToLower())
-                            &&
-                            (phoneFilter == "" || c.NewPhoneNumber.Trim().ToLower().Contains(phoneFilter))
-                            &&
-                            (nameFilter == "" || c.Name.Trim().ToLower().Contains(nameFilter.ToLower()))
-                            &&
-                            (rankFilter == "" || c.Rank.Trim().ToLower() == rankFilter.ToLower())
-                            &&
-                            (addressFilter == "" || c.Address.Trim().ToLower().Contains(addressFilter.ToLower()))
-                            &&
-                              (genderFilter == "" || c.Gender.Trim().ToLower() == genderFilter.ToLower())
-                            &&
-                              (statusFilter == "" || c.PhoneStatus.Trim().ToLower() == statusFilter.Trim().ToLower())
-                            //&&
-
-                            //(fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ConnectedDate))
-                            //&&
-                            //(toDate == DateTime.MaxValue || Convert.ToDateTime(c.ConnectedDate) < toDate)
-                );
-            List<TelphoneUser> filteredPhoneList = filteredPhones.ToList();
-            return filteredPhoneList;
-        }
 
 
 
@@ -419,10 +345,7 @@ namespace SignalSystemApp.Controllers
             }
 
             string a1 = baNumber + rank + complainType;
-            Telephone aTelephone = new Telephone();
-            List<TelephoneComplain> complainList = aTelephone.GetVariousComplainList(status);
-            
-
+          
             DateTime fromDate = DateTime.MinValue;
             DateTime toDate = DateTime.MaxValue;
             int fromLength = fromDateRange.Length;
@@ -463,57 +386,15 @@ namespace SignalSystemApp.Controllers
                 fromDate = DateTime.Now.AddHours(-24.5);
             }
 
-            List<TelephoneComplain> filteredComplainsList = Telephone.GetFilteredComplaneList(overAllSearch, complainList,
+            FilteredLists filteredComplainsList = Telephone.GetFilteredComplaneList(overAllSearch,
                 baNumber.Trim(), phone.Trim(), name.Trim(),
-                rank.Trim(), complainType.Trim(), fromDate, toDate);
+                rank.Trim(), complainType.Trim(), fromDate, toDate, 0, 9551615, "desc", 4);
 
-            if (filteredComplainsList.Count > 0)
+            if (filteredComplainsList.aComplainList.Count > 0)
             {
-
-                DateTime dt = DateTime.Now;
-                DateTime dDate = DateTime.Now;
-                string[] sDate = dDate.ToString().Split(' ');
-                string time = dt.ToString("hh:mm");
-
-
-                GridView aGridView = new GridView();
-                aGridView.DataSource = filteredComplainsList;
-                aGridView.DataBind();
-
-
-                foreach (TableCell cell in aGridView.HeaderRow.Cells)
-                {
-                    cell.BackColor = Color.Cornsilk;
-                }
-
-                foreach (GridViewRow row in aGridView.Rows)
-                {
-                    // row.BackColor = Color.White;
-                    foreach (TableCell cell in row.Cells)
-                    {
-                        if (row.RowIndex%2 == 0)
-                        {
-                            cell.BackColor = Color.Gainsboro;
-                        }
-                        else
-                        {
-                            cell.BackColor = Color.GhostWhite;
-                        }
-                        cell.CssClass = "textmode";
-                    }
-                }
-
-                Response.ClearContent();
-                Response.AddHeader("content-disposition",
-                    "attachment;filename=PendingTelephoneComplain_" + sDate[0] + "_" + sDate[1] + sDate[2] + ".xls");
-                Response.ContentType = "application/excel";
-                StringWriter swr = new StringWriter();
-                HtmlTextWriter tw = new HtmlTextWriter(swr);
-                aGridView.RenderControl(tw);
-                Response.Write(swr.ToString());
-
-                Response.End();
+                ExcelWriter.ExcelGenerator(filteredComplainsList.aComplainList);
             }
+
             return null;
         }
 
@@ -527,13 +408,8 @@ namespace SignalSystemApp.Controllers
                     "BANumber", "Name", "Rank", "NewPhoneNumber", "ComplainDate", "ComplainType", "ResolveBy",
                     "ResolvedDate", "ActionTaken", "Remarks"
                 });
-
-
-
             var banumberFilter = Convert.ToString(Request["sSearch_0"]);
             var nameFilter = Convert.ToString(Request["sSearch_1"]);
-
-
             var rankFilter = Convert.ToString(Request["sSearch_2"]).Trim();
             var dateFilter = Convert.ToString(Request["sSearch_4"]);
             var phoneFilter = Convert.ToString(Request["sSearch_3"]).Trim();
@@ -566,7 +442,8 @@ namespace SignalSystemApp.Controllers
                 string a1 = dateFilter.Replace("-yadcf_delim-", "~");
                 //Split date range filters with ~
                 fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
-                toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]);
+                toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]).AddHours(23.99);
+            
             }
 
             DateTime resolvefromDate = DateTime.MinValue;
@@ -576,29 +453,14 @@ namespace SignalSystemApp.Controllers
                 string b1 = resolveDateFilter.Replace("-yadcf_delim-", "~");
                 //Split date range filters with ~
                 resolvefromDate = b1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(b1.Split('~')[0]);
-                resolvetoDate = b1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(b1.Split('~')[1]);
+                resolvetoDate = b1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(b1.Split('~')[1]).AddHours(23.99);
             }
 
-
-
-            Telephone aTelephone = new Telephone();
-            List<TelephoneComplain> complanList = aTelephone.GetVariousComplainList("resolved");
-
-
-
-
-            List<TelephoneComplain> filteredComplaneList = Telephone.GetResolvedFilteredComplaneList(sSearch, complanList,
+            FilteredLists filteredComplaneList = Telephone.GetResolvedFilteredComplaneList(sSearch,
                 banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate, resolverFilter,
-                resolvefromDate, resolvetoDate, actionTakenFilter, remarksFilter);
+                resolvefromDate, resolvetoDate, actionTakenFilter, remarksFilter,aModel.iDisplayStart,aModel.iDisplayLength,aModel.sSortDir_0,aModel.iSortCol_0);
 
-            //SortList.GetSortedList(aModel, filteredComplaneList, columnlist);
-
-          
-            List<TelephoneComplain> displayedCompanies =
-                filteredComplaneList.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
-
-
-            var result = from c in displayedCompanies
+            var result = from c in filteredComplaneList.aComplainList
                 select new[]
                 {
 
@@ -616,59 +478,23 @@ namespace SignalSystemApp.Controllers
                     Convert.ToString(c.ComplainId)
                 };
             List<string[]> resultList = result.ToList();
-            List<string> aRankList = new List<string>();
-            List<string> banumberList = new List<string>();
-            List<string> complainTypeList = new List<string>();
-            List<string> resolverList = new List<string>();
-
-
-
-            foreach (TelephoneComplain a1 in complanList)
-            {
-                if (!aRankList.Contains(a1.Rank))
-                {
-                    aRankList.Add(a1.Rank);
-                }
-                if (!banumberList.Contains(a1.BANumber))
-                {
-                    banumberList.Add(a1.BANumber);
-
-                }
-                if (!complainTypeList.Contains(a1.ComplainType))
-                {
-                    complainTypeList.Add(a1.ComplainType);
-                }
-                if (!resolverList.Contains(a1.ResolveBy))
-                {
-                    resolverList.Add(a1.ResolveBy);
-                }
-
-            }
-
-
-
-
+            
             return Json(new
             {
                 sEcho = aModel.sEcho,
-                yadcf_data_0 = banumberList,
-                yadcf_data_2 = aRankList,
-                yadcf_data_5 = complainTypeList,
-                yadcf_data_6 = resolverList,
+                yadcf_data_0 = filteredComplaneList.BaNumberList,
+                yadcf_data_2 = filteredComplaneList.RankList,
+                yadcf_data_5 = filteredComplaneList.ComplainTypeList,
+                yadcf_data_6 = filteredComplaneList.ResolverList,
 
-                iTotalRecords = complanList.Count(),
-                iTotalDisplayRecords = filteredComplaneList.Count(),
+                //iTotalRecords = complanList.Count(),
+                iTotalRecords = filteredComplaneList.TotalSize,
+                iTotalDisplayRecords = filteredComplaneList.FilteredSize,
                 aaData = resultList
             },
                 JsonRequestBehavior.AllowGet);
-
-
-
-
             //Extract only current page
-
-
-        }
+            }
 
 
 
@@ -676,9 +502,6 @@ namespace SignalSystemApp.Controllers
             string complainType, string fromDateRange, string toDateRange, string overAllSearch, string resolvedBy,
             string resolvefromDateRange, string resolvetoDateRange, string actionTaken, string remarks, string status)
         {
-
-
-
             if (baNumber.ToLower() == "select ba")
             {
                 baNumber = "";
@@ -688,8 +511,7 @@ namespace SignalSystemApp.Controllers
             {
                 rank = "";
             }
-
-
+            
             if (complainType.ToLower() == "select complain")
             {
                 complainType = "";
@@ -698,24 +520,14 @@ namespace SignalSystemApp.Controllers
             {
                 resolvedBy = "";
             }
-
-
             if ((overAllSearch == null))
             {
                 overAllSearch = "";
             }
-
-            string a1 = baNumber + rank + complainType;
-            Telephone aTelephone = new Telephone();
-            List<TelephoneComplain> complainList = aTelephone.GetVariousComplainList(status);
-
-
+            
             DateTime fromDate = DateTime.MinValue;
             DateTime toDate = DateTime.MaxValue;
-
-            int fromLength = fromDateRange.Length;
-            int toLenght = toDateRange.Length;
-
+            
             if (fromDateRange.Length > 0)
             {
 
@@ -740,15 +552,10 @@ namespace SignalSystemApp.Controllers
 
             DateTime resolveFromDate = DateTime.MinValue;
             DateTime resolveToDate = DateTime.MaxValue;
-
-
-
-
+            
             if (resolvefromDateRange.Length > 0)
             {
-
                 resolveFromDate = Convert.ToDateTime(resolvefromDateRange);
-
             }
             else
             {
@@ -766,63 +573,20 @@ namespace SignalSystemApp.Controllers
                 resolveToDate = DateTime.MaxValue;
             }
 
-
-
-            List<TelephoneComplain> filteredComplainsList = Telephone.GetResolvedFilteredComplaneList(overAllSearch, complainList,
+            FilteredLists filteredComplainsList = Telephone.GetResolvedFilteredComplaneList(overAllSearch,
                 baNumber, phone, name, rank, complainType, fromDate, toDate, resolvedBy, resolveFromDate, resolveToDate,
-                actionTaken, remarks);
+                actionTaken, remarks, 0, 9551615,"desc", 7);
 
-
-            DateTime dt = DateTime.Now;
-            DateTime dDate = DateTime.Now;
-            string[] sDate = dDate.ToString().Split(' ');
-            string time = dt.ToString("hh:mm");
-
-
-            GridView aGridView = new GridView();
-            aGridView.DataSource = filteredComplainsList;
-            aGridView.DataBind();
-
-
-            foreach (TableCell cell in aGridView.HeaderRow.Cells)
+            if (filteredComplainsList.aComplainList.Count>0)
             {
-                cell.BackColor = Color.Cornsilk;
+                
+                ExcelWriter.ExcelGenerator(filteredComplainsList.aComplainList);
             }
 
-            foreach (GridViewRow row in aGridView.Rows)
-            {
-
-                foreach (TableCell cell in row.Cells)
-                {
-                    if (row.RowIndex%2 == 0)
-                    {
-                        cell.BackColor = Color.Gainsboro;
-                    }
-                    else
-                    {
-                        cell.BackColor = Color.GhostWhite;
-                    }
-                    cell.CssClass = "textmode";
-                }
-            }
-
-            Response.ClearContent();
-            Response.AddHeader("content-disposition",
-                "attachment;filename=PendingTelephoneComplain_" + sDate[0] + "_" + sDate[1] + sDate[2] + ".xls");
-            Response.ContentType = "application/excel";
-            StringWriter swr = new StringWriter();
-            HtmlTextWriter tw = new HtmlTextWriter(swr);
-            aGridView.RenderControl(tw);
-            Response.Write(swr.ToString());
-
-            Response.End();
-            return null;
+    return null;
         }
 
-
-
-
-
+       
 
 
         public JsonResult TelephoneDataProviderAction(JQueryDataTableParamModel aModel)
@@ -838,18 +602,29 @@ namespace SignalSystemApp.Controllers
             var roleId = Request.Params["max"];
             var banumberFilter = Convert.ToString(Request["sSearch_0"]).Trim();
             var nameFilter = Convert.ToString(Request["sSearch_1"]).Trim();
-
-
+            
             var rankFilter = Convert.ToString(Request["sSearch_2"]).Trim();
             var phoneFilter = Convert.ToString(Request["sSearch_3"]).Trim();
-            var addressFilter = Convert.ToString(Request["sSearch_4"]).Trim();
-            var genderFilter = Convert.ToString(Request["sSearch_5"]).Trim();
-            var statusFilter = Convert.ToString(Request["sSearch_6"]).Trim();
-            var connectedDateFilter = Convert.ToString(Request["sSearch_7"]);
+           // var addressFilter = Convert.ToString(Request["sSearch_4"]).Trim();
+            var phoneTypeFilter = Convert.ToString(Request["sSearch_4"]).Trim();
+            var homeAddressFilter = Convert.ToString(Request["sSearch_5"]).Trim();
+            var officeAddressFilter = Convert.ToString(Request["sSearch_6"]);
+            var genderFilter = Convert.ToString(Request["sSearch_7"]);
            
             var complainFilter = Convert.ToString(Request["sSearch_5"]);
-            var hourlyFilter = Convert.ToString(Request["sSearch_6"]);
+            var hourlyFilter = Convert.ToString(Request["sSearch_8"]);
             var isNameSortable = Convert.ToBoolean(Request["bSortable_1"]);
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MaxValue;
+            if (hourlyFilter.Contains("-yadcf_delim-"))
+            {
+                string a1 = hourlyFilter.Replace("-yadcf_delim-", "~");
+                //Split date range filters with ~
+                fromDate = a1.Split('~')[0] == "" ? DateTime.MinValue : Convert.ToDateTime(a1.Split('~')[0]);
+                toDate = a1.Split('~')[1] == "" ? DateTime.MaxValue : Convert.ToDateTime(a1.Split('~')[1]).AddHours(23.99);
+
+            }
 
             string sSearch = string.Empty;
             if (aModel.sSearch == null)
@@ -864,30 +639,17 @@ namespace SignalSystemApp.Controllers
 
             var banameSortDirection = Request["sSortDir_0"];
 
-            DateTime fromDate = DateTime.MinValue;
-            DateTime toDate = DateTime.MaxValue;
+          
       
             TelphoneUser aTelephoneUser = new TelphoneUser();
-            List<TelphoneUser> aUsersList = aTelephoneUser.GetTelphoneUsers();
+           // List<TelphoneUser> aUsersList = aTelephoneUser.GetTelphoneUsers();
             Telephone aTelephone = new Telephone();
-           
-
-            List<TelphoneUser> filterTelphoneUsers = GetFilteredPhoneList(sSearch, aUsersList, banumberFilter, phoneFilter, nameFilter,
-                rankFilter, addressFilter, genderFilter, statusFilter, fromDate, toDate);
 
 
-            // List<TelephoneComplain> filteredComplaneList = GetFilteredComplaneList(sSearch, complanList, banumberFilter, phoneFilter, nameFilter, rankFilter, complainFilter, fromDate, toDate);
+            FilteredLists filterTelphoneUsers = aTelephone.GetFilteredPhoneList(sSearch, banumberFilter, phoneFilter, nameFilter, rankFilter, homeAddressFilter, officeAddressFilter, phoneTypeFilter, genderFilter, fromDate, toDate, aModel.iDisplayStart, aModel.iDisplayLength, aModel.sSortDir_0, aModel.iSortCol_0);
 
 
-            //SortList.GetSortedList(aModel, filterTelphoneUsers, columnlist);
-
-
-
-            List<TelphoneUser> displayedPhones =
-                filterTelphoneUsers.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
-
-
-            var result = from c in displayedPhones
+            var result = from c in filterTelphoneUsers.aTelePhoneUserList
                 select new[]
                 {
 
@@ -895,9 +657,11 @@ namespace SignalSystemApp.Controllers
                     c.Name,
                     c.Rank,
                     c.NewPhoneNumber,
-                    c.Address,
+                    c.PhoneType,
+                    c.HomeAddress,
+                    c.OfficeAddress,
                     c.Gender,
-                    c.PhoneStatus,
+                   
                     c.ConnectedDate,
                     "Edit",
 
@@ -910,39 +674,16 @@ namespace SignalSystemApp.Controllers
             List<string> statusList=new List<string>();
 
 
-            foreach (TelphoneUser a1 in aUsersList)
-            {
-                if (!aRankList.Contains(a1.Rank))
-                {
-                    aRankList.Add(a1.Rank);
-                }
-                if (!banumberList.Contains(a1.BANumber))
-                {
-                    banumberList.Add(a1.BANumber);
-
-                }
-                if (!complainTypeList.Contains(a1.Gender))
-                {
-                    complainTypeList.Add(a1.Gender);
-                }
-
-                if (!statusList.Contains(a1.PhoneStatus))
-                {
-                    statusList.Add(a1.PhoneStatus);
-                }
-            }
-
-
             return Json(new
             {
                 sEcho = aModel.sEcho,
-                yadcf_data_0 = banumberList,
-                yadcf_data_2 = aRankList,
-                yadcf_data_5 = complainTypeList,
-                yadcf_data_6 = statusList,
+                yadcf_data_0 = filterTelphoneUsers.BaNumberList,
+                yadcf_data_2 = filterTelphoneUsers.RankList,
+                yadcf_data_4 = filterTelphoneUsers.PhoneTypeList,
+               // yadcf_data_6 = statusList,
 
-                iTotalRecords = aUsersList.Count(),
-                iTotalDisplayRecords = filterTelphoneUsers.Count(),
+                iTotalRecords = filterTelphoneUsers.TotalSize,
+                iTotalDisplayRecords = filterTelphoneUsers.FilteredSize,
                 aaData = resultList
             },
              JsonRequestBehavior.AllowGet);

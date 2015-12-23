@@ -397,7 +397,7 @@
 
         var oTable = $('#mytestDatatable').dataTable({
             
-            "order": [[4, "desc"]],
+            "order": [[7, "desc"]],
             "sAjaxSource": "/Telephone/ResolvedDataProviderAction",
            
             "bLengthChange": true,
@@ -491,7 +491,7 @@
                             column_number: 7,
                             filter_type: "range_date",
                             date_format: "mm/dd/yyyy",
-                            filter_delay: 500,
+                          //  filter_delay: 500,
                             filter_container_id: "selectResolveDate"
                         },
                          {
@@ -579,7 +579,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("GetSingleComplainData", "Telephone")",
+                url: "@Url.Action("GetSingleResolvedComplainData", "Telephone")",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(myData),
                 dataType: 'json',
@@ -628,14 +628,17 @@
         });
 
 
-    $('#ExportExcel').click(function() {
-
+        $('#ExportExcelButton').click(function () {
+            var complainType = "";
         var baNumber = $("#yadcf-filter--mytestDatatable-0 option:selected").text();
         var hourFilter = $("#yadcf-filter--mytestDatatable-6 option:selected").text();
         var name = $('#yadcf-filter--mytestDatatable-1').val();
         var phone = $('#yadcf-filter--mytestDatatable-3').val();
         var rank = $("#yadcf-filter--mytestDatatable-2 option:selected").text();
-        var complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
+        if ($("#yadcf-filter--mytestDatatable-5").val() != "-1") {
+            complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
+        }
+        //var complainType = $("#yadcf-filter--mytestDatatable-5 option:selected").text();
         var fromDateRange = $("#yadcf-filter--mytestDatatable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var toDateRange = $("#yadcf-filter--mytestDatatable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
         var overAllSearch = $("#mytestDatatable_filter :input").val();

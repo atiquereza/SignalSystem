@@ -58,8 +58,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Excel\14.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\DigitalVaccinationApp\DigitalVaccination\bin\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySqlBackup">
       <HintPath>..\..\DigitalVaccinationApp\DigitalVaccination\bin\MySqlBackup.dll</HintPath>
@@ -265,7 +266,9 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.dataTables.yadcf.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -287,10 +290,12 @@
     <Compile Include="Libs\Authentication.cs" />
     <Compile Include="Libs\DBGateway.cs" />
     <Compile Include="Libs\EncrDecrAction.cs" />
+    <Compile Include="Libs\ExcelWriter.cs" />
     <Compile Include="Libs\FileLocations.cs" />
     <Compile Include="Libs\IOFileOperation.cs" />
     <Compile Include="Libs\Mailer.cs" />
     <Compile Include="Libs\SessionHandler.cs" />
+    <Compile Include="Libs\SortList.cs" />
     <Compile Include="Libs\UserRoleManager.cs" />
     <Compile Include="Libs\UtilityLibrary.cs" />
     <Compile Include="Libs\ZipFiles.cs" />

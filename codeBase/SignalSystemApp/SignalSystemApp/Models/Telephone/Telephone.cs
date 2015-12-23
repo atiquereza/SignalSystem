@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 using SignalSystem.Libs;
 using SortDirection = System.Web.Helpers.SortDirection;
 
@@ -35,6 +37,19 @@ public class TelephoneComplain
 
 }
 
+    public class FilteredLists
+    {
+        public List<TelephoneComplain> aComplainList { set; get; }
+        public List<TelphoneUser> aTelePhoneUserList { set; get; } 
+        public int FilteredSize { set; get; }
+        public int TotalSize { set; get; }
+        public List<string> BaNumberList { set; get; }
+        public List<string> RankList { set; get; }
+        public List<string> PhoneTypeList { set; get; } 
+        public List<string> ComplainTypeList { set; get; }
+        public List<string> ResolverList { set; get; }
+    }
+
     public class TelephoneComplainType
     {
         public string TypeId { get; set; }
@@ -48,7 +63,9 @@ public class TelephoneComplain
         public string Name { get; set; }
         public string Rank { get; set; }
         public string NewPhoneNumber { get; set; }
-        public string Address { get; set; }
+        public string HomeAddress { get; set; }
+        public string OfficeAddress { get; set; }
+        public string PhoneType { get; set; }
         public string Gender { get; set; }
         public string PhoneStatus { set; get; }
         public string ConnectedDate { get; set; }
@@ -58,25 +75,34 @@ public class TelephoneComplain
         {
              DBGateway aGateway=new DBGateway();
              string query = "select telephoneusers.Id,telephoneusers.BANumber,telephoneusers.Name,menusrank.Value as Rank,telephoneusers.NewPhoneNumber,telephoneusers.Address,telephoneusers.Gender,telephoneusers.`Status`,telephoneusers.ConnectedDate,telephoneusers.DisconnectedDate from telephoneusers,menusrank where telephoneusers.RankId=menusrank.id";
-             List<TelphoneUser> listTelphoneUsers=new List<TelphoneUser>();
-             DataSet aDataSet = aGateway.Select(query);
+             string query2 = "select complains.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menucomplainType.Value as ComplainType," +
+ " allphoneinfo.PhoneNumber,menusrank.Value as Rank,complains.Description,complains.ComplainDate" +
+ " from complains,menucomplainType,phoneuserpersonalinfo,allphoneinfo," +
+ " menusRank where menucomplaintype.Id=complains.MenuComplainTypeId" +
+ " and phoneuserpersonalinfo.Id = complains.TelephoneUserId and phoneuserpersonalinfo.RankId = menusrank.id and complains.AllPhoneInfoID=allphoneinfo.ID";
+
+             string query3 = "select allactivephoneinfo.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menusrank.Value as Rank,allphoneinfo.PhoneNumber,allactivephoneinfo.PhoneUsedFor,allactivephoneinfo.HomeAddress,allactivephoneinfo.OfficeAddress,phoneuserpersonalinfo.Sex as Gender,allactivephoneinfo.ConnectDate from phoneuserpersonalinfo,menusrank,allactivephoneinfo,allphoneinfo where menusrank.id=phoneuserpersonalinfo.RankId and phoneuserpersonalinfo.ID=allactivephoneinfo.PhoneUserPersonalInfoId and allphoneinfo.ID=allactivephoneinfo.AllPhoneInfoID;";
+            List<TelphoneUser> listTelphoneUsers=new List<TelphoneUser>();
+             DataSet aDataSet = aGateway.Select(query3);
             foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
             {
 
                 TelphoneUser aTelphoneUser = new TelphoneUser();
                 aTelphoneUser.BANumber = dataRow["BANumber"].ToString();
-                aTelphoneUser.Name = dataRow["Name"].ToString();
+                aTelphoneUser.Name = dataRow["FullName"].ToString();
 
-                aTelphoneUser.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelphoneUser.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
                 aTelphoneUser.Rank = dataRow["Rank"].ToString();
 
-                aTelphoneUser.ConnectedDate = dataRow["ConnectedDate"].ToString();
-                aTelphoneUser.DisconnectedDate = dataRow["DisconnectedDate"].ToString();
+                aTelphoneUser.ConnectedDate = dataRow["ConnectDate"].ToString();
+               // aTelphoneUser.DisconnectedDate = dataRow["DisconnectedDate"].ToString();
                 aTelphoneUser.ID = dataRow["Id"].ToString();
-                aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
+               // aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
 
-                aTelphoneUser.Address = dataRow["Address"].ToString();
+                aTelphoneUser.HomeAddress = dataRow["HomeAddress"].ToString();
+                    aTelphoneUser.OfficeAddress = dataRow["OfficeAddress"].ToString();
                 aTelphoneUser.Gender = dataRow["Gender"].ToString();
+                aTelphoneUser.PhoneType = dataRow["PhoneUsedFor"].ToString();
 
                 listTelphoneUsers.Add(aTelphoneUser);
             }
@@ -103,7 +129,7 @@ public class TelephoneComplain
 
                 aTelphoneUser.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
                 aTelphoneUser.Rank = dataRow["Rank"].ToString();
-                aTelphoneUser.Address = dataRow["Address"].ToString();
+                aTelphoneUser.HomeAddress = dataRow["Address"].ToString();
                 aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
                 aTelphoneUser.ID = dataRow["Id"].ToString();
 
@@ -234,57 +260,168 @@ public class TelephoneComplain
             string deleteResult = aGateway.Delete(query);
         }
 
-        public static List<TelephoneComplain> GetFilteredComplaneList(string sSearch, List<TelephoneComplain> complanList,
+        public static FilteredLists GetFilteredComplaneList(string sSearch,
             string banumberFilter, string phoneFilter,
-            string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate)
+            string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate, int skipSize, int takeSize, string sortOrder, int sortColumnIndex)
         {
-            List<TelephoneComplain> searchedComplains;
-            sSearch = sSearch.Trim();
+            string complainQuery =
+               "select SQL_CALC_FOUND_ROWS complains.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menucomplainType.Value as ComplainType," +
+               " allphoneinfo.PhoneNumber,menusrank.Value as Rank,complains.ComplainDate " +
 
-
-            if ((sSearch == ""))
+               " from complains,menucomplainType,phoneuserpersonalinfo,allphoneinfo," +
+               " menusRank where menucomplaintype.Id=complains.MenuComplainTypeId" +
+               " and phoneuserpersonalinfo.Id = complains.TelephoneUserId and phoneuserpersonalinfo.RankId = menusrank.id and complains.AllPhoneInfoID=allphoneinfo.ID ";
+            if (sSearch.Trim().Length > 0)
             {
-                searchedComplains = complanList;
+                complainQuery += "and ((phoneuserpersonalinfo.BANumber like '%" + sSearch + "%')" +
+                             "or (menucomplainType.Value like '%" + sSearch + "%')" +
+                             "or (phoneuserpersonalinfo.FullName like '%" + sSearch + "%')" +
+                             "or (allphoneinfo.PhoneNumber like '%" + sSearch + "%')" +
+                             "or (menusrank.Value like '%" + sSearch + "%')";
+
             }
-            else
+            if (banumberFilter.Trim().Length > 0)
             {
-                searchedComplains =
-                    complanList.Where(c => c.BANumber.ToLower().Trim().Contains(sSearch.ToLower())
-                                           || c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Name.Trim().ToLower().Contains(sSearch.ToLower()) ||
-                                           c.NewPhoneNumber.Trim().ToLower().Contains(sSearch.ToLower()) ||
-                                           c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower())).ToList();
+                complainQuery += "and (phoneuserpersonalinfo.BANumber = '" + banumberFilter + "')";
+            }
+            if (complainFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (menucomplainType.Value = '" + complainFilter + "')";
+            }
+            if (nameFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (phoneuserpersonalinfo.FullName like '%" + nameFilter + "%')";
+            }
+            if (phoneFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allphoneinfo.PhoneNumber like '%" + phoneFilter + "%')";
+            }
+            if (rankFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (menusrank.Value = '" + rankFilter + "')";
+            }
+
+            complainQuery += " and ((complains.ComplainDate >= DATE_FORMAT('" + fromDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')) and (complains.ComplainDate <= DATE_FORMAT('" + toDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')))";
+
+
+
+            List<string> tableDBColumns =
+             new List<string>(new string[]
+                {
+                    "phoneuserpersonalinfo.BANumber", "phoneuserpersonalinfo.FullName", "menusrank.Value", "allphoneinfo.PhoneNumber",
+                    "complains.ComplainDate", 
+                    "menucomplainType.Value"
+                });
+
+
+
+            complainQuery += " order by " + tableDBColumns[sortColumnIndex] + " " + sortOrder + " ";
+
+            complainQuery += " limit " + skipSize + ", " + takeSize + ";";
+            complainQuery += " SELECT FOUND_ROWS();";
+            complainQuery += " SELECT count(*) from complains;";
+            complainQuery += "select distinct phoneuserpersonalinfo.BANumber from phoneuserpersonalinfo;select distinct menusrank.Value from menusrank;select distinct menucomplainType.Value from menucomplainType;";
+
+            DataSet ds = MySql.Data.MySqlClient.MySqlHelper.ExecuteDataset(System.Configuration.ConfigurationManager.ConnectionStrings["SignalSystemConnectionString"].ConnectionString, complainQuery);
+            int filteredCount = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+            int lTotalCount = Convert.ToInt32(ds.Tables[2].Rows[0][0]);
+            List<TelephoneComplain> aList = new List<TelephoneComplain>();
+            foreach (DataRow dataRow in ds.Tables[0].Rows)
+            {
+
+                TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+                aTelephoneComplain.BANumber = dataRow["BANumber"].ToString();
+                aTelephoneComplain.Name = dataRow["FullName"].ToString();
+                aTelephoneComplain.ComplainType = dataRow["ComplainType"].ToString();
+                aTelephoneComplain.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
+                aTelephoneComplain.Rank = dataRow["Rank"].ToString();
+               
+                aTelephoneComplain.ComplainDate = dataRow["ComplainDate"].ToString();
+                aTelephoneComplain.ComplainId = dataRow["Id"].ToString();
+                // aTelephoneComplain.Status = dataRow["Status"].ToString();
+
+                aList.Add(aTelephoneComplain);
+            }
+            List<string> BANumberList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[3].Rows)
+            {
+                BANumberList.Add(dataRow["BANumber"].ToString());
+            }
+
+            List<string> RankList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[4].Rows)
+            {
+                RankList.Add(dataRow["Value"].ToString());
             }
 
 
-            var filteredCompanies = searchedComplains
-                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.Trim().ToLower())
-                            &&
-                            (phoneFilter == "" || c.NewPhoneNumber.Trim().ToLower().Contains(phoneFilter.Trim()))
-                            &&
-                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.Trim().ToLower()))
-                            &&
-                            (rankFilter == "" || c.Rank.Trim().ToLower() == rankFilter.Trim().ToLower())
-                            &&
-                            (complainFilter == "" || c.ComplainType.Trim().ToLower() == complainFilter.Trim().ToLower())
-                            &&
-                            (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
-                            &&
-                            (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
-                );
-            List<TelephoneComplain> filteredComplaneList = filteredCompanies.ToList();
-            return filteredComplaneList;
+            List<string> ComplainTypeList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[5].Rows)
+            {
+                ComplainTypeList.Add(dataRow["Value"].ToString());
+            }
+
+
+            FilteredLists aFilteredComplains = new FilteredLists();
+            aFilteredComplains.aComplainList = aList;
+            aFilteredComplains.FilteredSize = filteredCount;
+            aFilteredComplains.TotalSize = lTotalCount;
+            aFilteredComplains.BaNumberList = BANumberList;
+            aFilteredComplains.RankList = RankList;
+            aFilteredComplains.ComplainTypeList = ComplainTypeList;
+          
+            //List<TelephoneComplain> searchedComplains;
+            //sSearch = sSearch.Trim();
+
+
+            //if ((sSearch == ""))
+            //{
+            //    searchedComplains = complanList;
+            //}
+            //else
+            //{
+            //    searchedComplains =
+            //        complanList.Where(c => c.BANumber.ToLower().Trim().Contains(sSearch.ToLower())
+            //                               || c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower()) ||
+            //                               c.Name.Trim().ToLower().Contains(sSearch.ToLower()) ||
+            //                               c.NewPhoneNumber.Trim().ToLower().Contains(sSearch.ToLower()) ||
+            //                               c.ComplainType.Trim().ToLower().Contains(sSearch.ToLower())).ToList();
+            //}
+
+
+            //var filteredCompanies = searchedComplains
+            //    .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.Trim().ToLower())
+            //                &&
+            //                (phoneFilter == "" || c.NewPhoneNumber.Trim().ToLower().Contains(phoneFilter.Trim()))
+            //                &&
+            //                (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.Trim().ToLower()))
+            //                &&
+            //                (rankFilter == "" || c.Rank.Trim().ToLower() == rankFilter.Trim().ToLower())
+            //                &&
+            //                (complainFilter == "" || c.ComplainType.Trim().ToLower() == complainFilter.Trim().ToLower())
+            //                &&
+            //                (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
+            //                &&
+            //                (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
+            //    );
+            //List<TelephoneComplain> filteredComplaneList = filteredCompanies.ToList();
+            return aFilteredComplains;
         }
 
         public static void EditComplain(TelephoneComplain aTelephoneComplain, string updateQuery)
         {
             string complainStatus;
+            DBGateway aGateway = new DBGateway();
             if (aTelephoneComplain.Status == "0")
             {
                 complainStatus = "Pending";
                 updateQuery = "UPDATE `signalappdb`.`complains` SET `Description`='" + aTelephoneComplain.Description +
                               "', `Status`='" + complainStatus + "', `MenuComplainTypeId`=" +
                               aTelephoneComplain.ComplainType + " WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
+                string updateResult = aGateway.Update(updateQuery);
             }
             else if (aTelephoneComplain.Status == "1")
             {
@@ -299,40 +436,63 @@ public class TelephoneComplain
                               "', `MenuComplainTypeId`=" + aTelephoneComplain.ComplainType + ", `ResolvedDate`='" +
                               dt.ToString("yyyy-MM-dd HH:mm:ss") + "', `ActionTaken`='" + aTelephoneComplain.ActionTaken +
                               "', `ResolvedBy`='" + userName + "' WHERE  `Id`=" + aTelephoneComplain.ComplainId + ";";
+
+                //string insertQuery = "INSERT INTO `signalappdb`.`resolvedcomplains` (`Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`, `AllPhoneInfoID`) VALUES ('"+aTelephoneComplain.Description+"', 'resolved', "+aTelephoneComplain.ProblemTypes+", (select ), '2015-12-17 23:07:26', '2015-12-19 23:07:26', 'o', 'dd', 'maruf', 10);";
+                string insertQuery = "INSERT INTO `signalappdb`.`resolvedcomplains` (`Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`,`AllPhoneInfoID`,`ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`) select description,status, MenuComplainTypeId,TelephoneUserId,AllPhoneInfoID,ComplainDate,'" +dt.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + aTelephoneComplain.Remarks + "', '" + aTelephoneComplain.ActionTaken + "', '" + aTelephoneComplain.ResolveBy + "' from complains WHERE ID=" + aTelephoneComplain.ComplainId + ";";
+                int insertCount = aGateway.Insert(insertQuery);
+                string deleteQuery = "Delete From Complains where id=" + aTelephoneComplain.ComplainId + "";
+                string delMsg = aGateway.Delete(deleteQuery);
             }
 
 
-            DBGateway aGateway = new DBGateway();
-            string updateResult = aGateway.Update(updateQuery);
+            
+            
         }
 
 
 
-        public static List<TelephoneComplain> GetTelephoneComplain(string id)
+        public static List<TelephoneComplain> GetTelephoneComplain(string id,string type)
         {
-            string query =
-                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
-                "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
-                "complains.Description,complains.ComplainDate,complains.ResolvedBy,complains.ResolvedDate,complains.Remarks,complains.ActionTaken from complains,menucomplainType,telephoneusers," +
-                "menusRank where menucomplaintype.Id=complains.MenuComplainTypeId " +
-                "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id and complains.id=" +
+            string queryResolve = "select resolvedcomplains.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menucomplainType.Value as ComplainType," +
+" allphoneinfo.PhoneNumber,menusrank.Value as Rank,resolvedcomplains.Description,resolvedcomplains.ComplainDate,resolvedcomplains.Remarks,resolvedcomplains.ResolvedDate,resolvedcomplains.ResolvedBy" +
+" from resolvedcomplains,menucomplainType,phoneuserpersonalinfo,allphoneinfo," +
+" menusRank where menucomplaintype.Id=resolvedcomplains.MenuComplainTypeId" +
+" and phoneuserpersonalinfo.Id = resolvedcomplains.TelephoneUserId and phoneuserpersonalinfo.RankId = menusrank.id and resolvedcomplains.AllPhoneInfoID=allphoneinfo.ID and resolvedcomplains.id=" +
+              id + ";";
+
+
+            string queryPending = "select complains.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menucomplainType.Value as ComplainType," +
+" allphoneinfo.PhoneNumber,menusrank.Value as Rank,complains.Description,complains.ComplainDate,complains.Remarks,complains.ResolvedDate,complains.ResolvedBy" +
+" from complains,menucomplainType,phoneuserpersonalinfo,allphoneinfo," +
+" menusRank where menucomplaintype.Id=complains.MenuComplainTypeId" +
+" and phoneuserpersonalinfo.Id = complains.TelephoneUserId and phoneuserpersonalinfo.RankId = menusrank.id and complains.AllPhoneInfoID=allphoneinfo.ID and complains.id=" +
                 id + ";";
+
+
 
             List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
             DBGateway aGateway = new DBGateway();
-            DataSet aDataSet = aGateway.Select(query);
+            DataSet aDataSet;
+            if (type == "resolved")
+            {
+                aDataSet=aGateway.Select(queryResolve);
+            }
+            else
+            {
+                aDataSet=aGateway.Select(queryPending);
+            }
             foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
             {
                 TelephoneComplain aTelephoneComplain = new TelephoneComplain();
                 aTelephoneComplain.BANumber = dataRow["BANumber"].ToString();
-                aTelephoneComplain.Name = dataRow["Name"].ToString();
+                aTelephoneComplain.Name = dataRow["FullName"].ToString();
                 aTelephoneComplain.ComplainType = dataRow["ComplainType"].ToString();
-                aTelephoneComplain.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelephoneComplain.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
                 aTelephoneComplain.Rank = dataRow["Rank"].ToString();
                 aTelephoneComplain.Description = dataRow["Description"].ToString();
                 aTelephoneComplain.ComplainDate = dataRow["ComplainDate"].ToString();
                 aTelephoneComplain.ComplainId = dataRow["Id"].ToString();
-                aTelephoneComplain.ActionTaken = dataRow["ActionTaken"].ToString();
+                //aTelephoneComplain.ActionTaken = dataRow["ActionTaken"].ToString();
                 aTelephoneComplain.ResolvedDate = dataRow["ResolvedDate"].ToString();
                 aTelephoneComplain.Remarks = dataRow["Remarks"].ToString();
                 aTelephoneComplain.ResolveBy = dataRow["ResolvedBy"].ToString();
@@ -424,33 +584,7 @@ public class TelephoneComplain
             "${month}/${day}/${year}");
         }
 
-        public List<Dictionary<string, string>> GetPendingComplains()
-        {
-            List<Dictionary<string,string>> pendingComplains = new List<Dictionary<string, string>>();
 
-            string query =
-                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
-                "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
-                "complains.Description,complains.ComplainDate from complains,menucomplainType,telephoneusers," +
-                "menusRank where complains.`Status`='Pending' and menucomplaintype.Id=complains.MenuComplainTypeId " +
-                "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id;";
-            DataSet aDataSet = aGateway.Select(query);
-            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
-            {
-                Dictionary<string,string> aDictionary = new Dictionary<string, string>();
-                aDictionary.Add("BANumber", dataRow["BANumber"].ToString());
-                aDictionary.Add("Name", dataRow["Name"].ToString());
-                aDictionary.Add("ComplainType", dataRow["ComplainType"].ToString());
-                aDictionary.Add("NewPhoneNumber", dataRow["NewPhoneNumber"].ToString());
-                aDictionary.Add("Rank", dataRow["Rank"].ToString());
-                aDictionary.Add("Description", dataRow["Description"].ToString());
-                aDictionary.Add("ComplainDate", dataRow["ComplainDate"].ToString());
-                aDictionary.Add("Id", dataRow["Id"].ToString());
-                pendingComplains.Add(aDictionary);
-            }
-
-            return pendingComplains;
-        }
 
         public List<Dictionary<string, string>> GetResolvedComplains()
         {
@@ -483,105 +617,147 @@ public class TelephoneComplain
             return pendingComplains;
         }
 
-
-        public List<TelephoneComplain> GetVariousComplainList(string type)
+        public static FilteredLists GetResolvedFilteredComplaneList(string sSearch, string banumberFilter, string phoneFilter,
+            string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate,
+            string resolvedByFilter, DateTime resolverFromdate, DateTime resolverTodate, string actionFilter,
+            string remarksFilter,int skipSize,int takeSize,string sortOrder,int sortColumnIndex)
         {
+            string complainQuery =
+                "select SQL_CALC_FOUND_ROWS resolvedcomplains.id,resolvedcomplains.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menucomplainType.Value as ComplainType," +
+                " allphoneinfo.PhoneNumber,menusrank.Value as Rank,resolvedcomplains.Description,resolvedcomplains.ComplainDate,resolvedcomplains.ResolvedBy," +
+                " resolvedcomplains.ActionTaken,resolvedcomplains.ResolvedDate,resolvedcomplains.Remarks" +
+                " from resolvedcomplains,menucomplainType,phoneuserpersonalinfo,allphoneinfo," +
+                " menusRank where menucomplaintype.Id=resolvedcomplains.MenuComplainTypeId" +
+                " and phoneuserpersonalinfo.Id = resolvedcomplains.TelephoneUserId and phoneuserpersonalinfo.RankId = menusrank.id and resolvedcomplains.AllPhoneInfoID=allphoneinfo.ID ";
+            if (sSearch.Trim().Length > 0)
+            {
+                complainQuery += "and ((phoneuserpersonalinfo.BANumber like '%"+sSearch+"%')" +
+                             "or (menucomplainType.Value like '%"+sSearch+"%')" +
+                             "or (phoneuserpersonalinfo.FullName like '%"+sSearch+"%')" +
+                             "or (allphoneinfo.PhoneNumber like '%"+sSearch+"%')" +
+                             "or (menusrank.Value like '%"+sSearch+"%')" +
+                            // "or (resolvedcomplains.Description like '%"+sSearch+"%')" +
+                             "or (resolvedcomplains.ResolvedBy like '%"+sSearch+"%')" +
+                             "or (resolvedcomplains.ActionTaken like '%"+sSearch+"%')" +
+                             "or (resolvedcomplains.Remarks like '%"+sSearch+"%'))";
+            }
+            if (banumberFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (phoneuserpersonalinfo.BANumber = '"+banumberFilter+"')";
+            }
+            if (complainFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (menucomplainType.Value = '" + complainFilter + "')";
+            }
+            if (nameFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (phoneuserpersonalinfo.FullName like '%" + nameFilter + "%')";
+            }
+            if (phoneFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allphoneinfo.PhoneNumber like '%" + phoneFilter + "%')";
+            }
+            if (rankFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (menusrank.Value = '" + rankFilter + "')";
+            }
+            if (resolvedByFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (resolvedcomplains.ResolvedBy like '%" + resolvedByFilter + "%')";
+            }
+            if (actionFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (resolvedcomplains.ActionTaken like '%" + actionFilter + "%')";
+            }
+            if (remarksFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (resolvedcomplains.Remarks like '%" + remarksFilter + "%')";
+            }
+            complainQuery += " and ((resolvedcomplains.ComplainDate >= DATE_FORMAT('" + fromDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')) and (resolvedcomplains.ComplainDate <= DATE_FORMAT('" + toDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')))";
+            complainQuery += " and ((resolvedcomplains.ResolvedDate >= DATE_FORMAT('" + resolverFromdate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')) and (resolvedcomplains.ResolvedDate <= DATE_FORMAT('" + resolverTodate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s'))) ";
 
-            List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
+     
+            List<string> tableDBColumns =
+             new List<string>(new string[]
+                {
+                    "phoneuserpersonalinfo.BANumber", "phoneuserpersonalinfo.FullName", "menusrank.Value", "allphoneinfo.PhoneNumber",
+                    "resolvedcomplains.ComplainDate", 
+                    "menucomplainType.Value", "resolvedcomplains.ResolvedBy",
+                    "resolvedcomplains.ResolvedDate", "resolvedcomplains.ActionTaken", "resolvedcomplains.Remarks"
+                });
 
-            string query =
-                "select complains.id,telephoneusers.BANumber,telephoneusers.Name,menucomplainType.Value as " +
-                "ComplainType,telephoneusers.NewPhoneNumber,menusrank.Value as Rank, " +
-                "complains.Description,complains.ComplainDate,complains.Status,complains.ActionTaken,complains.ResolvedBy,complains.ResolvedDate,complains.ActionTaken,complains.Remarks from complains,menucomplainType,telephoneusers," +
-                "menusRank where complains.`Status`='"+type+"' and menucomplaintype.Id=complains.MenuComplainTypeId " +
-                "and telephoneusers.Id = complains.TelephoneUserId and telephoneusers.RankId = menusrank.id;";
-            //TelephoneComplain aTelephoneComplain = new TelephoneComplain();
-            List<TelephoneComplain> aTelephoneComplainList = new List<TelephoneComplain>();
-            DBGateway aGateway = new DBGateway();
-            DataSet aDataSet = aGateway.Select(query);
-            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+      
+           
+                complainQuery += " order by "+tableDBColumns[sortColumnIndex]+" "+sortOrder+" ";
+            
+            complainQuery+=" limit "+skipSize+", "+takeSize+";"; 
+            complainQuery+=" SELECT FOUND_ROWS();";
+            complainQuery += " SELECT count(*) from resolvedcomplains;";
+            complainQuery += "select distinct phoneuserpersonalinfo.BANumber from phoneuserpersonalinfo;select distinct menusrank.Value from menusrank;select distinct menucomplainType.Value from menucomplainType; select distinct resolvedcomplains.ResolvedBy from resolvedcomplains where resolvedcomplains.ResolvedBy!='';";
+
+            
+            DataSet ds = MySql.Data.MySqlClient.MySqlHelper.ExecuteDataset(System.Configuration.ConfigurationManager.ConnectionStrings["SignalSystemConnectionString"].ConnectionString, complainQuery);
+            int filteredCount = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+            int lTotalCount = Convert.ToInt32(ds.Tables[2].Rows[0][0]);
+            List<TelephoneComplain> aList = new List<TelephoneComplain>();
+            foreach (DataRow dataRow in ds.Tables[0].Rows)
             {
 
                 TelephoneComplain aTelephoneComplain = new TelephoneComplain();
                 aTelephoneComplain.BANumber = dataRow["BANumber"].ToString();
-                aTelephoneComplain.Name = dataRow["Name"].ToString();
+                aTelephoneComplain.Name = dataRow["FullName"].ToString();
                 aTelephoneComplain.ComplainType = dataRow["ComplainType"].ToString();
-                aTelephoneComplain.NewPhoneNumber = dataRow["NewPhoneNumber"].ToString();
+                aTelephoneComplain.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
                 aTelephoneComplain.Rank = dataRow["Rank"].ToString();
                 aTelephoneComplain.Description = dataRow["Description"].ToString();
                 aTelephoneComplain.ComplainDate = dataRow["ComplainDate"].ToString();
                 aTelephoneComplain.ComplainId = dataRow["Id"].ToString();
-                aTelephoneComplain.Status = dataRow["Status"].ToString();
-                
+                // aTelephoneComplain.Status = dataRow["Status"].ToString();
+
                 aTelephoneComplain.ResolveBy = dataRow["ResolvedBy"].ToString();
                 aTelephoneComplain.ResolvedDate = dataRow["ResolvedDate"].ToString();
                 aTelephoneComplain.ActionTaken = dataRow["ActionTaken"].ToString();
                 aTelephoneComplain.Remarks = dataRow["Remarks"].ToString();
-                aTelephoneComplainList.Add(aTelephoneComplain);
+                aList.Add(aTelephoneComplain);
             }
+            List<string> BANumberList=new List<string>();
 
-            return aTelephoneComplainList;
-        }
-
-
-        public static List<TelephoneComplain> GetResolvedFilteredComplaneList(string sSearch,
-            List<TelephoneComplain> complanList, string banumberFilter, string phoneFilter,
-            string nameFilter, string rankFilter, string complainFilter, DateTime fromDate, DateTime toDate,
-            string resolvedByFilter, DateTime resolverFromdate, DateTime resolverTodate, string actionFilter,
-            string remarksFilter)
-        {
-            List<TelephoneComplain> searchedComplains;
-
-
-            if ((sSearch == ""))
+            foreach (DataRow dataRow in ds.Tables[3].Rows)
             {
-                searchedComplains = complanList;
+                BANumberList.Add(dataRow["BANumber"].ToString());
             }
-            else
+
+             List<string> RankList=new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[4].Rows)
             {
-                searchedComplains =
-                    complanList.Where(c => c.BANumber.ToLower().Contains(sSearch.ToLower())
-                                           || c.ComplainType.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Name.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.NewPhoneNumber.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.ComplainType.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.ResolveBy.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.ActionTaken.ToLower().Contains(sSearch.ToLower()) ||
-                                           c.Remarks.ToLower().Contains(sSearch.ToLower())
-
-                        ).ToList();
+                RankList.Add(dataRow["Value"].ToString());
             }
 
 
-            var filteredCompanies = searchedComplains
-                .Where(c => (banumberFilter == "" || c.BANumber.Trim().ToLower() == banumberFilter.Trim().ToLower())
-                            &&
-                            (phoneFilter == "" || c.NewPhoneNumber.ToLower().Contains(phoneFilter))
-                            &&
-                            (nameFilter == "" || c.Name.ToLower().Contains(nameFilter.ToLower()))
-                            &&
-                            (rankFilter == "" || c.Rank.ToLower() == rankFilter.ToLower())
-                            &&
-                            (complainFilter == "" || c.ComplainType.ToLower() == complainFilter.ToLower())
-                            &&
-                            (fromDate == DateTime.MinValue || fromDate < Convert.ToDateTime(c.ComplainDate))
-                            &&
-                            (toDate == DateTime.MaxValue || Convert.ToDateTime(c.ComplainDate) < toDate)
-                            &&
-                            (resolverFromdate == DateTime.MinValue ||
-                             resolverFromdate < Convert.ToDateTime(c.ResolvedDate))
-                            &&
-                            (resolverTodate == DateTime.MaxValue || Convert.ToDateTime(c.ResolvedDate) < resolverTodate)
-                            &&
-                            (resolvedByFilter == "" || c.ResolveBy.ToLower() == resolvedByFilter.ToLower())
-                            &&
-                            (actionFilter == "" || c.ActionTaken.ToLower().Contains(actionFilter.ToLower()))
-                            &&
-                            (remarksFilter == "" || c.Remarks.ToLower().Contains(remarksFilter.ToLower()))
+            List<string> ComplainTypeList = new List<string>();
 
-                );
-            List<TelephoneComplain> filteredComplaneList = filteredCompanies.ToList();
-            return filteredComplaneList;
+            foreach (DataRow dataRow in ds.Tables[5].Rows)
+            {
+                ComplainTypeList.Add(dataRow["Value"].ToString());
+            }
+
+            List<string> ResolverList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[6].Rows)
+            {
+                ResolverList.Add(dataRow["ResolvedBy"].ToString());
+            }
+
+            FilteredLists aFilteredComplains = new FilteredLists();
+            aFilteredComplains.aComplainList = aList;
+            aFilteredComplains.FilteredSize = filteredCount;
+            aFilteredComplains.TotalSize = lTotalCount;
+            aFilteredComplains.BaNumberList = BANumberList;
+            aFilteredComplains.RankList = RankList;
+            aFilteredComplains.ComplainTypeList = ComplainTypeList;
+            aFilteredComplains.ResolverList = ResolverList;
+            return aFilteredComplains;
         }
 
 
@@ -595,7 +771,176 @@ public class TelephoneComplain
             throw new NotImplementedException();
         }
 
-       
+
+
+        public FilteredLists GetFilteredPhoneList(string sSearch,string banumberFilter, string phoneFilter, string nameFilter, string rankFilter, string homeAddressFilter, string officeAddressFilter, string phoneTypeFilter, string genderFilter, DateTime fromDate, DateTime toDate,int skipSize,int takeSize,string sortOrder,int sortColumnIndex)
+        {
+
+            string query3 = "select allactivephoneinfo.id,phoneuserpersonalinfo.BANumber,phoneuserpersonalinfo.FullName,menusrank.Value as Rank,allphoneinfo.PhoneNumber,allactivephoneinfo.PhoneUsedFor,allactivephoneinfo.HomeAddress,allactivephoneinfo.OfficeAddress,phoneuserpersonalinfo.Sex as Gender,allactivephoneinfo.ConnectDate from phoneuserpersonalinfo,menusrank,allactivephoneinfo,allphoneinfo where menusrank.id=phoneuserpersonalinfo.RankId and phoneuserpersonalinfo.ID=allactivephoneinfo.PhoneUserPersonalInfoId and allphoneinfo.ID=allactivephoneinfo.AllPhoneInfoID;";
+
+            string complainQuery =
+
+               " select SQL_CALC_FOUND_ROWS allactivephoneinfo.id,Banumber,fullname,menusrank.value as Rank,Phonenumber,phoneusedfor,Homeaddress,allactivephoneinfo.OfficeAddress,phoneuserpersonalinfo.Sex,connectdate from allactivephoneinfo,phoneuserpersonalinfo,allphoneinfo,menusrank where phoneuserpersonalinfo.ID=allactivephoneinfo.PhoneUserPersonalInfoId and allactivephoneinfo.AllPhoneInfoID=allphoneinfo.ID and phoneuserpersonalinfo.RankId=menusrank.id ";
+            if (sSearch.Trim().Length > 0)
+            {
+                complainQuery += "and ((phoneuserpersonalinfo.BANumber like '%" + sSearch + "%')" +
+                             " or (phoneuserpersonalinfo.FullName like '%" + sSearch + "%')" +
+                             " or (allphoneinfo.PhoneNumber like '%" + sSearch + "%')" +
+                              "  or (allactivephoneinfo.PhoneUsedFor like '%" + sSearch + "%')" +
+                              " or (allactivephoneinfo.HomeAddress like '%" + sSearch + "%')" +
+                               " or (allactivephoneinfo.OfficeAddress like '%" + sSearch + "%')" +
+                               " or (phoneuserpersonalinfo.Sex like '%" + sSearch + "%')" +
+                             " or (menusrank.Value like '%" + sSearch + "%'))";
+
+            }
+            if (banumberFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (phoneuserpersonalinfo.BANumber = '" + banumberFilter + "')";
+            }
+            if (phoneTypeFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allactivephoneinfo.PhoneUsedFor like '%" + phoneTypeFilter + "%')";
+            }
+            if (nameFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (phoneuserpersonalinfo.FullName like '%" + nameFilter + "%')";
+            }
+            if (phoneFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allphoneinfo.PhoneNumber like '%" + phoneFilter + "%')";
+            }
+            if (rankFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (menusrank.Value = '" + rankFilter + "')";
+            }
+
+            if (homeAddressFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allactivephoneinfo.HomeAddress like '%" + homeAddressFilter + "%')";
+            }
+
+            if (officeAddressFilter.Trim().Length > 0)
+            {
+                complainQuery += "and (allactivephoneinfo.OfficeAddress like '%" + officeAddressFilter + "%')";
+            }
+
+            complainQuery += " and ((allactivephoneinfo.ConnectDate >= DATE_FORMAT('" + fromDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')) and (allactivephoneinfo.ConnectDate <= DATE_FORMAT('" + toDate.ToString("yyyy-MM-dd HH:mm:ss") + "','%Y-%m-%d %H:%i:%s')))";
+
+
+
+            List<string> tableDBColumns =
+             new List<string>(new string[]
+                {
+                    "phoneuserpersonalinfo.BANumber", "phoneuserpersonalinfo.FullName", "menusrank.Value", "allphoneinfo.PhoneNumber",
+                    "allactivephoneinfo.PhoneUsedFor", "allactivephoneinfo.HomeAddress","allactivephoneinfo.OfficeAddress","phoneuserpersonalinfo.Sex",
+                    "allactivephoneinfo.ConnectDate"
+                });
+
+
+
+            complainQuery += " order by " + tableDBColumns[sortColumnIndex] + " " + sortOrder + " ";
+
+            complainQuery += " limit " + skipSize + ", " + takeSize + ";";
+            complainQuery += " SELECT FOUND_ROWS();";
+            complainQuery += " SELECT count(*) from allactivephoneinfo;";
+            complainQuery += "select distinct phoneuserpersonalinfo.BANumber from phoneuserpersonalinfo;select distinct menusrank.Value from menusrank;select distinct allactivephoneinfo.PhoneUsedFor from allactivephoneinfo;";
+
+            DataSet ds = MySql.Data.MySqlClient.MySqlHelper.ExecuteDataset(System.Configuration.ConfigurationManager.ConnectionStrings["SignalSystemConnectionString"].ConnectionString, complainQuery);
+            int filteredCount = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+            int lTotalCount = Convert.ToInt32(ds.Tables[2].Rows[0][0]);
+            List<TelphoneUser> aList = new List<TelphoneUser>();
+            foreach (DataRow dataRow in ds.Tables[0].Rows)
+            {TelephoneComplain aTelephoneComplain = new TelephoneComplain();
+                TelphoneUser aTelphoneUser = new TelphoneUser();
+                aTelphoneUser.BANumber = dataRow["BANumber"].ToString();
+                aTelphoneUser.Name = dataRow["FullName"].ToString();
+
+                aTelphoneUser.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
+                aTelphoneUser.Rank = dataRow["Rank"].ToString();
+
+                aTelphoneUser.ConnectedDate = dataRow["ConnectDate"].ToString();
+                // aTelphoneUser.DisconnectedDate = dataRow["DisconnectedDate"].ToString();
+                aTelphoneUser.ID = dataRow["Id"].ToString();
+                // aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
+
+                aTelphoneUser.HomeAddress = dataRow["HomeAddress"].ToString();
+                aTelphoneUser.OfficeAddress = dataRow["OfficeAddress"].ToString();
+                aTelphoneUser.Gender = dataRow["Sex"].ToString();
+                aTelphoneUser.PhoneType = dataRow["PhoneUsedFor"].ToString();
+
+                aList.Add(aTelphoneUser);
+                
+            }
+            List<string> BANumberList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[3].Rows)
+            {
+                BANumberList.Add(dataRow["BANumber"].ToString());
+            }
+
+            List<string> RankList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[4].Rows)
+            {
+                RankList.Add(dataRow["Value"].ToString());
+            }
+
+
+            List<string> PhoneTypeList = new List<string>();
+
+            foreach (DataRow dataRow in ds.Tables[5].Rows)
+            {
+                PhoneTypeList.Add(dataRow["PhoneUsedFor"].ToString());
+            }
+            
+            List<TelphoneUser> listTelphoneUsers = new List<TelphoneUser>();
+            DBGateway aGateway = new DBGateway();
+            DataSet aDataSet = aGateway.Select(query3);
+            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+            {
+
+                TelphoneUser aTelphoneUser = new TelphoneUser();
+                aTelphoneUser.BANumber = dataRow["BANumber"].ToString();
+                aTelphoneUser.Name = dataRow["FullName"].ToString();
+
+                aTelphoneUser.NewPhoneNumber = dataRow["PhoneNumber"].ToString();
+                aTelphoneUser.Rank = dataRow["Rank"].ToString();
+
+                aTelphoneUser.ConnectedDate = dataRow["ConnectDate"].ToString();
+                // aTelphoneUser.DisconnectedDate = dataRow["DisconnectedDate"].ToString();
+                aTelphoneUser.ID = dataRow["Id"].ToString();
+                // aTelphoneUser.PhoneStatus = dataRow["Status"].ToString();
+
+                aTelphoneUser.HomeAddress = dataRow["HomeAddress"].ToString();
+                aTelphoneUser.OfficeAddress = dataRow["OfficeAddress"].ToString();
+                aTelphoneUser.Gender = dataRow["Gender"].ToString();
+                aTelphoneUser.PhoneType = dataRow["PhoneUsedFor"].ToString();
+
+                listTelphoneUsers.Add(aTelphoneUser);
+            }
+            List<TelphoneUser> filteredPhoneList = listTelphoneUsers;
+            FilteredLists aFilteredList=new FilteredLists();
+            aFilteredList.aTelePhoneUserList = aList;
+            aFilteredList.FilteredSize = filteredCount;
+            aFilteredList.TotalSize = lTotalCount;
+            aFilteredList.BaNumberList = BANumberList;
+            aFilteredList.RankList = RankList;
+            aFilteredList.PhoneTypeList = PhoneTypeList;
+
+            return aFilteredList;
+        }
+
+
+
+               
 
     }
+
+
+
+
+
+
 }
+
+
