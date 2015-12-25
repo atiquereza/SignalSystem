@@ -12,12 +12,12 @@
     {
         message = ViewData["message"].ToString();
     }
-    List<Station> Stations = FrameworkItems.GetLocations();
+    List<Dictionary<string,string>> Stations = FrameworkItems.GetLocations();
     string locations = string.Empty;
    
-        foreach (Station station in Stations)
+        foreach (Dictionary<string,string> station in Stations)
         {
-            locations += "<option value=\"" + station.ID + "\">" + station.Name + "</option>";
+            locations += "<option value=\"" + station["ID"] + "\">" + station["Value"] + "</option>";
         } 
     
 
@@ -37,12 +37,6 @@
         }
 
     }
-
-    string pendingList = string.Empty;
-    string deleteAction = UtilityLibrary.GetBaseURL() + "Equipment/DeleteSingleEquipment";
-    string editAction = UtilityLibrary.GetBaseURL() + "Equipment/EditSingleEquipment";
-    string addAction = UtilityLibrary.GetBaseURL() + "Equipment/AddEquipment";
-    string addTypeAction = UtilityLibrary.GetBaseURL() + "Equipment/AddEquipmentType";
 
 }
 
@@ -96,8 +90,6 @@
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
-
-
         <div>
             <label for="dateDepurture" class="col-md-2">
                 Departure Date:
@@ -109,8 +101,6 @@
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
-
-
         <div>
             <label for="mailFrom" class="col-md-2">
                 Mail From:
@@ -125,15 +115,11 @@
                 <i class="fa fa-lock fa-2x"></i>
             </div>
         </div>
-
-
         <div>
             <label for="mailTo" class="col-md-2">
                 Mail To:
             </label>
             <div class="col-md-9">
-               
-
                 <select  id="mailTo" class="form-control" name="mailTo">
                     <option value="-1">--Please Select--</option>
                     @Html.Raw(locations)
@@ -142,11 +128,7 @@
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
             </div>
-        </div>
-
-
-
-
+        </div> 
         <div class="row">
         <div class="col-md-2">
         </div>
@@ -167,70 +149,49 @@
 
 
 <style>
-   
+	div {
+		padding-bottom: 20px;
+	}
 
-        div {
-            padding-bottom:20px;
-        }
-        .custom-btn {
-            width: 200px !important;
-        }
-
-   
+	.custom-btn {
+		width: 200px !important;
+	}
 </style>
 
 
 <script>
 
 
-    $(document).ready(function() {
-        var endDate = new Date();
-        var oldDate = new Date();
-        var arrivalDatePicker = $('#dateArrival');
+	$(document).ready(function () {
+		var endDate = new Date();
+		var oldDate = new Date();
+		var arrivalDatePicker = $('#dateArrival');
 
-        arrivalDatePicker.datepicker({
-            controlType: 'select',
-            oneLine: true,
-            timeFormat: 'hh:mm tt',
-            dateFormat: 'dd/mm/yy',
-            maxDate: endDate,
-            onSelect: function () {
-                return $(this).trigger('change');
-            }
+		arrivalDatePicker.datepicker({
+			controlType: 'select',
+			oneLine: true,
+			timeFormat: 'hh:mm tt',
+			dateFormat: 'dd/mm/yy',
+			maxDate: endDate,
 
+		});
+		arrivalDatePicker.datetimepicker('setDate', (new Date()));
 
-        });
-
-
-        var departureDatePicker = $('#dateDepurture');
+		var departureDatePicker = $('#dateDepurture');
 
 
-        departureDatePicker.datepicker({
-            controlType: 'select',
-            oneLine: true,
-            timeFormat: 'hh:mm tt',
-            dateFormat: 'dd/mm/yy'
-            // maxDate: endDate
+		departureDatePicker.datepicker({
+			controlType: 'select',
+			oneLine: true,
+			timeFormat: 'hh:mm tt',
+			dateFormat: 'dd/mm/yy'
 
-        });
-        //oldDate = $('#dateArrival').datepicker('getDate');
-        //departureDatePicker.datetimepicker('option', 'minDate', new Date(oldDate));
-        departureDatePicker.datetimepicker('setDate', (new Date()));
-        
-
-       
-
-        $("#dateArrival").on("change", function() {
-           // console.log('inp changed');
-            oldDate = $('#dateArrival').datepicker('getDate');
-            departureDatePicker.datetimepicker('option', 'minDate', new Date(oldDate));
-        });
+		});
+		departureDatePicker.datetimepicker('setDate', (new Date()));
 
 
-  
-      
 
-    });
+	});
 </script>
 
 

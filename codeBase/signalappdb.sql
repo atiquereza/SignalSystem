@@ -33,17 +33,27 @@ CREATE TABLE IF NOT EXISTS `allactivephoneinfo` (
   KEY `PhoneInfo` (`AllPhoneInfoID`),
   CONSTRAINT `PersonInfo` FOREIGN KEY (`PhoneUserPersonalInfoId`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `PhoneInfo` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.allactivephoneinfo: ~5 rows (approximately)
+-- Dumping data for table signalappdb.allactivephoneinfo: ~15 rows (approximately)
 DELETE FROM `allactivephoneinfo`;
 /*!40000 ALTER TABLE `allactivephoneinfo` DISABLE KEYS */;
 INSERT INTO `allactivephoneinfo` (`ID`, `PhoneUserPersonalInfoId`, `AllPhoneInfoID`, `PhoneUsedFor`, `HomeAddress`, `OfficeAddress`, `RequestDate`, `LetterNo`, `ConnectDate`) VALUES
 	(8, 4, 3, 'Office', 'Dhaka', 'Mirpur_12', '2015-12-13 20:26:57', 'BA0001_Letter_Army_Office_1', '2015-12-13 20:27:45'),
 	(9, 3, 8, 'Home', 'Ibrahim pur', 'Mohakhali', '2015-12-13 22:43:59', 'New Connection 6002', '2015-12-13 23:18:22'),
-	(10, 3, 7, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-10 22:43:10', 'New Connection 6001', '2015-12-13 23:18:27'),
-	(11, 3, 4, 'Home', 'Ibrahim pur', 'Mohakhali', '2015-12-12 22:43:40', 'New Connection 5002', '2015-12-13 23:18:32'),
-	(12, 3, 2, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-11 22:42:36', 'New Connection 5000', '2015-12-13 23:18:38');
+	(10, 7, 7, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-10 22:43:10', 'New Connection 6001', '2015-12-13 23:18:27'),
+	(11, 7, 4, 'Home', 'Ibrahim pur', 'Mohakhali', '2015-12-12 22:43:40', 'New Connection 5002', '2015-12-13 23:18:32'),
+	(12, 5, 2, 'Office', 'Ibrahim pur', 'Mohakhali', '2015-12-11 22:42:36', 'New Connection 5000', '2015-12-13 23:18:38'),
+	(14, 5, 6, 'Office', 'Nkhal Para', 'Gulshan', '2015-12-22 07:01:00', '', '2015-12-22 07:01:00'),
+	(15, 5, 6, '', '', '', '2015-12-21 07:01:00', '', '2015-12-21 07:01:00'),
+	(16, 5, 6, '', '', '', '2015-12-18 07:01:00', '', '2015-10-22 07:01:00'),
+	(17, 5, 6, '', '', '', '2015-12-22 17:01:00', '', '2014-12-22 07:01:00'),
+	(18, 5, 6, '', '', '', '2015-11-12 07:01:00', '', '2015-01-05 07:01:00'),
+	(19, 5, 6, '', '', '', '2014-12-22 07:01:00', '', '2015-12-12 15:01:00'),
+	(20, 5, 6, '', '', '', '0000-00-00 00:00:00', '', '2015-11-24 07:01:00'),
+	(21, 5, 6, '', '', '', '0000-00-00 00:00:00', '', '2013-12-22 07:01:00'),
+	(22, 5, 6, '', '', '', '0000-00-00 00:00:00', '', '2015-09-11 07:01:00'),
+	(23, 5, 6, '', '', '', '0000-00-00 00:00:00', '', '2012-11-11 11:11:11');
 /*!40000 ALTER TABLE `allactivephoneinfo` ENABLE KEYS */;
 
 
@@ -151,16 +161,49 @@ CREATE TABLE IF NOT EXISTS `complains` (
   KEY `MenuComplainTypeId` (`MenuComplainTypeId`),
   KEY `TelephoneUserId` (`TelephoneUserId`),
   KEY `FK_complains_allphoneinfo` (`AllPhoneInfoID`),
-  CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `phoneuserpersonalinfo` (`ID`),
   CONSTRAINT `FK_complains_allphoneinfo` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
-  CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_complains_menucomplaintype` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
+  CONSTRAINT `FK_complains_telephoneusers` FOREIGN KEY (`TelephoneUserId`) REFERENCES `phoneuserpersonalinfo` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.complains: ~1 rows (approximately)
+-- Dumping data for table signalappdb.complains: ~34 rows (approximately)
 DELETE FROM `complains`;
 /*!40000 ALTER TABLE `complains` DISABLE KEYS */;
 INSERT INTO `complains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`, `AllPhoneInfoID`) VALUES
-	(76, 'Test unclear sound', 'Pending', 2, 4, '2015-12-17 23:07:26', '0000-00-00 00:00:00', '', '', '', 3);
+	(83, 'h1', 'Pending', 6, 7, '2015-12-19 16:53:31', '0000-00-00 00:00:00', '', '', '', 6),
+	(84, 'h2', 'Pending', 8, 5, '9999-01-01 23:59:59', '0000-00-00 00:00:00', '', '', '', 5),
+	(85, 'h3', 'Pending', 3, 6, '2015-12-20 07:00:14', '0000-00-00 00:00:00', '', '', '', 3),
+	(86, 'h8', 'Pending', 1, 5, '2015-12-20 07:04:41', '0000-00-00 00:00:00', '', '', '', 2),
+	(87, 'h5', 'Pending', 4, 5, '2015-12-20 07:07:13', '0000-00-00 00:00:00', '', '', '', 6),
+	(89, 'H7', 'Pending', 6, 8, '2015-12-20 07:09:38', '0000-00-00 00:00:00', '', '', '', 3),
+	(91, 'h4', 'Pending', 1, 5, '2015-12-20 07:11:15', '0000-00-00 00:00:00', '', '', '', 12),
+	(92, 'h6', 'Pending', 7, 5, '2015-12-20 07:11:30', '0000-00-00 00:00:00', '', '', '', 5),
+	(94, 'h10', 'Pending', 3, 8, '2015-12-20 07:12:09', '0000-00-00 00:00:00', '', '', '', 10),
+	(96, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(97, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(98, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(99, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(100, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(101, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(102, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(103, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(104, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(105, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(106, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(107, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(108, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(109, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(110, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(111, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(112, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(113, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(114, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(115, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 2),
+	(116, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 6),
+	(117, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 6),
+	(118, 'h3', 'Pending', 5, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 6),
+	(119, 'h3', 'Pending', 4, 6, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 6),
+	(120, 'h3', 'Pending', 4, 7, '2015-12-22 01:24:03', '0000-00-00 00:00:00', '', '', '', 6);
 /*!40000 ALTER TABLE `complains` ENABLE KEYS */;
 
 
@@ -223,19 +266,11 @@ CREATE TABLE IF NOT EXISTS `equipmnttype` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `TypeName` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.equipmnttype: ~7 rows (approximately)
+-- Dumping data for table signalappdb.equipmnttype: ~0 rows (approximately)
 DELETE FROM `equipmnttype`;
 /*!40000 ALTER TABLE `equipmnttype` DISABLE KEYS */;
-INSERT INTO `equipmnttype` (`Id`, `TypeName`) VALUES
-	(1, 'E1 Link'),
-	(2, 'Voice Musk'),
-	(3, 'ONUs'),
-	(4, 'MicroWave'),
-	(5, 'PDH'),
-	(6, 'onsu'),
-	(7, 'SDH');
 /*!40000 ALTER TABLE `equipmnttype` ENABLE KEYS */;
 
 
@@ -245,25 +280,33 @@ CREATE TABLE IF NOT EXISTS `maildata` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `MailID` text NOT NULL,
   `MailDescription` text NOT NULL,
-  `Date` date NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+  `MailFromID` int(11) NOT NULL,
+  `MailToID` int(11) NOT NULL,
+  `DateArrival` date NOT NULL,
+  `DateDeparture` date NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_maildata_menustations` (`MailFromID`),
+  KEY `FK_maildata_menustations_2` (`MailToID`),
+  CONSTRAINT `FK_maildata_menustations` FOREIGN KEY (`MailFromID`) REFERENCES `menustations` (`ID`),
+  CONSTRAINT `FK_maildata_menustations_2` FOREIGN KEY (`MailToID`) REFERENCES `menustations` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
--- Dumping data for table signalappdb.maildata: ~11 rows (approximately)
+-- Dumping data for table signalappdb.maildata: ~12 rows (approximately)
 DELETE FROM `maildata`;
 /*!40000 ALTER TABLE `maildata` DISABLE KEYS */;
-INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `Date`) VALUES
-	(1, 'MID0001', 'DHK to CTG', '2015-11-24'),
-	(2, 'MID0002', 'CTG to DHK', '2015-11-24'),
-	(3, 'MID0003', 'CTG to BOG', '2015-11-24'),
-	(4, 'MID0004', 'DHK to DHK', '2015-11-24'),
-	(5, 'MID0005', 'BOG to DHK', '2015-11-24'),
-	(6, 'MID0006', 'Jess to DHK', '2015-11-24'),
-	(7, 'MID0007', 'BOG to DHK', '2015-11-24'),
-	(8, 'MID0007', 'BOG to RAJ', '2015-11-24'),
-	(9, 'MID0008', 'DHK to Saidpur', '2015-11-24'),
-	(10, 'MID0009', 'Saidpur to Rangpur', '2015-11-24'),
-	(11, 'MID00010', 'RAJ to CTG', '2015-11-24');
+INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `MailFromID`, `MailToID`, `DateArrival`, `DateDeparture`) VALUES
+	(12, 'MID00001', 'some description', 1, 2, '2015-12-25', '2015-12-25'),
+	(13, 'MID00002', 'ctg to bog', 2, 3, '2015-12-25', '2015-12-25'),
+	(14, 'MID00003', 'some desc', 3, 4, '2015-12-25', '2015-12-25'),
+	(15, 'MID00004', 'some desc', 3, 4, '2015-12-25', '2015-12-25'),
+	(16, 'MID00005', 'some desc', 1, 5, '2015-12-25', '2015-12-25'),
+	(17, 'MID00006', 'some desc', 2, 3, '2015-12-25', '2015-12-25'),
+	(18, 'MID00007', 'some desc', 4, 4, '2015-12-25', '2015-12-25'),
+	(19, 'MID00008', 'some desc', 3, 4, '2015-12-25', '2015-12-25'),
+	(20, 'MID00009', 'some desc', 4, 3, '2015-12-25', '2015-12-25'),
+	(21, 'MID00010', 'some desc', 3, 1, '2015-12-25', '2015-12-25'),
+	(22, 'MID00011', 'some desc', 4, 4, '2015-12-25', '2015-12-25'),
+	(23, 'MID00012', 'some desc', 2, 2, '2015-12-25', '2015-12-25');
 /*!40000 ALTER TABLE `maildata` ENABLE KEYS */;
 
 
@@ -351,6 +394,27 @@ INSERT INTO `menusrank` (`id`, `Value`, `Name`) VALUES
 	(8, 'Lieutenant', 'rank'),
 	(9, 'Second Lieutenant', 'rank');
 /*!40000 ALTER TABLE `menusrank` ENABLE KEYS */;
+
+
+-- Dumping structure for table signalappdb.menustations
+DROP TABLE IF EXISTS `menustations`;
+CREATE TABLE IF NOT EXISTS `menustations` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Value` varchar(50) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table signalappdb.menustations: ~5 rows (approximately)
+DELETE FROM `menustations`;
+/*!40000 ALTER TABLE `menustations` DISABLE KEYS */;
+INSERT INTO `menustations` (`ID`, `Value`, `Name`) VALUES
+	(1, 'Dhaka Cant.', 'Dhaka Cant.'),
+	(2, 'CTG Cant.', 'CTG Cant.'),
+	(3, 'BOG Cant.', 'BOG Cant.'),
+	(4, 'RAJ Cant.', 'RAJ Cant.'),
+	(5, 'RANG Cant.', 'RANG Cant.');
+/*!40000 ALTER TABLE `menustations` ENABLE KEYS */;
 
 
 -- Dumping structure for table signalappdb.pendingrequest

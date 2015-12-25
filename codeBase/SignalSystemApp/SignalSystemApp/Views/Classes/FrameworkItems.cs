@@ -100,19 +100,18 @@ namespace SignalSystemApp.Views.Classes
             return ranks;
         }
 
-        public static List<Station> GetLocations()
+        public static List<Dictionary<string,string>> GetLocations()
         {
-            List<Station> aList = new List<Station>();
+            List<Dictionary<string, string>> aList = new List<Dictionary<string, string>>();
             DBGateway aGateway = new DBGateway();
-            DataSet aSet = aGateway.Select("select * from stations;");
+            DataSet aSet = aGateway.Select("select * from menustations;");
 
             foreach (DataRow dataRow in aSet.Tables[0].Rows)
             {
-                Station aData = new Station();
-                aData.ID = dataRow["ID"].ToString();
-                aData.Name = (dataRow["Name"].ToString());
-                aData.Address = dataRow["Address"].ToString();
-
+                Dictionary<string, string> aData = new Dictionary<string, string>();
+                aData.Add("ID",dataRow["ID"].ToString());
+                aData.Add("Value", dataRow["Name"].ToString());
+               
                 aList.Add(aData);
             }
             return aList;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using SignalSystemApp.Models;
@@ -50,13 +51,11 @@ namespace SignalSystemApp.Controllers
                 aMailData.MailDescription = mailDescription;
                 aMailData.MailFrom = mailFrom;
                 aMailData.MailTo = mailTo;
-              //  DateTime dateValue = DateTime.Parse(dateArrival);
-                //DateTime dateValue = Convert.ToDateTime(dateArrival);
                 DateTime dt = DateTime.ParseExact(dateArrival, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                
                 aMailData.MailArrival = dt;
                 dt = DateTime.ParseExact(dateDepurture, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                //dateValue = Convert.ToDateTime(dateDepurture);
+             
                 aMailData.MailDeparture = dt;
                 string message = aMail.AddNewMail(aMailData);
                 ViewData["message"] = message;
@@ -72,16 +71,31 @@ namespace SignalSystemApp.Controllers
         public JsonResult DataProviderAction(JQueryDataTableParamModel aModel)
         {
 
+            var mailId = Convert.ToString(Request["sSearch_0"]);
+            var mailDescription = Convert.ToString(Request["sSearch_1"]);
+            var mailFrom = Convert.ToString(Request["sSearch_2"]);
+            var mailTo = Convert.ToString(Request["sSearch_3"]);
+            var dateArrivalRange = Convert.ToString(Request["sSearch_4"]);
+            string dateArrivalFrom = string.Empty;
+            string dateArrivalTo = string.Empty;
+
+            string[] dates = Regex.Split(dateArrivalRange, "-yadcf_delim-");
+            if (dates.Count() == 2)
+            {
+                dateArrivalFrom = dates[0];
+                dateArrivalTo = dates[1];
+            }
+            else if (dates.Count() == 1)
+            {
+                dateArrivalFrom = dates[0];
+            }
+
+
             Mail aMail = new Mail();
-
-            List<MailData> mailData = aMail.GetMailData();
-            var idFilter = Convert.ToString(Request["sSearch_0"]);
-            var mailIdFilter = Convert.ToString(Request["sSearch_1"]);
-            var mailDescriptionFilter = Convert.ToString(Request["sSearch_2"]);
-            var dateFilter = Convert.ToString(Request["sSearch_3"]);
-
-
-            
+            int totalRecords = 0;
+            List<MailData> mailData = aMail.GetMailData(mailId,mailDescription,mailFrom,mailTo,
+                dateArrivalFrom,dateArrivalTo,aModel.iDisplayStart,aModel.iDisplayLength,out totalRecords);
+           
 
             var result = from aMailData in mailData
                 select new[]
@@ -90,24 +104,46 @@ namespace SignalSystemApp.Controllers
                     aMailData.ID,
                     aMailData.MailID,
                     aMailData.MailDescription,
-                    aMailData.MailArrival.ToString("dd-MM-yyyy").ToString()
+                    aMailData.MailArrival.ToString("dd-MM-yyyy").ToString() ,
+                    aMailData.MailDeparture.ToString("dd-MM-yyyy").ToString(),
+                    aMailData.MailFrom,
+                    aMailData.MailTo,
+                    ""
 
                 };
-
-
             List<string[]> resultList = result.ToList();
-            List<string> aRankList = new List<string>();
-            List<string> banumberList = new List<string>();
-            List<string> complainTypeList = new List<string>();
+          
             return Json(new
             {
                 sEcho = aModel.sEcho,
 
-                iTotalRecords = 25,//resultList.Count,
-                iTotalDisplayRecords = 12,//filteredComplaneList.Count(),
+                iTotalRecords = resultList.Count,
+                iTotalDisplayRecords = totalRecords,
                 aaData = resultList
             },
                JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetMailInfo(int id)
+        {
+            
+            List<MailData> mailData = new List<MailData>()
+            {
+                new MailData(){MailID = id.ToString(),
+                    MailFrom = "Dhaka Cant.",
+                    MailTo = "CTG Cant.",
+                    MailDescription = "SomeDescription",
+                    MailArrival = DateTime.Now,
+                    MailDeparture = DateTime.Now}     
+            };
+          
+
+            return Json(mailData);
+        }
+
+        public ActionResult EditEntry()
+        {
+            return View("ListMails");
         }
     }
 }

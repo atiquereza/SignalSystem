@@ -1,302 +1,467 @@
 ﻿@using SignalSystem.Libs
 @using SignalSystemApp.Models.Equipment
-
+@using SignalSystemApp.Views.Classes
 @{
 
-
+		List<Dictionary<string,string>> Stations = FrameworkItems.GetLocations();
+		string locations = string.Empty;
+   
+        foreach (Dictionary<string,string> station in Stations)
+        {
+            locations += "<option value=\"" + station["ID"] + "\">" + station["Value"] + "</option>";
+        }
+	string editFormAction = UtilityLibrary.GetBaseURL() + "Mail/EditEntry";
 }
 <div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1>Mail <small>List of mails</small></h1>
+	<div class="row">
+		<div class="col-lg-12">
+			<h1>Mail <small>List of mails</small></h1>
 
-        </div>
-    </div>
-    <div class="row">
+		</div>
+	</div>
+	<div class="row">
 
-        <div class="col-lg-12">
-            <div class="panel panel-primary">
+		<div class="col-lg-12">
+			<div class="panel panel-primary">
 
-                <div class="panel-heading">
-                    <h3 class="panel-title" style="margin-left: -190px;">
-                        <i class="fa fa-bar-chart-o"></i> List Of Mails
-                    </h3>
-                </div>
+				<div class="panel-heading">
+					<h3 class="panel-title" style="margin-left: -190px;">
+						<i class="fa fa-bar-chart-o"></i>List Of Mails
+					</h3>
+				</div>
 
-                <div class="panel-body">
+				<div class="panel-body">
 
 
-                <div>  
-                    @*Search filter starts*@
+					<div>
+						@*Search filter starts*@
                     <div class="row">
-                        <div class="col-xs-2">
-                            <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
-                        </div>
-                    </div>
-                    <div id="filter" style="display: none">
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
-                            </div>
-                            <div class="col-xs-2">
-                                <div id="externalContainer"></div>
-                            </div>
-                        </div><br />
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <div id="mailDBid"></div>
-                            </div><label>&nbsp;</label>
-                            <div class="col-xs-3">
-                                <div id="mailID"></div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div id="mailDescription"></div>
-                            </div><br>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-5"><br>
-                                <label>Search by Complain Date:</label>
-                                <div id="mailDate"></div>
-                            </div> <br>
-                        </div>
-                    </div>
+						<div class="col-xs-2">
+							<button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide filters</button>
+						</div>
+					</div>
+						<div id="filter" style="display: none">
+							<div class="row">
+								<div class="col-xs-2">
+									<br>
+									<input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
+								</div>
+								<div class="col-xs-2">
+									<div id="externalContainer"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
 
-                        @*Search filter ends*@
+								<div class="col-xs-3">
+									<div id="mailID"></div>
+								</div>
+								<div class="col-xs-3">
+									<div id="mailDescription"></div>
+								</div>
+								<div class="col-xs-3">
+									<div id="mailFrom"></div>
+								</div>
+								<div class="col-xs-3">
+									<div id="mailTo"></div>
+								</div>
+								<br>
+							</div>
+							<div class="row">
+								<div class="col-xs-5">
+									<br>
+									<label>Search by Arrival Date:</label>
+									<div id="mailDate"></div>
+								</div>
+								<br>
+							</div>
+						</div>
+
+						@*Search filter ends*@
                         <table id="MainDataTable" name="entryMainDataTables_table" border="1" class="table table-condensed table-striped ">
-                            <thead>
-                                <tr>
-                                    <th class="col-sm-1">ID</th>
-                                    <th class="col-sm-1">MailID</th>
-                                    <th class="col-sm-1">Mail Description</th>
-                                    <th class="col-sm-1">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
+							<thead>
+								<tr>
+									<th class="col-sm-1">ID</th>
+									<th class="col-sm-1">MailID</th>
+									<th class="col-sm-1">Mail Description</th>
+									<th class="col-sm-1">Date Arrival</th>
+									<th class="col-sm-1">Date Departure</th>
+									<th class="col-sm-1">From</th>
+									<th class="col-sm-1">Destination</th>
+									<th class="col-sm-1" style="align-content: center;">Edit</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
 
-                        </table>
-                        @*<label>Total Pending Complains: @pendingComplains.Count</label>*@
-                    </div>
+						</table>
 
-                </div>
-            </div>
-        </div>
-    </div>
+					</div>
 
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
+
+
+<form id="edit-form" class="myModals" method="POST" action="@editFormAction">
+	<div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel1">Edit Mail</h4>
+				</div>
+				<div class="modal-body">
+
+					<div>
+						<label for="mailid" class="col-md-2">
+							Mail ID:
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="mailid_Edit" placeholder="Mail ID" name="mailId">
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+
+					<div>
+						<label for="description" class="col-md-2">
+							Description:
+						</label>
+						<div class="col-md-9">
+							<textarea class="form-control" id="mailDescription_Edit" name="mailDescription"></textarea>
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+
+					<div>
+						<label for="dateArrival" class="col-md-2">
+							Arrival Date:
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="dateArrival_Edit" class="datePicker" name="dateArrival">
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+					<div>
+						<label for="dateDepurture" class="col-md-2">
+							Departure Date:
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="dateDepurture_Edit" class="datePicker" name="dateDepurture">
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+					<div>
+						<label for="mailFrom" class="col-md-2">
+							Mail From:
+						</label>
+						<div class="col-md-9">
+							<select id="mailFrom_Edit" class="form-control" name="mailFrom">
+								<option value="-1">--Please Select--</option>
+								@Html.Raw(locations)
+							</select>
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+					<div>
+						<label for="mailTo" class="col-md-2">
+							Mail To:
+						</label>
+						<div class="col-md-9">
+							<select id="mailTo_Edit" class="form-control" name="mailTo">
+								<option value="-1">--Please Select--</option>
+								@Html.Raw(locations)
+							</select>
+						</div>
+
+						<div class="col-md-1">
+							<i class="fa fa-lock fa-2x"></i>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="modal-footer">
+					<div class="form-group">
+						<button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Complain</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
 
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+<script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
 
 }
 
 
-<style>
+<style>	
+#MainDataTable_filter {
+    display: none;
+}
+	.myModals div {
+		padding-bottom: 10px;
+	}
 
-    .myModals div {
-        padding-bottom: 10px;
-    }
+	.paginate_button {
+		background: lightblue;
+	}
 
-    .paginate_button {
+	.dataTables_length {
+		background: whitesmoke;
+	}
 
-        background: lightblue;
-    }
+	.dataTables_filter {
+		background: whitesmoke;
+	}
 
-    .dataTables_length {
-        background: whitesmoke;
-    }
+	#yadcf-filter--reportTable-1 {
+		width: 25px !important;
+		max-width: 25px !important;
+	}
 
-    .dataTables_filter {
-        background: whitesmoke;
-    }
+	#yadcf-filter--MainDataTable-1 {
+		width: 105px !important;
+		max-width: 105px !important;
+	}
 
-    #yadcf-filter--reportTable-1 {
-        width: 25px !important;
-        max-width: 25px !important;
-    }
+	#yadcf-filter--MainDataTable-0 {
+		width: 120px !important;
+		max-width: 120px !important;
+	}
 
-    #yadcf-filter--MainDataTable-1 {
-        width: 105px !important;
-        max-width: 105px !important;
-    }
+	#yadcf-filter--MainDataTable-2 {
+		width: 120px !important;
+		max-width: 120px !important;
+	}
 
-    #yadcf-filter--MainDataTable-0 {
-        width: 120px !important;
-        max-width: 120px !important;
-    }
+	#yadcf-filter--MainDataTable-3 {
+		width: 110px !important;
+		max-width: 110px !important;
+	}
 
-    #yadcf-filter--MainDataTable-2 {
-        width: 120px !important;
-        max-width: 120px !important;
-    }
+	#yadcf-filter--MainDataTable-5 {
+		width: 120px !important;
+		max-width: 110px !important;
+	}
 
-    #yadcf-filter--MainDataTable-3 {
-        width: 110px !important;
-        max-width: 110px !important;
-    }
+	.yadcf-filter-range-date-seperator {
+		width: 20px !important;
+	}
 
-    #yadcf-filter--MainDataTable-5 {
-        width: 120px !important;
-        max-width: 110px !important;
-    }
+	#MainDataTable_length select {
+		background: green;
+	}
 
-    .yadcf-filter-range-date-seperator {
-        width: 20px !important;
-    }
+	#MainDataTable_length {
+		background: #222222;
+		color: white;
+		padding-top: 10px;
+	}
 
-    #MainDataTable_length select {
-        background: green;
-    }
-
-    #MainDataTable_length {
-        background: #222222;
-        color: white;
-        padding-top: 10px;
-    }
-
-    #MainDataTable_filter {
-        background: #222222;
-        color: black;
-    }    
-
-     
-
+	#MainDataTable_filter {
+		background: #222222;
+		color: black;
+	}
 </style>
 
 
 <script>
 
 
-    $(document).ready(function() {
-
-        var oTable = $('#MainDataTable').dataTable({
-            "order": [[3, "asc"]],
-            "sAjaxSource": "/Mail/DataProviderAction",
-            "bLengthChange": true,
-            dom: 'l<>Bfrtip',
-            "bServerSide": true,
-            "fnRowCallback":
-                function(nRow, aData, iDisplayIndex) {
-                    return nRow;
-                },
+	$(document).ready(function () {
 
 
-        });
+
+		var arrivalDatePicker = $('#dateArrival_Edit');
+
+		arrivalDatePicker.datepicker({
+			controlType: 'select',
+			oneLine: true,
+			timeFormat: 'hh:mm tt',
+			dateFormat: 'dd/mm/yy',
 
 
-        $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
-        $.datepicker.setDefaults($.datepicker.regional['']);
-        $.datepicker.setDefaults({
-            buttonImageOnly: true,
-            buttonImage: 'calendar.gif',
-            changeMonth: true,
-            changeYear: true,
-            yearRange: '1900:3000',
+		});
+		arrivalDatePicker.datetimepicker('setDate', (new Date()));
+
+		var departureDatePicker = $('#dateDepurture_Edit');
+		departureDatePicker.datepicker({
+			controlType: 'select',
+			oneLine: true,
+			timeFormat: 'hh:mm tt',
+			dateFormat: 'dd/mm/yy'
+
+		});
+		departureDatePicker.datetimepicker('setDate', (new Date()));
 
 
-            showWeek: true,
-            weekHeader: "Wk",
-            autoSize: true
+		var oTable = $('#MainDataTable').dataTable({
+			"order": [[3, "asc"]],
+			"sAjaxSource": "/Mail/DataProviderAction",
+			"bLengthChange": true,
+			dom: 'l<>Bfrtip',
+			"bServerSide": true,
+			"fnRowCallback":
+				function (nRow, aData, iDisplayIndex) {
+					$('td:eq(7)', nRow).html('<button mail_id=' + aData[0] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
+					return nRow;
+				},
 
 
-        });
-
-        var datepickerDefaults = {
-            showTodayButton: true,
-            showClear: true
-        };
-
-
-        $('#MainDataTable_filter input').unbind();
-        $('#MainDataTable_filter input').bind('keyup', function(e) {
-            if (e.keyCode == 13) {
-                //alert(1);
-                oTable.fnFilter(this.value);
-            }
-        });
-
-        oTable.yadcf([
-            {
-                column_number: 0,
-                filter_type: "text",
-                filter_container_id: "mailDBid",
-                filter_delay: 1000,
-                filter_default_label: "Select ID"
-
-            },
-            {
-                column_number: 1,
-                filter_type: "text",
-                filter_default_label: "Mail ID",
-                filter_delay: 1000,
-                filter_container_id: "mailID"
-            },
-            {
-                column_number: 2,
-                filter_type: "text",
-                filter_default_label: "mailDescription",
-
-                filter_delay: 1000,
-
-                filter_delay: 1000,
-
-                filter_container_id: "mailDescription"
-
-            },
-            {
-                column_number: 3,
-                filter_type: "range_date",
-                date_format: "mm/dd/yyyy",
-                filter_delay: 500,
-                filter_container_id: "mailDate"
-            }
-        ]);
+		});
+		$.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+		$.datepicker.setDefaults($.datepicker.regional['']);
+		$.datepicker.setDefaults({
+			buttonImageOnly: true,
+			buttonImage: 'calendar.gif',
+			changeMonth: true,
+			changeYear: true,
+			yearRange: '1900:3000',
 
 
-        $('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+			showWeek: true,
+			weekHeader: "Wk",
+			autoSize: true
 
 
-        $().tooltip({
-            template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-        });
+		});
+
+		var datepickerDefaults = {
+			showTodayButton: true,
+			showClear: true
+		};
 
 
-        $(".yadcf-filter").css('background', 'black');
-        $(".yadcf-filter-range-date").css('background', 'black');
-        $(".yadcf-filter-range-date").css('font', 'bold');
+		$('#MainDataTable_filter input').unbind();
+		$('#MainDataTable_filter input').bind('keyup', function (e) {
+			if (e.keyCode == 13) {
+				//alert(1);
+				oTable.fnFilter(this.value);
+			}
+		});
 
-        $('#ExportExcelButton').click(function() {
+		oTable.yadcf([
+			{
+				column_number: 0,
+				filter_type: "text",
+				filter_default_label: "Mail ID",
+				filter_delay: 1000,
+				filter_container_id: "mailID"
+			},
+			{
+				column_number: 1,
+				filter_type: "text",
+				filter_default_label: "Mail Description",
+				filter_delay: 1000,
+				filter_container_id: "mailDescription"
 
-            var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
-            var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
-            var name = $('#yadcf-filter--MainDataTable-1').val();
-            var phone = $('#yadcf-filter--MainDataTable-3').val();
-            var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
-            var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
-            var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-            var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
-            var overAllSearch = $("#MainDataTable_filter :input").val();
+			},
+			{
+				column_number: 2,
+				filter_type: "text",
+				filter_default_label: "Mail From",
+				filter_delay: 1000,
+				filter_container_id: "mailFrom"
 
-            window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=pending";
-        });
+			}, {
+				column_number: 3,
+				filter_type: "text",
+				filter_default_label: "Mail To",
+				filter_delay: 1000,
+				filter_container_id: "mailTo"
+
+			},
+			{
+				column_number: 4,
+				filter_type: "range_date",
+				date_format: "mm/dd/yyyy",
+				filter_delay: 500,
+				filter_container_id: "mailDate"
+			}
+		]);
 
 
-        var tableWidth = $('#MainDataTable').width() + 25;
+		$('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
 
-        //document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
 
-        //Make DateTime picker dropdown to work on a Modal//
-        //var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+		$().tooltip({
+			template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+		});
 
-        //$.fn.modal.Constructor.prototype.enforceFocus = function () { };
 
-        //$confModal.on('hidden', function () {
-        //    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
-        //});
+		$(".yadcf-filter").css('background', 'black');
+		$(".yadcf-filter-range-date").css('background', 'black');
+		$(".yadcf-filter-range-date").css('font', 'bold');
 
-        //$confModal.modal({ backdrop: false });
-        //Make DateTime picker dropdown to work on a Modal//
+		$('#ExportExcelButton').click(function () {
 
-    });
-</script>  
+			var baNumber = $("#yadcf-filter--MainDataTable-0 option:selected").text();
+			var hourFilter = $("#yadcf-filter--MainDataTable-6 option:selected").text();
+			var name = $('#yadcf-filter--MainDataTable-1').val();
+			var phone = $('#yadcf-filter--MainDataTable-3').val();
+			var rank = $("#yadcf-filter--MainDataTable-2 option:selected").text();
+			var complainType = $("#yadcf-filter--MainDataTable-5 option:selected").text();
+			var fromDateRange = $("#yadcf-filter--MainDataTable-from-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+			var toDateRange = $("#yadcf-filter--MainDataTable-to-date-4").datepicker({ dateFormat: 'yy-mm-dd' }).val();
+			var overAllSearch = $("#MainDataTable_filter :input").val();
 
+			window.location = "/Telephone/GetExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&hourFilter=" + hourFilter + "&status=pending";
+		});
+
+
+		var tableWidth = $('#MainDataTable').width() + 25;
+
+		$(document).on('click', '.editEntry', function () {
+			var mail_id = $(this).attr('mail_id').trim();
+			var url = "http://" + window.location.host + "/Mail/GetMailInfo";
+			var myData = ({ "id": mail_id });
+			$.ajax({
+				type: "POST",
+				url: url,
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify(myData),
+				dataType: 'json',
+				success: function (returnData) {
+					$.each(returnData, function (index, value) {
+
+						$("#mailid_Edit").val(value.MailID);
+						$("#mailDescription_Edit").val(value.MailDescription);
+						var parsedDate = new Date(parseInt(value.MailArrival.substr(6)));
+						var jsDate = new Date(parsedDate);
+						$("#dateArrival_Edit").val(jsDate.getDate() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getFullYear());
+						var parsedDate = new Date(parseInt(value.MailDeparture.substr(6)));
+						var jsDate = new Date(parsedDate);
+						$("#dateDepurture_Edit").val(jsDate.getDate() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getFullYear());
+						$('#mailFrom_Edit option:contains(' + value.MailFrom + ')').prop({ selected: true });
+						$('#mailTo_Edit option:contains(' + value.MailTo + ')').prop({ selected: true });
+
+					});
+				}
+			});
+		});
+
+
+		
+		
+
+
+	});
+</script>
