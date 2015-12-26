@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `maildata` (
 DELETE FROM `maildata`;
 /*!40000 ALTER TABLE `maildata` DISABLE KEYS */;
 INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `MailFromID`, `MailToID`, `DateArrival`, `DateDeparture`) VALUES
-	(12, 'MID00001', 'some description', 1, 2, '2015-12-25', '2015-12-25'),
+	(12, 'MID00001', 'some description test', 1, 5, '2015-11-24', '2015-12-25'),
 	(13, 'MID00002', 'ctg to bog', 2, 3, '2015-12-25', '2015-12-25'),
 	(14, 'MID00003', 'some desc', 3, 4, '2015-12-25', '2015-12-25'),
 	(15, 'MID00004', 'some desc', 3, 4, '2015-12-25', '2015-12-25'),
@@ -306,7 +306,7 @@ INSERT INTO `maildata` (`ID`, `MailID`, `MailDescription`, `MailFromID`, `MailTo
 	(20, 'MID00009', 'some desc', 4, 3, '2015-12-25', '2015-12-25'),
 	(21, 'MID00010', 'some desc', 3, 1, '2015-12-25', '2015-12-25'),
 	(22, 'MID00011', 'some desc', 4, 4, '2015-12-25', '2015-12-25'),
-	(23, 'MID00012', 'some desc', 2, 2, '2015-12-25', '2015-12-25');
+	(23, 'MID00012', ' test1', 1, 2, '2015-12-25', '2015-12-25');
 /*!40000 ALTER TABLE `maildata` ENABLE KEYS */;
 
 

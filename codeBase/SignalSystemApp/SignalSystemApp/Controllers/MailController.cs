@@ -52,11 +52,11 @@ namespace SignalSystemApp.Controllers
                 aMailData.MailFrom = mailFrom;
                 aMailData.MailTo = mailTo;
                 DateTime dt = DateTime.ParseExact(dateArrival, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-               
-                aMailData.MailArrival = dt;
+
+                aMailData.MailArrivalDate = dt;
                 dt = DateTime.ParseExact(dateDepurture, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-             
-                aMailData.MailDeparture = dt;
+
+                aMailData.MailDepartureDate = dt;
                 string message = aMail.AddNewMail(aMailData);
                 ViewData["message"] = message;
                 return View("Index");
@@ -101,11 +101,11 @@ namespace SignalSystemApp.Controllers
                 select new[]
                 {
 
-                    aMailData.ID,
+                    aMailData.MailDBID,
                     aMailData.MailID,
                     aMailData.MailDescription,
-                    aMailData.MailArrival.ToString("dd-MM-yyyy").ToString() ,
-                    aMailData.MailDeparture.ToString("dd-MM-yyyy").ToString(),
+                    aMailData.MailArrivalDate.ToString("dd-MM-yyyy").ToString() ,
+                    aMailData.MailDepartureDate.ToString("dd-MM-yyyy").ToString(),
                     aMailData.MailFrom,
                     aMailData.MailTo,
                     ""
@@ -126,23 +126,17 @@ namespace SignalSystemApp.Controllers
 
         public ActionResult GetMailInfo(int id)
         {
-            
-            List<MailData> mailData = new List<MailData>()
-            {
-                new MailData(){MailID = id.ToString(),
-                    MailFrom = "Dhaka Cant.",
-                    MailTo = "CTG Cant.",
-                    MailDescription = "SomeDescription",
-                    MailArrival = DateTime.Now,
-                    MailDeparture = DateTime.Now}     
-            };
-          
+            Mail aMail = new Mail();
+            List<MailData> mailData = new List<MailData>();
 
+            mailData = aMail.SingleMailInfo(id);
             return Json(mailData);
         }
 
-        public ActionResult EditEntry()
+        public ActionResult EditEntry(MailData aMailData)
         {
+            Mail aMail = new Mail();
+            string message = aMail.EditMail(aMailData);
             return View("ListMails");
         }
     }

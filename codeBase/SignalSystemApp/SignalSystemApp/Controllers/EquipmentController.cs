@@ -370,8 +370,6 @@ namespace SignalSystemApp.Controllers
 
 
 
-
-
         public void SortList<T>(List<T> list, string columnName, SortDirection direction)
         {
             var property = typeof(T).GetProperty(columnName);

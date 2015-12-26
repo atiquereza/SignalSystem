@@ -120,7 +120,8 @@
 							Mail ID:
 						</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" id="mailid_Edit" placeholder="Mail ID" name="mailId">
+							<input type="text" class="form-control" id="mailid_Edit" placeholder="Mail ID" name="MailID">
+							<input type="hidden" class="form-control" id="mailDBId_Edit" placeholder="Mail ID" name="MailDBID">
 						</div>
 						<div class="col-md-1">
 							<i class="fa fa-lock fa-2x"></i>
@@ -132,7 +133,7 @@
 							Description:
 						</label>
 						<div class="col-md-9">
-							<textarea class="form-control" id="mailDescription_Edit" name="mailDescription"></textarea>
+							<textarea class="form-control" id="mailDescription_Edit" name="MailDescription"></textarea>
 						</div>
 						<div class="col-md-1">
 							<i class="fa fa-lock fa-2x"></i>
@@ -144,7 +145,7 @@
 							Arrival Date:
 						</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" id="dateArrival_Edit" class="datePicker" name="dateArrival">
+							<input type="text" class="form-control" id="dateArrival_Edit" class="datePicker" name="MailArrivalDate">
 						</div>
 						<div class="col-md-1">
 							<i class="fa fa-lock fa-2x"></i>
@@ -155,7 +156,7 @@
 							Departure Date:
 						</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" id="dateDepurture_Edit" class="datePicker" name="dateDepurture">
+							<input type="text" class="form-control" id="dateDepurture_Edit" class="datePicker" name="MailDepartureDate">
 						</div>
 						<div class="col-md-1">
 							<i class="fa fa-lock fa-2x"></i>
@@ -166,7 +167,7 @@
 							Mail From:
 						</label>
 						<div class="col-md-9">
-							<select id="mailFrom_Edit" class="form-control" name="mailFrom">
+							<select id="mailFrom_Edit" class="form-control" name="MailFrom">
 								<option value="-1">--Please Select--</option>
 								@Html.Raw(locations)
 							</select>
@@ -180,7 +181,7 @@
 							Mail To:
 						</label>
 						<div class="col-md-9">
-							<select id="mailTo_Edit" class="form-control" name="mailTo">
+							<select id="mailTo_Edit" class="form-control" name="MailTo">
 								<option value="-1">--Please Select--</option>
 								@Html.Raw(locations)
 							</select>
@@ -300,6 +301,7 @@
 
 
 		});
+		
 		arrivalDatePicker.datetimepicker('setDate', (new Date()));
 
 		var departureDatePicker = $('#dateDepurture_Edit');
@@ -310,7 +312,7 @@
 			dateFormat: 'dd/mm/yy'
 
 		});
-		departureDatePicker.datetimepicker('setDate', (new Date()));
+		//departureDatePicker.datetimepicker('setDate', (new Date()));
 
 
 		var oTable = $('#MainDataTable').dataTable({
@@ -441,15 +443,16 @@
 				dataType: 'json',
 				success: function (returnData) {
 					$.each(returnData, function (index, value) {
-
+						$("#mailDBId_Edit").val(value.MailDBID);
 						$("#mailid_Edit").val(value.MailID);
 						$("#mailDescription_Edit").val(value.MailDescription);
-						var parsedDate = new Date(parseInt(value.MailArrival.substr(6)));
+						var parsedDate = new Date(parseInt(value.MailArrivalDate.substr(6)));
 						var jsDate = new Date(parsedDate);
-						$("#dateArrival_Edit").val(jsDate.getDate() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getFullYear());
-						var parsedDate = new Date(parseInt(value.MailDeparture.substr(6)));
+
+						$("#dateArrival_Edit").val(jsDate.getFullYear() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getDate());
+						var parsedDate = new Date(parseInt(value.MailDepartureDate.substr(6)));
 						var jsDate = new Date(parsedDate);
-						$("#dateDepurture_Edit").val(jsDate.getDate() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getFullYear());
+						$("#dateDepurture_Edit").val(jsDate.getFullYear() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getDate());
 						$('#mailFrom_Edit option:contains(' + value.MailFrom + ')').prop({ selected: true });
 						$('#mailTo_Edit option:contains(' + value.MailTo + ')').prop({ selected: true });
 

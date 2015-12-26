@@ -12,11 +12,11 @@ namespace SignalSystemApp.Models.Mail
 {
     public class MailData
     {
-        public string ID { set; get; }
+        public string MailDBID { set; get; }
         public string MailID { set; get; }
         public string MailDescription { set; get; }
-        public DateTime MailArrival { set; get; }
-        public DateTime MailDeparture { set; get; }
+        public DateTime MailArrivalDate { set; get; }
+        public DateTime MailDepartureDate { set; get; }
         public string MailTo { set; get; }
         public string MailFrom { set; get; }
 
@@ -28,13 +28,13 @@ namespace SignalSystemApp.Models.Mail
         DBGateway aGateway = new DBGateway("SignalSystemConnectionString");
         public string AddNewMail(MailData aMailData)
         {
-            string insertString = "INSERT INTO maildata (`MailID`, `MailDescription`,`DateArrival`,`DateDeparture`,`MailToID`,`MailFromID`) VALUES ('" + aMailData.MailID + "', '" + aMailData.MailDescription + "','" + aMailData.MailArrival.ToString("yyyy-MM-dd") + "','" + aMailData.MailDeparture.ToString("yyyy-MM-dd") + "',"+aMailData.MailTo+","+aMailData.MailFrom+"); ";
+            string insertString = "INSERT INTO maildata (`MailID`, `MailDescription`,`DateArrival`,`DateDeparture`,`MailToID`,`MailFromID`) VALUES ('" + aMailData.MailID + "', '" + aMailData.MailDescription + "','" + aMailData.MailArrivalDate.ToString("yyyy-MM-dd") + "','" + aMailData.MailDepartureDate.ToString("yyyy-MM-dd") + "'," + aMailData.MailTo + "," + aMailData.MailFrom + "); ";
             Hashtable aHashtable = new Hashtable()
             {
                 {"MailID",aMailData.MailID},
                 {"mailDescription",aMailData.MailDescription},
-                {"DateArrival",aMailData.MailArrival.ToString("yyyy-MM-dd")},
-                 {"DateDeparture",aMailData.MailDeparture.ToString("yyyy-MM-dd")},
+                {"DateArrival",aMailData.MailArrivalDate.ToString("yyyy-MM-dd")},
+                 {"DateDeparture",aMailData.MailDepartureDate.ToString("yyyy-MM-dd")},
                  {"MailTo",aMailData.MailTo},
                  {"MailFrom",aMailData.MailFrom}
             };
@@ -103,13 +103,13 @@ namespace SignalSystemApp.Models.Mail
             foreach (DataRow dataRow in aSet.Tables[0].Rows)
             {
                 MailData aData = new MailData();
-                aData.ID = dataRow["ID"].ToString();
+                aData.MailDBID = dataRow["ID"].ToString();
                 aData.MailID = dataRow["MailID"].ToString();
                 aData.MailDescription = dataRow["MailDescription"].ToString();
                 aData.MailFrom = dataRow["MailFrom"].ToString();
                 aData.MailTo = dataRow["MailTo"].ToString();
-                aData.MailArrival = Convert.ToDateTime(dataRow["DateArrival"].ToString());
-                aData.MailDeparture = Convert.ToDateTime(dataRow["DateDeparture"].ToString()); 
+                aData.MailArrivalDate = Convert.ToDateTime(dataRow["DateArrival"].ToString());
+                aData.MailDepartureDate = Convert.ToDateTime(dataRow["DateDeparture"].ToString()); 
                 aList.Add(aData);
             }
 
@@ -134,8 +134,56 @@ namespace SignalSystemApp.Models.Mail
             }
             return status;
         }
-       
 
 
+
+
+        public List<MailData> SingleMailInfo(int id)
+        {
+            List<MailData> aMailData = new List<MailData>();
+
+            string query = "select m.ID,m.MailID,m.MailDescription,s1.Value as MailFrom," +
+                           "s2.Value as MailTo,m.DateArrival,m.DateDeparture from maildata m left join menustations s1 on " +
+                           "s1.ID=m.MailFromID  left join menustations s2 on s2.ID=m.MailToID where m.ID='" + id + "';";
+            DataSet aSet = aGateway.Select(query);
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                MailData aData = new MailData()
+                {
+                    MailDBID = dataRow["ID"].ToString(),
+                    MailID = dataRow["MailID"].ToString(),
+
+                    MailDescription = dataRow["MailDescription"].ToString(),
+                    MailFrom = dataRow["MailFrom"].ToString(),
+                    MailTo = dataRow["MailTo"].ToString(),
+                    MailArrivalDate = Convert.ToDateTime(dataRow["DateArrival"].ToString()),
+                    MailDepartureDate = Convert.ToDateTime(dataRow["DateDeparture"].ToString())
+                };
+                aMailData.Add(aData);
+            }
+
+            return aMailData;
+        }
+
+        public string EditMail(MailData aMailData)
+        {
+            string updateQuery = "UPDATE maildata SET MailID='"+aMailData.MailID+"', MailDescription='"+aMailData.MailDescription+
+                "',MailFromID='"+aMailData.MailFrom+"',MailToID='"+aMailData.MailTo+"'";
+
+            if (aMailData.MailArrivalDate.ToString("dd/MM/yyyy") != "01/01/0001")
+            {
+                updateQuery += ",DateArrival='"+aMailData.MailArrivalDate.ToString("yyyy-MM-dd")+"'";
+            }
+            if (aMailData.MailDepartureDate.ToString("dd/MM/yyyy") != "01/01/0001")
+            {
+                updateQuery += ",DateDeparture='" + aMailData.MailDepartureDate.ToString("yyyy-MM-dd") + "'";
+            }
+
+            updateQuery += " WHERE ID='"+aMailData.MailDBID+"';";
+
+            string message = aGateway.Update(updateQuery);
+            return message;
+        
+        }
     }
 }
