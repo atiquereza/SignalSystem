@@ -486,6 +486,90 @@ INSERT INTO `phoneuserpersonalinfo` (`ID`, `BANumber`, `FullName`, `Appointment`
 /*!40000 ALTER TABLE `phoneuserpersonalinfo` ENABLE KEYS */;
 
 
+-- Dumping structure for table signalappdb.resolvedcomplains
+DROP TABLE IF EXISTS `resolvedcomplains`;
+CREATE TABLE IF NOT EXISTS `resolvedcomplains` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Description` text NOT NULL,
+  `Status` varchar(50) NOT NULL,
+  `MenuComplainTypeId` int(11) NOT NULL,
+  `TelephoneUserId` bigint(20) NOT NULL,
+  `ComplainDate` datetime NOT NULL,
+  `ResolvedDate` datetime NOT NULL,
+  `Remarks` text NOT NULL,
+  `ActionTaken` text NOT NULL,
+  `ResolvedBy` text NOT NULL,
+  `AllPhoneInfoID` int(11) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `MenuComplainTypeId` (`MenuComplainTypeId`),
+  KEY `TelephoneUserId` (`TelephoneUserId`),
+  KEY `FK_complains_allphoneinfo` (`AllPhoneInfoID`),
+  CONSTRAINT `resolvedcomplains_ibfk_1` FOREIGN KEY (`AllPhoneInfoID`) REFERENCES `allphoneinfo` (`ID`),
+  CONSTRAINT `resolvedcomplains_ibfk_2` FOREIGN KEY (`MenuComplainTypeId`) REFERENCES `menucomplaintype` (`Id`),
+  CONSTRAINT `resolvedcomplains_ibfk_3` FOREIGN KEY (`TelephoneUserId`) REFERENCES `phoneuserpersonalinfo` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+-- Dumping data for table signalappdb.resolvedcomplains: ~54 rows (approximately)
+DELETE FROM `resolvedcomplains`;
+/*!40000 ALTER TABLE `resolvedcomplains` DISABLE KEYS */;
+INSERT INTO `resolvedcomplains` (`Id`, `Description`, `Status`, `MenuComplainTypeId`, `TelephoneUserId`, `ComplainDate`, `ResolvedDate`, `Remarks`, `ActionTaken`, `ResolvedBy`, `AllPhoneInfoID`) VALUES
+	(76, 'Test unclear sound', 'resolved', 2, 4, '2015-12-17 23:07:26', '2015-12-19 16:42:55', 'OK Now', 'Cable Changed', 'Hakkani', 3),
+	(80, 'Ty', 'resolved', 6, 5, '2014-12-12 13:10:00', '2014-12-13 15:00:00', '', '', '', 3),
+	(81, 'yh', 'resolved', 8, 8, '2015-12-17 23:07:26', '2015-12-19 23:07:26', 'o', 'dd', 'maruf', 10),
+	(82, 'Test unclear sound', 'resolved', 8, 8, '2015-12-17 23:07:26', '2015-12-19 23:07:26', 'o', 'dd', 'maruf', 10),
+	(83, 'Test unclear sound', 'Pending', 8, 8, '2015-12-17 23:07:26', '2015-12-19 23:07:26', 'o', 'dd', 'maruf', 10),
+	(84, 'Test unclear sound', 'Pending', 2, 4, '2015-12-17 23:07:26', '2015-12-19 23:07:26', 'o', 'dd', 'Asadur Rahman', 10),
+	(85, 'Test unclear sound', 'Pending', 2, 4, '2015-12-17 23:07:26', '2015-12-18 10:10:00', 'Remarks Test', 'Resolve Test', '', 13),
+	(86, 'Test unclear sound', 'Pending', 2, 4, '2015-12-17 23:07:26', '2015-12-19 19:23:10', 'Remarks Re-Test', 'resolve Re-Test', '', 13),
+	(87, 'Call Drop', 'Pending', 3, 8, '2015-12-19 19:38:27', '2015-12-19 19:43:00', 'no remark', 'uuiiooo', '', 5),
+	(88, 'busy tone', 'Pending', 1, 4, '2015-12-20 06:34:42', '2015-12-20 06:34:00', 'ok', 'ok Now', '', 3),
+	(90, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(91, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(92, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(93, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(94, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(95, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(96, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(97, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(98, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(99, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(100, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(101, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(102, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(103, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(104, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(105, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(106, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(107, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(108, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(109, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(110, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(111, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(112, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(113, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(114, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(115, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(116, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(117, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(118, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(119, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(120, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(121, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(122, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(123, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(124, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(125, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(126, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(127, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(128, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(129, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(130, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(131, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(132, 'Call Drop', 'Pending', 5, 6, '2015-12-21 11:00:07', '2015-12-21 11:00:10', 'OK', 'Auto OK', 'Salam', 6),
+	(133, 'hello', 'Pending', 2, 3, '2015-12-18 06:46:10', '2015-12-22 02:29:00', 'Notable', 'Perfect now', '', 4);
+/*!40000 ALTER TABLE `resolvedcomplains` ENABLE KEYS */;
+
+
 -- Dumping structure for table signalappdb.resolvedrequest
 DROP TABLE IF EXISTS `resolvedrequest`;
 CREATE TABLE IF NOT EXISTS `resolvedrequest` (
