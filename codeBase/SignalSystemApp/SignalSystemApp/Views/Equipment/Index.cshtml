@@ -11,527 +11,486 @@
     string addTypeAction = UtilityLibrary.GetBaseURL() + "Equipment/AddEquipmentType";
 
 }
-
-
+<style>
+	div {
+		padding-bottom: 20px;
+	}
+</style>
 <div id="page-wrapper">
 
+	<div class="row">
+		<div class="col-lg-12">
+			<h1>Equipments<small>List of Equipments</small>
+			</h1>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div id="table-container-div">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title" style="margin-left: -190px;">
+						<i class="fa fa-bar-chart-o"></i>Equipments
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div>
+						<div>
+							<button class="btn btn-info" onclick=" $('#equipmentAddForms').toggle(); ">Show/Hide Controls</button>
+						</div>
+						<div id="equipmentAddForms" style="display: none">
+							<div style="background: black">
+								<form action="@addTypeAction" method="POST">
+									<div class="row" style="padding-left: 30px;">
+										<fieldset>
+
+											<legend>Manage Equipment Type</legend>
+											<div class=" col-xs-6">
+												<input class="form-control" type="text" style="color: black" placeholder="Enter Type Name" id="AddTypeName" name="AddTypeName" required />
+											</div>
+											<div class=" col-xs-3">
+												<input class="form-control col-xs-3" type="submit" id="addEquipmentType" value="Add EquipmentType" style="color: green;">
+											</div>
+										</fieldset>
+									</div>
+								</form>
+								<form action="@addAction" method="POST">
+									<div class="row" style="padding-left: 30px;">
+										<fieldset>
+											<legend>Manage Equipment</legend>
+											<div col-xs-6>
+												<select class="form-control" style="color: black; width: 300px;" id="addTypeSelect" name="addTypeSelect" required>
+													<option value="">Select type</option>
+													@foreach (EquipmentType aType in ((List<EquipmentType>) ViewBag.EquipmentTypes))
+													{
+													<option value="@aType.TypeID">@aType.Name</option>
+													}
+												</select>
+											</div>
+											<br>
+											<div col-xs-6>
+												<input class="form-control col-xs-3" type="text" style="width: 300px; color: black" placeholder="Enter Amount" id="addAmount" name="addAmount" required />
+											</div>
+											<br>
+											<br>
+											<br>
+											<div col-xs-6>
+												<textarea class="form-control col-xs-3" type="text" style="color: black; width: 300px;" id="addDescription" name="addDescription" placeholder="Enter Description" required></textarea>
+											</div>
+											<br>
+											<br>
+											<br>
+											<div col-xs-6>
+												<input class="form-control" type="submit" id="addEquipment" value="Add Equipment" style="color: black; width: 200px;">
+											</div>
+											<br>
+										</fieldset>
+									</div>
+								</form>
 
 
-    <div class="row">
-        
-        <div class="col-lg-12">
+							</div>
+							<br>
+						</div>
+						<br>
+						
+						<div>
+							<button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide Filters</button>
+						</div>
+						<div id="filter" style="display: none;height: 70px;">
+							<div style="background: black; height: 70px; padding-left: 10px;">
+								<br>
+								<div class="row">
+									<div class="col-xs-3">
+										<div id="equipmentType"></div>
+									</div>
+									<div class="col-xs-3">
+										<div id="equipmentDescription"></div>
+									</div>
+								</div>
+
+							</div>
+							<br>
+						</div>
+						<br>
+						<br>
+						<table id="mainTable" name="entrymainTables_table" border="1" class="table table-condensed table-striped ">
+							<thead>
+								<tr>
+
+									<th class="col-sm-1">Equipment Type</th>
+									<th class="col-sm-1">Amount</th>
+									<th class="col-sm-1">Description</th>
+									<th class="col-sm-1">Edit</th>
+									<th class="col-sm-1">Delete</th>
+
+								</tr>
+							</thead>
+							<tbody></tbody>
 
 
+						</table>
 
-            <h1>
-                Equipments<small>List of Equipments</small>
-            </h1>
-        </div>
+					</div>
 
-    </div>
-
-    <div class="row">
-        <div id="table-container-div">
-            @*<div class="col-lg-12">*@
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" style="margin-left: -190px;">
-                        <i class="fa fa-bar-chart-o"></i> Equipments
-                    </h3>
-                </div>
-                <div class="panel-body">
-
-                    <div>
-                        <div>
-                            <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide Controls</button>
-                           
-                        </div>
-                        <br/>
-                      
-
-
-                        <div id="filter" style="display: none">
-
-                            <div style="background: black">
-                                <div class="col-xs-2">
-                                    <br> <input type="button" value="Export to Excel" style="color: green;" id="ExportExcelButton">
-                                </div>
-
-
-                                <form action="@addTypeAction" method="POST">
-                                    <fieldset>
-                                        <legend>Manage Equipment Type</legend>
-
-                                        <input class="col-xs-3" type="text" style="color: black" placeholder="Enter Type Name" id="AddTypeName" name="AddTypeName" required/>
-
-
-
-                                        <input type="submit" id="addEquipmentType" value="Add EquipmentType" style="color: green;">
-
-                                    </fieldset>
-                                </form>
-
-
-
-
-                                <form action="@addAction" method="POST">
-                                    <fieldset style="padding-bottom: 10px; padding-left: 190px">
-                                        <legend>Manage Equipment</legend>
-                                        <select class="col-xs-3" style="height: 24px; color: black" id="addTypeSelect" name="addTypeSelect" required>
-                                            <option value="">Select type</option>
-                                            @foreach (EquipmentType aType in ((List<EquipmentType>) ViewBag.EquipmentTypes))
-                                            {
-                                                <option value="@aType.TypeID">@aType.Name</option>
-                                            }
-                                        </select>
-                                        <input class="col-xs-3" type="text" style="color: black" placeholder="Enter Amount" id="addAmount" name="addAmount" required/>
-
-
-                                        <textarea class="col-xs-3" type="text" style="color: black; height: 24px; width: 300px" id="addDescription" name="addDescription" placeholder="Enter Description" required></textarea>
-                                        <input type="submit" id="addEquipment" value="Add Equipment" style="color: green;">
-
-                                    </fieldset>
-                                </form>
-
-
-                            </div>
-                            <br>
-
-
-                            </br>
-                        </div>
-
-
-
-
-
-
-                        <table id="mainTable" name="entrymainTables_table" border="1" class="table table-condensed table-striped ">
-
-
-                            <thead>
-                            <tr>
-
-                                <th class="col-sm-1">Equipment Type</th>
-                                <th class="col-sm-1">Amount</th>
-                                <th class="col-sm-1">Description</th>
-                                <th class="col-sm-1">Edit</th>
-                                <th class="col-sm-1">Delete</th>
-
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-
-
-                        </table>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-
-
-
-
-
-
-
 <!-- Modal -->
 <form id="delete-form" class="myModals" method="POST" action="@deleteAction" onsubmit="if(!confirm('Do you want to Delete This Entry?')){return false;}">
-    <div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Delete Complain</h4>
-                </div>
-                <div class="modal-body">
+	<div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Delete Complain</h4>
+				</div>
+				<div class="modal-body">
 
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Id</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="IdDel" name="IdDel" readonly="readonly" />
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Id</label>
+						<div class="col-xs-5">
+							<input type="text" class="form-control" id="IdDel" name="IdDel" readonly="readonly" />
+						</div>
+					</div>
 
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Equipment Type</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="TypeIDDel" name="TypeIDDel" disabled="">
-                                <option value="" selected>Select Type</option>
-
-                            </select>
-
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Amount</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="AmountDel" name="AmountDel" readonly="readonly" disabled=""/>
-
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Description</label>
-                        <div class="col-xs-5">
-
-                            <textarea class="form-control" id="DescriptionDel" name="Description" disabled=""></textarea>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class=" col-xs-5 btn btn-primary">Delete Complain</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Equipment Type</label>
+						<div class="col-xs-5">
+							<select class="form-control" id="TypeIDDel" name="TypeIDDel" disabled="">
+								<option value="" selected>Select Type</option> 
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Amount</label>
+						<div class="col-xs-5">
+							<input type="text" class="form-control" id="AmountDel" name="AmountDel" readonly="readonly" disabled="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Description</label>
+						<div class="col-xs-5">
+							<textarea class="form-control" id="DescriptionDel" name="Description" disabled=""></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="form-group">
+					<button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class=" col-xs-5 btn btn-primary">Delete Complain</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </form>
 <form id="edit-form" class="myModals" method="POST" action="@editAction">
-    <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel1">Edit Equipment</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Id</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="EquipmentId" name="EquipmentId" readonly="" />
+	<div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel1">Edit Equipment</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Id</label>
+						<div class="col-xs-5">
+							<input type="text" class="form-control" id="EquipmentId" name="EquipmentId" readonly="" />
+						</div>
+					</div>
 
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Equipment Type</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="TypeID" name="TypeID">
-                                <option value="" selected>Select Type</option>
-
-                            </select>
-
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Amount</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="Amount" name="Amount" readonly="readonly" />
-
-                        </div>
-                    </div>
-
-                    
-                 
-
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">Description</label>
-                        <div class="col-xs-5">
-
-                            <textarea class="form-control" id="Description" name="Description"></textarea>
-
-                        </div>
-                    </div>
-               </div>
-
-
-
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Equipment</span></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Equipment Type</label>
+						<div class="col-xs-5">
+							<select class="form-control" id="TypeID" name="TypeID">
+								<option value="" selected>Select Type</option>
+							</select> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Amount</label>
+						<div class="col-xs-5">
+							<input type="text" class="form-control" id="Amount" name="Amount" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">Description</label>
+						<div class="col-xs-5">
+							<textarea class="form-control" id="Description" name="Description"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Equipment</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </form>
 
 @section head{
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+<script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
 
 }
 
 
-<style>
-    .myModals div {
-        padding-bottom: 10px;
-    }
+	<style>
+		.myModals div {
+			padding-bottom: 10px;
+		}
 
-    .paginate_button {
-        background: lightblue;
-    }
+		.paginate_button {
+			background: lightblue;
+		}
 
-    .dataTables_length {
-        background: whitesmoke;
-    }
+		.dataTables_length {
+			background: whitesmoke;
+		}
 
-    .dataTables_filter {
-        background: whitesmoke;
-    }
+		.dataTables_filter {
+			background: whitesmoke;
+		}
 
-    #yadcf-filter--reportTable-1 {
-        width: 25px !important;
-        max-width: 25px !important;
-    }
+		#yadcf-filter--reportTable-1 {
+			width: 25px !important;
+			max-width: 25px !important;
+		}
 
-    #yadcf-filter--mainTable-1 {
-        width: 105px !important;
-        max-width: 105px !important;
-    }
+		#yadcf-filter--mainTable-1 {
+			width: 105px !important;
+			max-width: 105px !important;
+		}
 
-    #yadcf-filter--mainTable-0 {
-        width: 120px !important;
-        max-width: 120px !important;
-    }
+		#yadcf-filter--mainTable-0 {
+			width: 120px !important;
+			max-width: 120px !important;
+		}
 
-    #yadcf-filter--mainTable-2 {
-        width: 120px !important;
-        max-width: 120px !important;
-    }
+		#yadcf-filter--mainTable-2 {
+			width: 120px !important;
+			max-width: 120px !important;
+		}
 
-    #yadcf-filter--mainTable-3 {
-        width: 110px !important;
-        max-width: 110px !important;
-    }
+		#yadcf-filter--mainTable-3 {
+			width: 110px !important;
+			max-width: 110px !important;
+		}
 
-    #yadcf-filter--mainTable-5 {
-        width: 120px !important;
-        max-width: 110px !important;
-    }
+		#yadcf-filter--mainTable-5 {
+			width: 120px !important;
+			max-width: 110px !important;
+		}
 
-    .yadcf-filter-range-date-seperator {
-        width: 20px !important;
-    }
+		.yadcf-filter-range-date-seperator {
+			width: 20px !important;
+		}
+.yadcf-filter {
+	background: black;
+}
 
-    #mainTable_length select {
-        background: green;
-    }
+		#mainTable_length select {
+			background: green;
+		}
 
-    #mainTable_length {
-        background: #222222;
-        color: white;
-        padding-top: 10px;
-    }
+		#mainTable_length {
+			background: #222222;
+			color: white;
+			padding-top: 10px;
+		}
 
-    #mainTable_filter {
-        background: #222222;
-        color: black;
-    }
-</style>
+		#mainTable_filter {
+			background: #222222;
+			color: black;
+		}
+	</style>
 
 
 <script>
 
 
-    $(document).ready(function () {
+	$(document).ready(function () {
 
 
-        $("#addAmount").keydown(function (e) {
-            // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
-                // Allow: Ctrl+A, Command+A
-                (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                // Allow: home, end, left, right, down, up
-                (e.keyCode >= 35 && e.keyCode <= 40)) {
-                // let it happen, don't do anything
-                return;
-            }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
+		$("#addAmount").keydown(function (e) {
+			// Allow: backspace, delete, tab, escape, enter and .
+			if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+				// Allow: Ctrl+A, Command+A
+				(e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+				// Allow: home, end, left, right, down, up
+				(e.keyCode >= 35 && e.keyCode <= 40)) {
+				// let it happen, don't do anything
+				return;
+			}
+			// Ensure that it is a number and stop the keypress
+			if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+				e.preventDefault();
+			}
+		});
 
 
-        var oTable = $('#mainTable').dataTable({
+		var oTable = $('#mainTable').dataTable({
 
-            "order": [[0, "desc"]],
-            "sAjaxSource": "/Equipment/EquipmentDataProviderAction",
+			"order": [[0, "desc"]],
+			"sAjaxSource": "/Equipment/EquipmentDataProviderAction",
 
-            "bLengthChange": true,
-            dom: 'l<>Bfrtip',
-            "bServerSide": true,
-            "fnRowCallback":
-                function (nRow, aData, iDisplayIndex) {
-
-
-                    $('td:eq(3)', nRow).html('<button equipment_id=' + aData[3] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
-                    $('td:eq(4)', nRow).html('<button equipment_id=' + aData[3] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
-
-                    return nRow;
-                }
+			"bLengthChange": true,
+			dom: 'l<>Bfrtip',
+			"bServerSide": true,
+			"fnRowCallback":
+				function (nRow, aData, iDisplayIndex) {
 
 
+					$('td:eq(3)', nRow).html('<button equipment_id=' + aData[3] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
+					$('td:eq(4)', nRow).html('<button equipment_id=' + aData[3] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
 
-        });
-
-
-        $('#mainTable_filter input').unbind();
-        $('#mainTable_filter input').bind('keyup', function (e) {
-            if (e.keyCode == 13) {
-                oTable.fnFilter(this.value);
-            }
-        });
+					return nRow;
+				}
 
 
 
+		});
 
-        //  $('.deleteEntry').on('click', function () {
-        $(document).on('click', '.deleteEntry', function () {
+		oTable.yadcf([
+					{
+						column_number: 0,
+						filter_type: "text",
+						filter_default_label: "Type",
+						filter_delay: 1000,
+						filter_container_id: "equipmentType"
+					},
+					{
+						column_number: 1,
+						filter_type: "text",
+						filter_default_label: "Description",
+						filter_delay: 1000,
+						filter_container_id: "equipmentDescription"
 
-            var Equipment_id = $(this).attr('equipment_id').trim();
-        
-            
-            var myData = ({ "id": Equipment_id });
-        
-            $.ajax({
-                'async': false,
-                type: "POST",
-                url: "@Url.Action("GetSingleEquipmentData", "Equipment")",
-                contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(myData),
-            dataType: 'json',
-
-            success: function (returnData) {
+					}
+					
+		]);
+		$().tooltip({
+			template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+		});
+		$('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
 
 
+		$('#mainTable_filter input').unbind();
+		$('#mainTable_filter input').bind('keyup', function (e) {
+			if (e.keyCode == 13) {
+				oTable.fnFilter(this.value);
+			}
+		});
 
-                $.each(returnData, function (index, value) {
 
 
-                    $("#IdDel").val(value.EquipmentId);
-                    $("#TypeIDDel").val(value.TypeId);
+
+		//  $('.deleteEntry').on('click', function () {
+		$(document).on('click', '.deleteEntry', function () {
+			var Equipment_id = $(this).attr('equipment_id').trim();
+			var myData = ({ "id": Equipment_id }); 
+			$.ajax({
+				'async': false,
+				type: "POST",
+				url: "@Url.Action("GetSingleEquipmentData", "Equipment")",
+				contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(myData),
+			dataType: 'json',
+
+			success: function (returnData) {
+				$.each(returnData, function (index, value) { 
+					$("#IdDel").val(value.EquipmentId);
+					$("#TypeIDDel").val(value.TypeId);
                 
-                    $("#AmountDel").val(value.Amount);
-                    $("#DescriptionDel").val(value.Description);
+					$("#AmountDel").val(value.Amount);
+					$("#DescriptionDel").val(value.Description);
               
-                    var options = "";
-                    var selectedOption = "";
-                    for (var i = 0; i < value.EquipmentTypes.length; i++) {
-                        if (value.TypeID == value.EquipmentTypes[i].TypeID) {
-                            selectedOption = value.EquipmentTypes[i].TypeID;
-                            options += '<option value="' + value.EquipmentTypes[i].TypeID + '" selected>' + value.EquipmentTypes[i].Name + '</option>';
-                        }
-                        else {
-                            options += '<option value="' + value.EquipmentTypes[i].TypeID + '">' + value.EquipmentTypes[i].Name + '</option>';
-                        }
-                    }
-                    $("select#TypeIDDel").html(options);
-                    // $("select#ComplainType select").val(selectedOption);
-                });
+					var options = "";
+					var selectedOption = "";
+					for (var i = 0; i < value.EquipmentTypes.length; i++) {
+						if (value.TypeID == value.EquipmentTypes[i].TypeID) {
+							selectedOption = value.EquipmentTypes[i].TypeID;
+							options += '<option value="' + value.EquipmentTypes[i].TypeID + '" selected>' + value.EquipmentTypes[i].Name + '</option>';
+						}
+						else {
+							options += '<option value="' + value.EquipmentTypes[i].TypeID + '">' + value.EquipmentTypes[i].Name + '</option>';
+						}
+					}
+					$("select#TypeIDDel").html(options);
+				});	
+			}
+		});
+	});
 
 
-
-            }
-        });
-    });
-
-
-    $(document).on('click', '.editEntry', function () {
-        var Equipment_id = $(this).attr('equipment_id').trim();
+	$(document).on('click', '.editEntry', function () {
+		var Equipment_id = $(this).attr('equipment_id').trim();
         
-        $("div.selectStatus select").val("0");
-        $("#aSapn2").text("Edit Equimpment Data");
+		$("div.selectStatus select").val("0");
+		$("#aSapn2").text("Edit Equimpment Data");
 
-        var myData = ({ "id": Equipment_id });
+		var myData = ({ "id": Equipment_id });
         
-        $.ajax({
-            'async': false,
-            type: "POST",
-            url: "@Url.Action("GetSingleEquipmentData", "Equipment")",
-            contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(myData),
-        dataType: 'json',
-
-        success: function (returnData) {
-
-
-
-            $.each(returnData, function (index, value) {
-
-
-                $("#EquipmentId").val(value.EquipmentId);
-                $("#TypeID").val(value.TypeId);
+		$.ajax({
+			'async': false,
+			type: "POST",
+			url: "@Url.Action("GetSingleEquipmentData", "Equipment")",
+			contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(myData),
+		dataType: 'json',
+		success: function (returnData) { 
+			$.each(returnData, function (index, value) { 
+				$("#EquipmentId").val(value.EquipmentId);
+				$("#TypeID").val(value.TypeId);
                 
-                $("#Amount").val(value.Amount);
-                $("#Description").val(value.Description);
+				$("#Amount").val(value.Amount);
+				$("#Description").val(value.Description);
               
-                var options = "";
-                var selectedOption = "";
-                for (var i = 0; i < value.EquipmentTypes.length; i++) {
-                    if (value.TypeID == value.EquipmentTypes[i].TypeID) {
-                        selectedOption = value.EquipmentTypes[i].TypeID;
-                        options += '<option value="' + value.EquipmentTypes[i].TypeID + '" selected>' + value.EquipmentTypes[i].Name + '</option>';
-                    }
-                    else {
-                        options += '<option value="' + value.EquipmentTypes[i].TypeID + '">' + value.EquipmentTypes[i].Name + '</option>';
-                    }
-                }
-                $("select#TypeID").html(options);
-                // $("select#ComplainType select").val(selectedOption);
-            });
+				var options = "";
+				var selectedOption = "";
+				for (var i = 0; i < value.EquipmentTypes.length; i++) {
+					if (value.TypeID == value.EquipmentTypes[i].TypeID) {
+						selectedOption = value.EquipmentTypes[i].TypeID;
+						options += '<option value="' + value.EquipmentTypes[i].TypeID + '" selected>' + value.EquipmentTypes[i].Name + '</option>';
+					}
+					else {
+						options += '<option value="' + value.EquipmentTypes[i].TypeID + '">' + value.EquipmentTypes[i].Name + '</option>';
+					}
+				}
+				$("select#TypeID").html(options);
+			});	
+		}
+	});
+	});
 
 
-
-        }
-        });
-    });
-
-
-    $('#ExportExcelButton').click(function() {
-
-        
-        var overAllSearch=$("#mainTable_filter :input").val();
-
-        window.location = "/Equipment/GetExcelFile?overAllSearch=" + overAllSearch;
-            });
+	$('#ExportExcelButton').click(function() {	
+		var overAllSearch=$("#mainTable_filter :input").val(); 
+		window.location = "/Equipment/GetExcelFile?overAllSearch=" + overAllSearch;
+	});
 
 
-    var tableWidth = $('#mainTable').width() + 25;
+	var tableWidth = $('#mainTable').width() + 25;
 
-    document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+	document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
 
-        //Make DateTime picker dropdown to work on a Modal//
-    var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+	//Make DateTime picker dropdown to work on a Modal//
+	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 
-    $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+	$.fn.modal.Constructor.prototype.enforceFocus = function () { };
 
-    $confModal.on('hidden', function () {
-        $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
-    });
+	$confModal.on('hidden', function () {
+		$.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+	});
 
-    $confModal.modal({ backdrop: false });
-        //Make DateTime picker dropdown to work on a Modal//
-            
-    });
+	$confModal.modal({ backdrop: false });	 
+	});
 </script>
-
-
-
-
-
-

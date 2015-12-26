@@ -46,57 +46,41 @@ namespace SignalSystemApp.Controllers
         }
 
         
-    [HttpPost]
-        public ActionResult Index(string search)
-        {
-            string query = "select * from equipemntdescription";
-            string query1 = "select * from equipmnttype";
+    //[HttpPost]
+    //    public ActionResult Index(string search)
+    //    {
+    //        string query = "select * from equipemntdescription";
+    //        string query1 = "select * from equipmnttype";
 
-            List<EquipmentDetails> aList = new List<EquipmentDetails>();
-            DataSet aDataSet = aGateway.Select(query);
-            foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
-            {
+    //        List<EquipmentDetails> aList = new List<EquipmentDetails>();
+    //        DataSet aDataSet = aGateway.Select(query);
+    //        foreach (DataRow dataRow in aDataSet.Tables[0].Rows)
+    //        {
 
-                EquipmentDetails aEquipmentDetails = new EquipmentDetails();
-                aEquipmentDetails.EquipmentId = dataRow["Id"].ToString();
-                aEquipmentDetails.TypeID = (int)dataRow["TypeID"];
-                aEquipmentDetails.Amount = (int)dataRow["Amount"];
-                aEquipmentDetails.Description = dataRow["Description"].ToString();
-                aList.Add(aEquipmentDetails);
-            }
+    //            EquipmentDetails aEquipmentDetails = new EquipmentDetails();
+    //            aEquipmentDetails.EquipmentId = dataRow["Id"].ToString();
+    //            aEquipmentDetails.TypeID = (int)dataRow["TypeID"];
+    //            aEquipmentDetails.Amount = (int)dataRow["Amount"];
+    //            aEquipmentDetails.Description = dataRow["Description"].ToString();
+    //            aList.Add(aEquipmentDetails);
+    //        }
 
-            return View(aList);
-        }
+    //        return View(aList);
+    //    }
 
 
-        public ActionResult Create()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ActionResult Edit(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ActionResult Details(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public JsonResult EquipmentDataProviderAction(JQueryDataTableParamModel aModel)
         {
+            string equipmentType = Convert.ToString(Request["sSearch_0"]);
+            string description = Convert.ToString(Request["sSearch_1"]);
             List<string> columnlist = new List<string>(new string[] { "TypeName", "Amount", "Description"});
             
             EquipmentDetails aEquipmentDetails=new EquipmentDetails();
-            List<EquipmentDetails> aEquipmentList = aEquipmentDetails.GetEquipmentList();
+            List<EquipmentDetails> aEquipmentList = aEquipmentDetails.GetEquipmentList(equipmentType, description);
 
-            //List<TelephoneComplain> complanList = aTelephone.GetVariousComplainList("pending");
+          
             List<EquipmentDetails> searchedList=new List<EquipmentDetails>();
 
 
@@ -111,6 +95,9 @@ namespace SignalSystemApp.Controllers
                                            || c.Description.ToLower().Contains(aModel.sSearch.ToLower())
                                            ).ToList();
             }
+
+           
+          
 
 
           
@@ -143,7 +130,6 @@ namespace SignalSystemApp.Controllers
             return Json(new
             {
                 sEcho = aModel.sEcho,
-
                 iTotalRecords = aEquipmentList.Count(),
                 iTotalDisplayRecords = searchedList.Count(),
                 aaData = resultList
@@ -158,90 +144,89 @@ namespace SignalSystemApp.Controllers
 
 
 
-        public ActionResult GetExcelFile(string overAllSearch)
-        {
+        //public ActionResult GetExcelFile(string overAllSearch)
+        //{
            
-            if ((overAllSearch == null))
-            {
-                overAllSearch = "";
-            }
+        //    if ((overAllSearch == null))
+        //    {
+        //        overAllSearch = "";
+        //    }
 
            
-            DateTime fromDate = DateTime.MinValue;
-            DateTime toDate = DateTime.MaxValue;
+        //    DateTime fromDate = DateTime.MinValue;
+        //    DateTime toDate = DateTime.MaxValue;
             
-            EquipmentDetails aEquipmentDetails=new EquipmentDetails();
-            List<EquipmentDetails> equipmentList=aEquipmentDetails.GetEquipmentList();
+        //    EquipmentDetails aEquipmentDetails=new EquipmentDetails();
+        //    List<EquipmentDetails> equipmentList=aEquipmentDetails.GetEquipmentList();
 
-             List<EquipmentDetails> filteredEquipmentList=new List<EquipmentDetails>();
-
-
-             if (string.IsNullOrEmpty(overAllSearch))
-             {
-                 filteredEquipmentList = equipmentList;
-             }
-             else
-             {
-                 filteredEquipmentList =
-                     equipmentList.Where(c => c.TypeName.ToLower().Contains(overAllSearch.ToLower())
-                                            || c.Description.ToLower().Contains(overAllSearch.ToLower())
-                                            ).ToList();
-             }
+        //     List<EquipmentDetails> filteredEquipmentList=new List<EquipmentDetails>();
 
 
+        //     if (string.IsNullOrEmpty(overAllSearch))
+        //     {
+        //         filteredEquipmentList = equipmentList;
+        //     }
+        //     else
+        //     {
+        //         filteredEquipmentList =
+        //             equipmentList.Where(c => c.TypeName.ToLower().Contains(overAllSearch.ToLower())
+        //                                    || c.Description.ToLower().Contains(overAllSearch.ToLower())
+        //                                    ).ToList();
+        //     }
 
 
 
-             if (filteredEquipmentList.Count > 0)
-            {
-
-                DateTime dt = DateTime.Now;
-                DateTime dDate = DateTime.Now;
-                string[] sDate = dDate.ToString().Split(' ');
-                string time = dt.ToString("hh:mm");
 
 
-                GridView aGridView = new GridView();
-                aGridView.DataSource = filteredEquipmentList;
-                aGridView.DataBind();
+        //     if (filteredEquipmentList.Count > 0)
+        //    {
+
+        //        DateTime dt = DateTime.Now;
+        //        DateTime dDate = DateTime.Now;
+        //        string[] sDate = dDate.ToString().Split(' ');
+        //        string time = dt.ToString("hh:mm");
 
 
-                foreach (TableCell cell in aGridView.HeaderRow.Cells)
-                {
-                    cell.BackColor = Color.Cornsilk;
-                }
+        //        GridView aGridView = new GridView();
+        //        aGridView.DataSource = filteredEquipmentList;
+        //        aGridView.DataBind();
 
-                foreach (GridViewRow row in aGridView.Rows)
-                {
-                    // row.BackColor = Color.White;
-                    foreach (TableCell cell in row.Cells)
-                    {
-                        if (row.RowIndex % 2 == 0)
-                        {
-                            cell.BackColor = Color.Gainsboro;
-                        }
-                        else
-                        {
-                            cell.BackColor = Color.GhostWhite;
-                        }
-                        cell.CssClass = "textmode";
-                    }
-                }
 
-                Response.ClearContent();
-                Response.AddHeader("content-disposition",
-                    "attachment;filename=EquipmentList_" + sDate[0] + "_" + sDate[1] + sDate[2] + ".xls");
-                Response.ContentType = "application/excel";
-                StringWriter swr = new StringWriter();
-                HtmlTextWriter tw = new HtmlTextWriter(swr);
-                aGridView.RenderControl(tw);
-                Response.Write(swr.ToString());
+        //        foreach (TableCell cell in aGridView.HeaderRow.Cells)
+        //        {
+        //            cell.BackColor = Color.Cornsilk;
+        //        }
 
-                Response.End();
-            }
-            return null;
-        }
+        //        foreach (GridViewRow row in aGridView.Rows)
+        //        {
+        //            // row.BackColor = Color.White;
+        //            foreach (TableCell cell in row.Cells)
+        //            {
+        //                if (row.RowIndex % 2 == 0)
+        //                {
+        //                    cell.BackColor = Color.Gainsboro;
+        //                }
+        //                else
+        //                {
+        //                    cell.BackColor = Color.GhostWhite;
+        //                }
+        //                cell.CssClass = "textmode";
+        //            }
+        //        }
 
+        //        Response.ClearContent();
+        //        Response.AddHeader("content-disposition",
+        //            "attachment;filename=EquipmentList_" + sDate[0] + "_" + sDate[1] + sDate[2] + ".xls");
+        //        Response.ContentType = "application/excel";
+        //        StringWriter swr = new StringWriter();
+        //        HtmlTextWriter tw = new HtmlTextWriter(swr);
+        //        aGridView.RenderControl(tw);
+        //        Response.Write(swr.ToString());
+
+        //        Response.End();
+        //    }
+        //    return null;
+        //}
 
 
 
@@ -249,7 +234,7 @@ namespace SignalSystemApp.Controllers
         {
 
             string query = "select equipemntdescription.id,equipemntdescription.typeid,equipemntdescription.amount,equipemntdescription.description,equipmnttype.typename from equipemntdescription,equipmnttype where equipemntdescription.typeid=equipmnttype.id and equipemntdescription.id="+id;
-            //string query1 = "select * from equipmnttype";
+          
 
             List<EquipmentDetails> aList = new List<EquipmentDetails>();
             DataSet aDataSet = aGateway.Select(query);
@@ -267,9 +252,6 @@ namespace SignalSystemApp.Controllers
 
             List<EquipmentType> equipmentTypes = GetEquipmentTypes();
             aList.ForEach(list => list.EquipmentTypes = equipmentTypes);
-
-
-
             return Json(aList, JsonRequestBehavior.AllowGet);
 
 
@@ -296,7 +278,7 @@ namespace SignalSystemApp.Controllers
 
         public ActionResult DeleteSingleEquipment(EquipmentDetails aEquipmentDetails)
         {
-            string complainStatus = string.Empty;
+       
             string id = Request["IdDel"];
             string deleteQuery = string.Empty;
 
@@ -315,7 +297,7 @@ namespace SignalSystemApp.Controllers
 
             string id = Request["EquipmentId"];
 
-            string complainStatus = string.Empty;
+         
             string updateQuery = string.Empty;
 
             updateQuery = "UPDATE `signalappdb`.`equipemntdescription` SET `TypeId`=" + aEquipmentDetails.TypeID + ", `Amount`=" + aEquipmentDetails.Amount + ", `Description`='" + aEquipmentDetails.Description + "' WHERE  `Id`=" + aEquipmentDetails.EquipmentId + ";";
@@ -344,6 +326,7 @@ namespace SignalSystemApp.Controllers
         public ActionResult AddEquipmentType()
         {
             string typeName = Request["AddTypeName"];
+
             List<EquipmentType> equipmentTypes = GetEquipmentTypes();
 
             bool existingType = false;

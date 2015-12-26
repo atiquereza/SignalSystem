@@ -251,12 +251,17 @@ CREATE TABLE IF NOT EXISTS `equipemntdescription` (
 DELETE FROM `equipemntdescription`;
 /*!40000 ALTER TABLE `equipemntdescription` DISABLE KEYS */;
 INSERT INTO `equipemntdescription` (`Id`, `TypeId`, `Amount`, `Description`) VALUES
-	(1, 1, 50, 'good'),
+	(1, 2, 60, 'good'),
 	(3, 4, 900, 'very good tooo'),
 	(4, 4, 60, 'Quality Product'),
-	(5, 1, 10, '10 feet'),
 	(6, 7, 30, 'Ericsson'),
-	(7, 3, 40, 'test');
+	(7, 3, 40, 'test'),
+	(8, 1, 10, 'Vendor: NEC'),
+	(9, 3, 10, 'bbb'),
+	(10, 4, 900, 'kkkk'),
+	(11, 5, 100, 'power cable'),
+	(12, 5, 111, 'yyyyy'),
+	(13, 5, 900, 'hhhh');
 /*!40000 ALTER TABLE `equipemntdescription` ENABLE KEYS */;
 
 
@@ -271,6 +276,15 @@ CREATE TABLE IF NOT EXISTS `equipmnttype` (
 -- Dumping data for table signalappdb.equipmnttype: ~0 rows (approximately)
 DELETE FROM `equipmnttype`;
 /*!40000 ALTER TABLE `equipmnttype` DISABLE KEYS */;
+INSERT INTO `equipmnttype` (`Id`, `TypeName`) VALUES
+	(1, 'MW Links'),
+	(2, 'SDH Links'),
+	(3, 'PCM Cable'),
+	(4, 'Coaxial Cable'),
+	(5, 'Power Cable'),
+	(6, 'MUX'),
+	(7, 'PQ4 card'),
+	(8, 'STM Card');
 /*!40000 ALTER TABLE `equipmnttype` ENABLE KEYS */;
 
 
