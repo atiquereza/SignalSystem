@@ -176,8 +176,15 @@
 
 		});
 		arrivalDatePicker.datetimepicker('setDate', (new Date()));
-
 		var departureDatePicker = $('#dateDepurture');
+
+		$("#dateArrival").on("change", function() {
+		               // console.log('inp changed');
+                        oldDate = $('#dateArrival').datepicker('getDate');
+                        departureDatePicker.datetimepicker('option', 'minDate', new Date(oldDate));
+            });
+
+		
 
 
 		departureDatePicker.datepicker({
