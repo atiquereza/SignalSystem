@@ -278,6 +278,7 @@
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
+    <Compile Include="Controllers\TechnicalController.cs" />
     <Compile Include="Controllers\TelephoneController.cs" />
     <Compile Include="Controllers\TelephoneRequestController.cs" />
     <Compile Include="Controllers\TelephoneUserController.cs" />
@@ -302,9 +303,9 @@
     <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\Application\ApplicationConfiguration.cs" />
     <Compile Include="Models\Equipment\EquipmentDetails.cs" />
-    <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\JQueryDataTableParamModel.cs" />
     <Compile Include="Models\Mail\Mail.cs" />
+    <Compile Include="Models\Technical\TechnicalDetails.cs" />
     <Compile Include="Models\TelephoneNumberAndUser\TelephoneNumber.cs" />
     <Compile Include="Models\TelephoneNumberAndUser\TelephoneUser.cs" />
     <Compile Include="Models\TelephoneRequest\TelephoneRequest.cs" />
@@ -351,6 +352,7 @@
     <Content Include="Views\TelephoneUser\ViewActiveTelephoneUsers.cshtml" />
     <Content Include="Views\TelephoneUser\ViewTerminatedTelephoneHistory.cshtml" />
     <Content Include="Views\TelephoneRequest\Index.cshtml" />
+    <Content Include="Views\Technical\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

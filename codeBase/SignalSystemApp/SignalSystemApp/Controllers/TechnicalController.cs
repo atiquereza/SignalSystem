@@ -1,47 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using SignalSystem.Libs;
 using SignalSystemApp.Models;
-using SignalSystemApp.Models.Equipment;
-using SignalSystemApp.Models.Telephone;
 using SortDirection = System.Web.Helpers.SortDirection;
+using SignalSystem.Libs;
+using SignalSystemApp.Models.Equipment;
+using SignalSystemApp.Models.Technical;
+using EquipmentType = SignalSystemApp.Models.Equipment.EquipmentType;
+
 namespace SignalSystemApp.Controllers
 {
-    public class EquipmentController : Controller
+    public class TechnicalController : Controller
     {
-        DBGateway aGateway=new DBGateway();
-        // GET: Equipment
         public ActionResult Index()
         {
             List<EquipmentType> aList = EquipmentType.GEtEquipmentTypes();
 
-           ViewBag.EquipmentTypes = aList;
+            ViewBag.EquipmentTypes = aList;
 
             return View(aList);
         }
 
-        
- 
-        public JsonResult EquipmentDataProviderAction(JQueryDataTableParamModel aModel)
+
+
+        public JsonResult TechnicalDataProviderAction(JQueryDataTableParamModel aModel)
         {
             string equipmentType = Convert.ToString(Request["sSearch_0"]);
             string description = Convert.ToString(Request["sSearch_1"]);
-            List<string> columnlist = new List<string>(new string[] { "TypeName", "Amount", "Description"});
-            
-            EquipmentDetails aEquipmentDetails=new EquipmentDetails();
-            List<EquipmentDetails> aEquipmentList = aEquipmentDetails.GetEquipmentList(equipmentType, description);
+            List<string> columnlist = new List<string>(new string[] { "TypeName", "Amount", "Description" });
 
-          
-            List<EquipmentDetails> searchedList=new List<EquipmentDetails>();
+            TechnicalDetails aTechnicalDetails = new TechnicalDetails();
+            List<TechnicalDetails> aEquipmentList = aTechnicalDetails.GetEquipmentList(equipmentType, description);
+
+
+            List<TechnicalDetails> searchedList = new List<TechnicalDetails>();
 
 
             if (string.IsNullOrEmpty(aModel.sSearch))
@@ -56,11 +50,11 @@ namespace SignalSystemApp.Controllers
                                            ).ToList();
             }
 
-           
-          
 
 
-          
+
+
+
             if (aModel.sSortDir_0 == "asc")
             {
                 SortList(searchedList, columnlist[aModel.iSortCol_0], SortDirection.Ascending);
@@ -69,24 +63,25 @@ namespace SignalSystemApp.Controllers
 
 
 
-            List<EquipmentDetails> displayedEquipments =
+            List<TechnicalDetails> displayedEquipments =
                 searchedList.Skip(aModel.iDisplayStart).Take(aModel.iDisplayLength).ToList();
 
 
             var result = from c in displayedEquipments
-                         select new []
+                         select new[]
                 {
 
                     c.TypeName,
                     c.Amount.ToString(),
                     c.Description,
-                    c.EquipmentId,
+                    c.OnAirDate.ToString("yyyy-MM-dd"),
+                    c.TechnicalId,
                     "View"
                    
                   
                 };
             List<string[]> resultList = result.ToList();
-        
+
             return Json(new
             {
                 sEcho = aModel.sEcho,
@@ -96,68 +91,73 @@ namespace SignalSystemApp.Controllers
             },
                JsonRequestBehavior.AllowGet);
 
-       
+
 
         }
 
 
-        public ActionResult GetSingleEquipmentData(string id)
+        public ActionResult GetSingleTechnicalData(string id)
         {
 
-            List<EquipmentDetails> aList = EquipmentDetails.GetSingleEquipmentDetails(id);
+            List<TechnicalDetails> aList = TechnicalDetails.GetSingleTechnicalDetails(id);
 
-            List<EquipmentType> equipmentTypes = EquipmentType.GEtEquipmentTypes();
+            List<TechnicalEquipmentType> equipmentTypes = TechnicalEquipmentType.GEtEquipmentTypes();
             aList.ForEach(list => list.EquipmentTypes = equipmentTypes);
-            return Json(aList, JsonRequestBehavior.AllowGet);
+            return Json(aList);
 
 
         }
 
-        
 
-        public ActionResult DeleteSingleEquipment(EquipmentDetails aEquipmentDetails)
+
+        public ActionResult DeleteSingleTechnical(TechnicalDetails aTechnicalDetails)
         {
-       
+
             string id = Request["IdDel"];
             string deleteQuery = string.Empty;
 
-            EquipmentDetails.DeleteEquipment(id);
+            TechnicalDetails.DeleteEquipment(id);
 
-            return RedirectToAction("Index", "Equipment");
+            return RedirectToAction("Index", "Technical");
 
         }
 
 
 
-        public ActionResult EditSingleEquipment(EquipmentDetails aEquipmentDetails)
+        public ActionResult EditSingleTechnical(TechnicalDetails aTechnicalDetails)
         {
 
-            string id = Request["EquipmentId"];
+            string id = Request["TechnicalId"];
+            string TypeId = Request["TypeID"];
+            string OAD = Request["OnAirDate"];
 
-         
+
+
+
             string updateQuery = string.Empty;
 
-            EquipmentDetails.UpdateEquipmentDetails(aEquipmentDetails);
+            TechnicalDetails.UpdateTechnicalDetails(aTechnicalDetails,OAD);
 
-            return RedirectToAction("Index", "Equipment");
+            return RedirectToAction("Index", "Technical");
 
         }
 
-        
-        public ActionResult AddEquipment()
+
+        public ActionResult AddTechnical()
         {
 
             string type = Request["addTypeSelect"];
             string amount = Request["addAmount"];
             string description = Request["addDescription"];
+            string OAD = Request["OnAirDate"];
 
-            EquipmentDetails.AddEquipmentDetails(type, amount, description);
+            TechnicalDetails.AddTechnicalDetails(type, amount, description, OAD);
 
-            return RedirectToAction("Index", "Equipment");
+            return RedirectToAction("Index", "Technical");
         }
 
-        
-        public ActionResult AddEquipmentType()
+
+        public ActionResult AddTechnicalType()
         {
             string typeName = Request["AddTypeName"];
 
@@ -180,10 +180,10 @@ namespace SignalSystemApp.Controllers
             {
                 EquipmentType.AddEquimpnetType(typeName);
             }
-            return RedirectToAction("Index", "Equipment");
+            return RedirectToAction("Index", "Technical");
         }
 
-     
+
 
 
         public void SortList<T>(List<T> list, string columnName, SortDirection direction)
@@ -197,7 +197,5 @@ namespace SignalSystemApp.Controllers
                 return multiplier * Comparer<object>.Default.Compare(col1, col2);
             });
         }
-
-
     }
 }

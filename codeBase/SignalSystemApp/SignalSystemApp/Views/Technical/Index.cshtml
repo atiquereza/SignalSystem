@@ -1,0 +1,548 @@
+﻿@using SignalSystem.Libs
+@using SignalSystemApp.Models.Equipment
+@using SignalSystemApp.Models.Technical
+
+@{
+
+
+    string pendingList = string.Empty;
+    string deleteAction = UtilityLibrary.GetBaseURL() + "Technical/DeleteSingleTechnical";
+    string editAction = UtilityLibrary.GetBaseURL() + "Technical/EditSingleTechnical";
+    string addAction = UtilityLibrary.GetBaseURL() + "Technical/AddTechnical";
+    string addTypeAction = UtilityLibrary.GetBaseURL() + "Technical/AddTechnicalType";
+
+}
+<style>
+    div {
+        padding-bottom: 20px;
+    }
+</style>
+<div id="page-wrapper">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>
+                Technicals<small>List of Technicals</small>
+            </h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div id="table-container-div">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="margin-left: -190px;">
+                        <i class="fa fa-bar-chart-o"></i>Technicals
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <div>
+                            <button class="btn btn-info" onclick=" $('#TechnicalAddForms').toggle(); ">Show/Hide Controls</button>
+                        </div>
+                        <div id="TechnicalAddForms" style="display: none">
+                            <div style="background: black">
+                                <form action="@addTypeAction" method="POST">
+                                    <div class="row" style="padding-left: 30px;">
+                                        <fieldset>
+
+                                            <legend>Manage Technical Type</legend>
+                                            <div class=" col-xs-6">
+                                                <input class="form-control" type="text" style="color: black" placeholder="Enter Type Name" id="AddTypeName" name="AddTypeName" required />
+                                            </div>
+                                            <div class=" col-xs-3">
+                                                <input class="form-control col-xs-3" type="submit" id="addTechnicalType" value="Add TechnicalType" style="color: green;">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </form>
+                                <form action="@addAction" method="POST">
+                                    <div class="row" style="padding-left: 30px;">
+                                        <fieldset>
+                                            <legend>Manage Technical</legend>
+                                            <div col-xs-6>
+                                                <select class="form-control" style="color: black; width: 300px;" id="addTypeSelect" name="addTypeSelect" required>
+                                                    <option value="">Select type</option>
+                                                    @foreach (EquipmentType aType in ((List<EquipmentType>)ViewBag.EquipmentTypes))
+                                                    {
+                                                        <option value="@aType.TypeID">@aType.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <br>
+                                            <div col-xs-6>
+                                                <input class="form-control col-xs-3" type="text" style="width: 300px; color: black" placeholder="Enter Amount" id="addAmount" name="addAmount" required />
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div col-xs-6>
+                                                <input class="form-control col-xs-3" type="text" style="width: 300px; color: black" placeholder="Enter Amount" id="OnAirDate" name="OnAirDate" required />
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div col-xs-6>
+                                                <textarea class="form-control col-xs-3" type="text" style="color: black; width: 300px;" id="addDescription" name="addDescription" placeholder="Enter Description" required></textarea>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div col-xs-6>
+                                                <input class="form-control" type="submit" id="addTechnical" value="Add Technical" style="color: black; width: 200px;">
+                                            </div>
+                                            <br>
+                                        </fieldset>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+
+                        <div>
+                            <button class="btn btn-info" onclick=" $('#filter').toggle(); ">Show/Hide Filters</button>
+                        </div>
+                        <div id="filter" style="display: none;height: 70px;">
+                            <div style="background: black; height: 70px; padding-left: 10px;">
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <div id="TechnicalType"></div>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <div id="TechnicalDescription"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <br>
+                        <table id="mainTable" name="entrymainTables_table" border="1" class="table table-condensed table-striped ">
+                            <thead>
+                                <tr>
+
+                                    <th class="col-sm-1">Technical Type</th>
+                                    <th class="col-sm-1">Amount</th>
+                                    <th class="col-sm-1">Description</th>
+                                    <th class="col-sm-1">OnAir Date</th>
+                                    <th class="col-sm-1">Edit</th>
+                                    <th class="col-sm-1">Delete</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+
+
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<form id="delete-form" class="myModals" method="POST" action="@deleteAction" onsubmit="if(!confirm('Do you want to Delete This Entry?')){return false;}">
+    <div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Complain</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Id</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="IdDel" name="IdDel" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Technical Type</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="TypeIDDel" name="TypeIDDel" disabled="">
+                                <option value="" selected>Select Type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Amount</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="AmountDel" name="AmountDel" readonly="readonly" disabled="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Description</label>
+                        <div class="col-xs-5">
+                            <textarea class="form-control" id="DescriptionDel" name="Description" disabled=""></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class=" col-xs-5 btn btn-primary">Delete Complain</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form id="edit-form" class="myModals" method="POST" action="@editAction">
+    <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">Edit Technical</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Id</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="TechnicalId" name="TechnicalId" readonly="" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Technical Type</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="TypeID" name="TypeID">
+                                <option value="" selected>Select Type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Amount</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="Amount" name="Amount" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Description</label>
+                        <div class="col-xs-5">
+                            <textarea class="form-control" id="Description" name="Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">OnAirDate</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="editOnAirDate" name="OnAirDate"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class=" col-xs-4 btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" id="editResolveBtn" class=" col-xs-5 btn btn-primary"><span id="aSapn2">Edit Technical</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section head{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.yadcf.js"></script>
+
+}
+
+
+<style>
+    .myModals div {
+        padding-bottom: 10px;
+    }
+
+    .paginate_button {
+        background: lightblue;
+    }
+
+    .dataTables_length {
+        background: whitesmoke;
+    }
+
+    .dataTables_filter {
+        background: whitesmoke;
+    }
+
+    #yadcf-filter--reportTable-1 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+
+    #yadcf-filter--mainTable-1 {
+        width: 105px !important;
+        max-width: 105px !important;
+    }
+
+    #yadcf-filter--mainTable-0 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mainTable-2 {
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    #yadcf-filter--mainTable-3 {
+        width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    #yadcf-filter--mainTable-5 {
+        width: 120px !important;
+        max-width: 110px !important;
+    }
+
+    .yadcf-filter-range-date-seperator {
+        width: 20px !important;
+    }
+
+    .yadcf-filter {
+        background: black;
+    }
+
+    #mainTable_length select {
+        background: green;
+    }
+
+    #mainTable_length {
+        background: #222222;
+        color: white;
+        padding-top: 10px;
+    }
+
+    #mainTable_filter {
+        background: #222222;
+        color: black;
+    }
+</style>
+
+
+<script>
+
+
+	$(document).ready(function () {
+
+
+		$("#addAmount").keydown(function (e) {
+			// Allow: backspace, delete, tab, escape, enter and .
+			if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+				// Allow: Ctrl+A, Command+A
+				(e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+				// Allow: home, end, left, right, down, up
+				(e.keyCode >= 35 && e.keyCode <= 40)) {
+				// let it happen, don't do anything
+				return;
+			}
+			// Ensure that it is a number and stop the keypress
+			if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+				e.preventDefault();
+			}
+		});
+
+
+		var oTable = $('#mainTable').dataTable({
+
+			"order": [[0, "desc"]],
+			"sAjaxSource": "/Technical/TechnicalDataProviderAction",
+
+			"bLengthChange": true,
+			dom: 'l<>Bfrtip',
+			"bServerSide": true,
+			"fnRowCallback":
+				function (nRow, aData, iDisplayIndex) {
+
+
+					$('td:eq(4)', nRow).html('<button Technical_id=' + aData[4] + ' type="button" data-toggle="modal" data-target="#myEdit" name="editEntry" class="editEntry btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></button>');
+					$('td:eq(5)', nRow).html('<button Technical_id=' + aData[4] + ' type="button" data-toggle="modal" data-target="#myDelete" name="deleteEntry" class=" deleteEntry btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
+
+					return nRow;
+				}
+
+
+
+		});
+
+		oTable.yadcf([
+					{
+						column_number: 0,
+						filter_type: "text",
+						filter_default_label: "Type",
+						filter_delay: 1000,
+						filter_container_id: "TechnicalType"
+					},
+					{
+						column_number: 1,
+						filter_type: "text",
+						filter_default_label: "Description",
+						filter_delay: 1000,
+						filter_container_id: "TechnicalDescription"
+
+					}
+
+		]);
+		$().tooltip({
+			template: '<div class="tooltip CUSTOM-CLASS"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+		});
+		$('.yadcf-filter-reset-button').text('').append("<span class=\"glyphicon glyphicon-refresh\"></span>").addClass("btn-success").attr('title', 'Reset Filter').attr('data-toggle', 'tooltip').tooltip();
+
+
+		$('#mainTable_filter input').unbind();
+		$('#mainTable_filter input').bind('keyup', function (e) {
+			if (e.keyCode == 13) {
+				oTable.fnFilter(this.value);
+			}
+		});
+
+
+
+
+		//  $('.deleteEntry').on('click', function () {
+		$(document).on('click', '.deleteEntry', function () {
+			var Technical_id = $(this).attr('Technical_id').trim();
+			var myData = ({ "id": Technical_id });
+			$.ajax({
+				'async': false,
+				type: "POST",
+				url: "@Url.Action("GetSingleTechnicalData", "Technical")",
+				contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(myData),
+			dataType: 'json',
+
+			success: function (returnData) {
+				$.each(returnData, function (index, value) {
+					$("#IdDel").val(value.TechnicalId);
+					$("#TypeIDDel").val(value.TypeId);
+
+					$("#AmountDel").val(value.Amount);
+					$("#DescriptionDel").val(value.Description);
+
+					var options = "";
+					var selectedOption = "";
+					for (var i = 0; i < value.TechnicalTypes.length; i++) {
+						if (value.TypeID == value.TechnicalTypes[i].TypeID) {
+							selectedOption = value.TechnicalTypes[i].TypeID;
+							options += '<option value="' + value.TechnicalTypes[i].TypeID + '" selected>' + value.TechnicalTypes[i].Name + '</option>';
+						}
+						else {
+							options += '<option value="' + value.TechnicalTypes[i].TypeID + '">' + value.TechnicalTypes[i].Name + '</option>';
+						}
+					}
+					$("select#TypeIDDel").html(options);
+				});
+			}
+		});
+		});
+
+
+	    var OnAirDatePicker = $('#OnAirDate');
+
+	    OnAirDatePicker.datepicker({
+	        controlType: 'select',
+	        oneLine: true,
+	        timeFormat: 'hh:mm tt',
+	        dateFormat: 'yy-mm-dd'
+	      
+
+	    });
+	    OnAirDatePicker.datepicker('setDate', (new Date()));
+
+
+	$(document).on('click', '.editEntry', function () {
+		var Technical_id = $(this).attr('Technical_id').trim();
+	    var onAirDateValue;
+		$("div.selectStatus select").val("0");
+		$("#aSapn2").text("Edit Equimpment Data");
+
+		var myData = ({ "id": Technical_id });
+
+		$.ajax({
+			'async': false,
+			type: "POST",
+			url: "@Url.Action("GetSingleTechnicalData", "Technical")",
+			contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(myData),
+		dataType: 'json',
+		success: function (returnData) {
+			$.each(returnData, function (index, value) {
+				$("#TechnicalId").val(value.TechnicalId);
+				$("#TypeID").val(value.TypeId);
+
+				$("#Amount").val(value.Amount);
+				$("#Description").val(value.Description);
+				onAirDateValue = value.OnAirDate;
+				onAirDateValue = new Date(parseInt(value.OnAirDate.substr(6)));
+				var jsDate = new Date(onAirDateValue);
+
+				//$("#editOnAirDate").val(jsDate.getFullYear() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getDate());
+				$("#editOnAirDate").val(value.OnAirDate);
+
+				var options = "";
+				var selectedOption = "";
+				for (var i = 0; i < value.EquipmentTypes.length; i++) {
+				    if (value.TypeID == value.EquipmentTypes[i].TypeID) {
+				        selectedOption = value.EquipmentTypes[i].TypeID;
+				        options += '<option value="' + value.EquipmentTypes[i].TypeID + '" selected>' + value.EquipmentTypes[i].Name + '</option>';
+					}
+					else {
+				        options += '<option value="' + value.EquipmentTypes[i].TypeID + '">' + value.EquipmentTypes[i].Name + '</option>';
+					}
+				}
+				$("select#TypeID").html(options);
+			});
+		}
+		});
+
+	    var endDate = new Date();
+
+	    var ex13 = $('#editOnAirDate');
+
+
+	    ex13.datepicker({
+	        //controlType: 'select',
+	        //oneLine: true,
+	       // timeFormat: 'hh:mm tt',
+	        dateFormat: 'yy-mm-dd',
+
+	        maxDate: endDate
+
+	    });
+	   // ex13.datetimepicker('option', 'minDate', new Date(onAirDateValue));
+	    ex13.datetimepicker('setDate', (new Date(onAirDateValue)));
+	});
+
+
+	$('#ExportExcelButton').click(function() {
+		var overAllSearch=$("#mainTable_filter :input").val();
+		window.location = "/Technical/GetExcelFile?overAllSearch=" + overAllSearch;
+	});
+
+
+	var tableWidth = $('#mainTable').width() + 25;
+
+	document.getElementById('table-container-div').style.width = "" + tableWidth + "px";
+
+	//Make DateTime picker dropdown to work on a Modal//
+	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+	$.fn.modal.Constructor.prototype.enforceFocus = function () { };
+
+	$confModal.on('hidden', function () {
+		$.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+	});
+
+	$confModal.modal({ backdrop: false });
+	});
+</script>

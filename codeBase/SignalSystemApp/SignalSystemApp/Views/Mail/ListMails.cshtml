@@ -296,7 +296,7 @@
 			controlType: 'select',
 			oneLine: true,
 			timeFormat: 'hh:mm tt',
-			dateFormat: 'dd/mm/yy',
+			dateFormat: 'yy-mm-dd'
 
 
 		});
@@ -308,7 +308,7 @@
 			controlType: 'select',
 			oneLine: true,
 			timeFormat: 'hh:mm tt',
-			dateFormat: 'dd/mm/yy'
+			dateFormat: 'yy-mm-dd'
 
 		});
 		//departureDatePicker.datetimepicker('setDate', (new Date()));
@@ -328,7 +328,7 @@
 
 
 		});
-		$.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+		$.datepicker.regional[""].dateFormat = 'yy-mm-dd';
 		$.datepicker.setDefaults($.datepicker.regional['']);
 		$.datepicker.setDefaults({
 			buttonImageOnly: true,
@@ -448,10 +448,10 @@
 						var parsedDate = new Date(parseInt(value.MailArrivalDate.substr(6)));
 						var jsDate = new Date(parsedDate);
 
-						$("#dateArrival_Edit").val(jsDate.getFullYear() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getDate());
+						$("#dateArrival_Edit").val(jsDate.getFullYear() + "-" + (jsDate.getMonth() + 1) + "-" + jsDate.getDate());
 						var parsedDate = new Date(parseInt(value.MailDepartureDate.substr(6)));
 						var jsDate = new Date(parsedDate);
-						$("#dateDepurture_Edit").val(jsDate.getFullYear() + "/" + (jsDate.getMonth() + 1) + "/" + jsDate.getDate());
+						$("#dateDepurture_Edit").val(jsDate.getFullYear() + "-" + (jsDate.getMonth() + 1) + "-" + jsDate.getDate());
 						$('#mailFrom_Edit option:contains(' + value.MailFrom + ')').prop({ selected: true });
 						$('#mailTo_Edit option:contains(' + value.MailTo + ')').prop({ selected: true });
 
@@ -460,7 +460,16 @@
 			});
 		});
 
+	    //Make DateTime picker dropdown to work on a Modal//
+		var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 
+		$.fn.modal.Constructor.prototype.enforceFocus = function () { };
+
+		$confModal.on('hidden', function () {
+		    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+		});
+
+		$confModal.modal({ backdrop: false });
 		
 		
 

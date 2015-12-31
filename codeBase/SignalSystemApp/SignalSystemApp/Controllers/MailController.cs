@@ -104,8 +104,8 @@ namespace SignalSystemApp.Controllers
                     aMailData.MailDBID,
                     aMailData.MailID,
                     aMailData.MailDescription,
-                    aMailData.MailArrivalDate.ToString("dd-MM-yyyy").ToString() ,
-                    aMailData.MailDepartureDate.ToString("dd-MM-yyyy").ToString(),
+                    aMailData.MailArrivalDate.ToString("yyyy-MM-dd").ToString() ,
+                    aMailData.MailDepartureDate.ToString("yyyy-MM-dd").ToString(),
                     aMailData.MailFrom,
                     aMailData.MailTo,
                     ""

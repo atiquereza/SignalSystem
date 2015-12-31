@@ -85,7 +85,7 @@
         <div class="col-xs-3">
             <div id="searchRemarks"></div>
         </div>
-    </div></br>
+    </div>
     <div class="row">
         <div class="col-xs-3">
             <label>Search by Complain Date:</label><div id="complainDate"></div>
@@ -94,7 +94,7 @@
         <div class="col-xs-3">
             <label>Search by Resolve Date:</label><div id="selectResolveDate"></div>
         </div>
-    </div></br>
+    </div>
 </div>              
 @*Search filter ends*@
 
@@ -526,7 +526,7 @@
 
         $(".yadcf-filter").css('background', 'black');
         $(".yadcf-filter-range-date").css('background', 'black');
-        $(".yadcf-filter-range-date").css('font', 'bold');
+        $(".yadcf-filter-range-date").css('font-weight', 'bold');
 
 
         $(document).on('click', '.deleteEntry', function () {
@@ -648,7 +648,7 @@
         var actionTaken = $('#yadcf-filter--mytestDatatable-8').val();
         var remarks = $('#yadcf-filter--mytestDatatable-9').val();
 
-        alert(fromDateRange);
+       // alert(fromDateRange);
         window.location = "/Telephone/GetResolveExcelFile?baNumber=" + baNumber + "&name=" + name + "&rank=" + rank + "&phone=" + phone + "&complainType=" + complainType + "&fromDateRange=" + fromDateRange + "&toDateRange=" + toDateRange + "&overAllSearch=" + overAllSearch + "&resolvedBy=" + resolvedBy + "&resolvefromDateRange=" + resolvefromDateRange + "&resolvetoDateRange=" + resolvetoDateRange + "&actionTaken=" + actionTaken + "&remarks=" + remarks + " &status=resolved&";
        
     });
