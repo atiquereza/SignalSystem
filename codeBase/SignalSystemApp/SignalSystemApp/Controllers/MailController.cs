@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using SignalSystem.Libs;
 using SignalSystemApp.Models;
 using SignalSystemApp.Models.Mail;
 
@@ -12,16 +13,17 @@ namespace SignalSystemApp.Controllers
 {
     public class MailController : Controller
     {
+        [Authenticate]
         public ActionResult Index()
         {
             return View();
         }
-
+         [Authenticate]
         public ActionResult ListMails()
         {
             return View();
         }
-
+         [Authenticate]
         public ActionResult AddNewMail()
         {
             try
@@ -67,7 +69,7 @@ namespace SignalSystemApp.Controllers
                 return View("Index");
             }
         }
-
+         [Authenticate]
         public JsonResult DataProviderAction(JQueryDataTableParamModel aModel)
         {
 
@@ -123,7 +125,7 @@ namespace SignalSystemApp.Controllers
             },
                JsonRequestBehavior.AllowGet);
         }
-
+         [Authenticate]
         public ActionResult GetMailInfo(int id)
         {
             Mail aMail = new Mail();
@@ -132,7 +134,7 @@ namespace SignalSystemApp.Controllers
             mailData = aMail.SingleMailInfo(id);
             return Json(mailData);
         }
-
+         [Authenticate]
         public ActionResult EditEntry(MailData aMailData)
         {
             Mail aMail = new Mail();

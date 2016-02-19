@@ -14,6 +14,7 @@ namespace SignalSystemApp.Controllers
 {
     public class TechnicalController : Controller
     {
+          [Authenticate]
         public ActionResult Index()
         {
             List<EquipmentType> aList = EquipmentType.GEtEquipmentTypes();
@@ -23,7 +24,7 @@ namespace SignalSystemApp.Controllers
             return View(aList);
         }
 
-
+          [Authenticate]
 
         public JsonResult TechnicalDataProviderAction(JQueryDataTableParamModel aModel)
         {
@@ -95,7 +96,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+            [Authenticate]
         public ActionResult GetSingleTechnicalData(string id)
         {
 
@@ -108,7 +109,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+            [Authenticate]
 
         public ActionResult DeleteSingleTechnical(TechnicalDetails aTechnicalDetails)
         {
@@ -122,7 +123,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+           [Authenticate]
 
         public ActionResult EditSingleTechnical(TechnicalDetails aTechnicalDetails)
         {
@@ -142,7 +143,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+          [Authenticate]
         public ActionResult AddTechnical()
         {
 
@@ -156,7 +157,7 @@ namespace SignalSystemApp.Controllers
             return RedirectToAction("Index", "Technical");
         }
 
-
+           [Authenticate]
         public ActionResult AddTechnicalType()
         {
             string typeName = Request["AddTypeName"];
@@ -184,7 +185,7 @@ namespace SignalSystemApp.Controllers
         }
 
 
-
+        
 
         public void SortList<T>(List<T> list, string columnName, SortDirection direction)
         {

@@ -20,6 +20,7 @@ namespace SignalSystemApp.Controllers
     {
         DBGateway aGateway=new DBGateway();
         // GET: Equipment
+         [Authenticate]
         public ActionResult Index()
         {
             List<EquipmentType> aList = EquipmentType.GEtEquipmentTypes();
@@ -29,8 +30,8 @@ namespace SignalSystemApp.Controllers
             return View(aList);
         }
 
-        
- 
+
+         [Authenticate]
         public JsonResult EquipmentDataProviderAction(JQueryDataTableParamModel aModel)
         {
             string equipmentType = Convert.ToString(Request["sSearch_0"]);
@@ -100,7 +101,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+          [Authenticate]
         public ActionResult GetSingleEquipmentData(string id)
         {
 
@@ -113,8 +114,8 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
 
+         [Authenticate]
         public ActionResult DeleteSingleEquipment(EquipmentDetails aEquipmentDetails)
         {
        
@@ -127,7 +128,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-
+         [Authenticate]
 
         public ActionResult EditSingleEquipment(EquipmentDetails aEquipmentDetails)
         {
@@ -143,7 +144,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
+         [Authenticate]
         public ActionResult AddEquipment()
         {
 
@@ -155,7 +156,7 @@ namespace SignalSystemApp.Controllers
 
             return RedirectToAction("Index", "Equipment");
         }
-
+          [Authenticate]
         
         public ActionResult AddEquipmentType()
         {
@@ -183,9 +184,7 @@ namespace SignalSystemApp.Controllers
             return RedirectToAction("Index", "Equipment");
         }
 
-     
-
-
+         [Authenticate]
         public void SortList<T>(List<T> list, string columnName, SortDirection direction)
         {
             var property = typeof(T).GetProperty(columnName);

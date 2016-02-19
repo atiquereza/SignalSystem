@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SignalSystem.Libs;
 using SignalSystemApp.Models.User;
 
 namespace SignalSystemApp.Controllers
@@ -10,6 +11,7 @@ namespace SignalSystemApp.Controllers
     public class UserController : Controller
     {
         // GET: User
+        [Authenticate]
         public ActionResult Index()
         {
             User aUser = new User();
@@ -17,7 +19,7 @@ namespace SignalSystemApp.Controllers
             ViewData["UserInfo"] = allUsers;
             return View();
         }
-
+        [Authenticate]
         [HttpPost]
         public ActionResult RegisterNewUser()
         {
@@ -57,6 +59,7 @@ namespace SignalSystemApp.Controllers
             ViewData["Message"] = "User has been added successfully";
             return View("Registration");
         }
+        [Authenticate]
         public ActionResult Registration()
         {
             return View();

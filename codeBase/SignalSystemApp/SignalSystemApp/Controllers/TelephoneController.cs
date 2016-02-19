@@ -23,18 +23,18 @@ namespace SignalSystemApp.Controllers
     {
         // GET: Telephone
 
-
+        [Authenticate]
         public ActionResult NewComplain()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult ListPhones()
         {
 
             return View();
         }
-
+        [Authenticate]
         public ActionResult SearchActiveTelephoneInfo()
         {
 
@@ -63,7 +63,7 @@ namespace SignalSystemApp.Controllers
             return View("NewComplain");
         }
 
-
+        [Authenticate]
         public ActionResult SubmitComplains()
         {
 
@@ -81,7 +81,7 @@ namespace SignalSystemApp.Controllers
             ViewData["Message"] = "Submitted Complains";
             return View("NewComplain");
         }
-
+        [Authenticate]
         public ActionResult AssignTelephone()
         {
             string baNumber = Request["baNumber"].ToString();
@@ -120,18 +120,18 @@ namespace SignalSystemApp.Controllers
 
             return View("AddTelephone");
         }
-
+        [Authenticate]
         public ActionResult AddTelephone()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult PendingComplains()
         {
          
             return View();
         }
-
+        [Authenticate]
         public ActionResult ResolvedComplains()
         {
             Telephone telephone = new Telephone();
@@ -141,7 +141,7 @@ namespace SignalSystemApp.Controllers
 
             return View();
         }
-
+        [Authenticate]
         public ActionResult SearchResolvedComplains()
         {
             string phoneNumber = Request["search"].ToString();
@@ -152,7 +152,7 @@ namespace SignalSystemApp.Controllers
 
             return View("ResolvedComplains");
         }
-
+        [Authenticate]
         public ActionResult GetSingleComplainData(string id)
         {
             List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
@@ -164,7 +164,7 @@ namespace SignalSystemApp.Controllers
 
 
         }
-
+        [Authenticate]
         public ActionResult GetSingleResolvedComplainData(string id)
         {
             List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
@@ -177,8 +177,8 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
 
+        [Authenticate]
         public ActionResult DeleteSingleComplainData()
         {
             List<Dictionary<string, string>> pendingComplains = new List<Dictionary<string, string>>();
@@ -194,9 +194,9 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
 
 
+        [Authenticate]
         public ActionResult EditSingleComplainData(TelephoneComplain aTelephoneComplain)
         {
             string complainStatus = string.Empty;
@@ -210,7 +210,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
+        [Authenticate]
         public JsonResult DataProviderAction(JQueryDataTableParamModel aModel)
         {
             List<string> columnlist =
@@ -316,7 +316,7 @@ namespace SignalSystemApp.Controllers
 
 
 
-
+        [Authenticate]
         public ActionResult GetExcelFile(string baNumber, string name, string rank, string phone, string complainType,
             string fromDateRange, string toDateRange, string overAllSearch, string hourFilter, string status)
         {
@@ -399,7 +399,7 @@ namespace SignalSystemApp.Controllers
         }
 
 
-
+        [Authenticate]
         public JsonResult ResolvedDataProviderAction(JQueryDataTableParamModel aModel)
         {
             List<string> columnlist =
@@ -497,7 +497,7 @@ namespace SignalSystemApp.Controllers
             }
 
 
-
+        [Authenticate]
         public ActionResult GetResolveExcelFile(string baNumber, string name, string rank, string phone,
             string complainType, string fromDateRange, string toDateRange, string overAllSearch, string resolvedBy,
             string resolvefromDateRange, string resolvetoDateRange, string actionTaken, string remarks, string status)
@@ -586,9 +586,9 @@ namespace SignalSystemApp.Controllers
     return null;
         }
 
-       
 
 
+        [Authenticate]
         public JsonResult TelephoneDataProviderAction(JQueryDataTableParamModel aModel)
         {
             List<string> columnlist =
@@ -689,8 +689,8 @@ namespace SignalSystemApp.Controllers
              JsonRequestBehavior.AllowGet);
     }
 
-        
 
+        [Authenticate]
         public ActionResult GetSinglePhoneData(string id)
         {
             List<TelphoneUser> phoneList = TelphoneUser.GetPhoneUserData(id);
@@ -699,8 +699,8 @@ namespace SignalSystemApp.Controllers
             return Json(phoneList, JsonRequestBehavior.AllowGet);
         }
 
-        
 
+        [Authenticate]
         public ActionResult PhoneConnectDeleteAction(TelphoneUser aTelphoneUser)
         {
            
@@ -717,7 +717,7 @@ namespace SignalSystemApp.Controllers
 
         }
 
-        
+        [Authenticate]
         public ActionResult PhoneDisconnect(TelphoneUser aTelphoneUser)
         {
             DBGateway aGateway = new DBGateway();

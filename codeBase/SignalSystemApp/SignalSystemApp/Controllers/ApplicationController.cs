@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using SignalSystem.Libs;
 using SignalSystemApp.Models.Application;
 
 namespace SignalSystemApp.Controllers
@@ -11,11 +12,12 @@ namespace SignalSystemApp.Controllers
     public class ApplicationController : Controller
     {
         // GET: Application
+        [Authenticate]
         public ActionResult Index()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult AddNewComplainType()
         {
             try

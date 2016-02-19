@@ -13,21 +13,23 @@ using SignalSystemApp.Models.TelephoneUser;
 namespace SignalSystemApp.Controllers
 {
     public class TelephoneRequestController : Controller
-    {   
+    {
+        [Authenticate]
         public ActionResult Index()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult PendingRequest()
         {
             return View();
         }
+        [Authenticate]
         public ActionResult ResolveRequest()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult SearchRequestNewForm()
         {
             string baNumber = Request["BANumberSearch"].Trim().ToString();
@@ -103,7 +105,7 @@ namespace SignalSystemApp.Controllers
            
             return View("Index");
         }
-
+        [Authenticate]
         public ActionResult AddNewRequest()
         {
            
@@ -158,7 +160,7 @@ namespace SignalSystemApp.Controllers
             ViewData["Message"] = message;
             return View("Index");
         }
-
+        [Authenticate]
         public ActionResult ResolveActiveRequest()
         {
 
@@ -173,7 +175,7 @@ namespace SignalSystemApp.Controllers
             return View("PendingRequest");
         }
 
-
+        [Authenticate]
         public ActionResult PendingDataProviderAction(JQueryDataTableParamModel aModel)
         {  
             string baNumber = Convert.ToString(Request["sSearch_0"]);
@@ -210,7 +212,7 @@ namespace SignalSystemApp.Controllers
             }, JsonRequestBehavior.AllowGet);
   
         }
-
+        [Authenticate]
         public ActionResult ResolvedDataProviderAction(JQueryDataTableParamModel aModel)
         {
             string baNumber = Convert.ToString(Request["sSearch_0"]);
@@ -244,7 +246,7 @@ namespace SignalSystemApp.Controllers
                 aaData = resolvedReqest
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [Authenticate]
         public ActionResult TerminatedConnectionDataProviderAction(JQueryDataTableParamModel aModel)
         {
             string baNumber = Convert.ToString(Request["sSearch_0"]);

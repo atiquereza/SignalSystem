@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using SignalSystem.Libs;
 using SignalSystemApp.Models;
 using SignalSystemApp.Models.TelephoneNumberAndUser;
 using SignalSystemApp.Models.TelephoneUser;
@@ -12,18 +13,19 @@ namespace SignalSystemApp.Controllers
 {
     public class TelephoneUserController : Controller
     {
+        [Authenticate]
         public ActionResult Index()
         {
             //This function will add A new Person Info
             return View();
         }
-
+        [Authenticate]
         public ActionResult AddTelephoneUser()
         {
             //dublicate mehtod like Index, this will remove later
             return View("Index");
         }
-
+        [Authenticate]
         [HttpPost]
         public ActionResult AddNewTelephoneUser(TelephoneUserInfo aTelephoneUserInfo)
         {
@@ -61,12 +63,12 @@ namespace SignalSystemApp.Controllers
             ViewData["Message"] = message;
             return View("Index");
         }
-
+        [Authenticate]
         public ActionResult AddNewTelephoneNumber()
         {
             return View();
         }
-
+        [Authenticate]
         [HttpPost]
         public ActionResult SubmitNewTelephoneNumber(TelephoneNumberInfo aTelephoneNumberInfo)
         {
@@ -82,17 +84,17 @@ namespace SignalSystemApp.Controllers
             ViewData["Message"] = message;
             return View("AddNewTelephoneNumber");
         }
-
+        [Authenticate]
         public ActionResult ViewActiveTelephoneUsers()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult ViewTerminatedTelephoneHistory()
         {
             return View();
         }
-
+        [Authenticate]
         public ActionResult GetActivePhoneDataProviderAction(JQueryDataTableParamModel aModel)
         {
             string baNumber = Convert.ToString(Request["sSearch_0"]);

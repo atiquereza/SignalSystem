@@ -15,7 +15,7 @@ namespace DigitalVaccination.Controllers
     {
         //
         // GET: /Home/
-
+         [Authenticate]
         public ActionResult Index()
         {
 

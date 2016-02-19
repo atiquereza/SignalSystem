@@ -51,18 +51,20 @@ namespace SignalSystem.Controllers
             }
         }
        
+        [Authenticate]
         public ActionResult LogOut()
         {
             
             Session.Clear();
             return Redirect("Index");
         }
-        
+
+        [Authenticate]
         public ActionResult Register()
         {
             return View();
         }
-
+        [Authenticate]
         [HttpPost]
         public ActionResult SubmitRegister(string childName, string birthDay, string fathersName, string mothersName, string currentAddress, string permanentAddress, string cellNumber, string birthCertificateId, string emailAddress, string repeatEmailAddress)
         {
