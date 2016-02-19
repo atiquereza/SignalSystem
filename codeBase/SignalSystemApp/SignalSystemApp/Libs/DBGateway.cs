@@ -105,29 +105,7 @@ namespace SignalSystem.Libs
 
         }
 
-        //public string Backup(string backUPFile)
-        //{
-        //    try
-        //    {
-        //        using (MySqlCommand cmd = new MySqlCommand())
-        //        {
-        //            using (MySqlBackup mb = new MySqlBackup(cmd))
-        //            {
-
-        //                cmd.Connection = SqlConnectionObj;
-        //                SqlConnectionObj.Open();
-        //                mb.ExportToFile(backUPFile);
-        //                SqlConnectionObj.Close();
-        //            }
-        //        }
-
-        //        return "Database Backup Successfull.";
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        return "Unable To Backup. Exception: " + exception.Message;
-        //    }
-        //}
+       
         public string BulkDataInsert(string tableName, string fieldTerminator, string lineTerminator, string fileName, int numberOfLineToSkip)
         {
             try

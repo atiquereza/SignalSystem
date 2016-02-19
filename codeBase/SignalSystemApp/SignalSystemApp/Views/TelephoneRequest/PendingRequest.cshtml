@@ -168,7 +168,7 @@
         var oTable = $('#MainDataTable').dataTable({
 
             "order": [[3, "asc"]],
-            "sAjaxSource": "/TelephoneRequest/PendingDataProviderAction",
+            "sAjaxSource": '@Url.Action("PendingDataProviderAction","TelephoneRequest")',//"/TelephoneRequest/PendingDataProviderAction",
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
             "bServerSide": true,

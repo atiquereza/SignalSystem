@@ -121,7 +121,7 @@
         var oTable = $('#MainDataTable').dataTable({
 
             "order": [[3, "asc"]],
-            "sAjaxSource": "/TelephoneRequest/TerminatedConnectionDataProviderAction",
+            "sAjaxSource": '@Url.Action("TerminatedConnectionDataProviderAction","TelephoneRequest")',//"/TelephoneRequest/TerminatedConnectionDataProviderAction",
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
             "bServerSide": true,

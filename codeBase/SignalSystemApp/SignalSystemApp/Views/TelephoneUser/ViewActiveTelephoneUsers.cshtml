@@ -122,7 +122,7 @@
         var oTable = $('#MainDataTable').dataTable({
 
             "order": [[3, "asc"]],
-            "sAjaxSource": "/TelephoneUser/GetActivePhoneDataProviderAction",
+            "sAjaxSource": '@Url.Action("GetActivePhoneDataProviderAction","TelephoneUser")',//"/TelephoneUser/GetActivePhoneDataProviderAction",
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
             "bServerSide": true,

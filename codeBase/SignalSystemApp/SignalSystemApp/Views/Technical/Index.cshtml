@@ -356,7 +356,7 @@
 		var oTable = $('#mainTable').dataTable({
 
 			"order": [[0, "desc"]],
-			"sAjaxSource": "/Technical/TechnicalDataProviderAction",
+			"sAjaxSource": '@Url.Action("TechnicalDataProviderAction","Technical")',//"/Technical/TechnicalDataProviderAction",
 
 			"bLengthChange": true,
 			dom: 'l<>Bfrtip',
@@ -416,7 +416,7 @@
 			$.ajax({
 				'async': false,
 				type: "POST",
-				url: "@Url.Action("GetSingleTechnicalData", "Technical")",
+				url: '@Url.Action("GetSingleTechnicalData", "Technical")',
 				contentType: "application/json; charset=utf-8",
 			data: JSON.stringify(myData),
 			dataType: 'json',
@@ -471,7 +471,7 @@
 		$.ajax({
 			'async': false,
 			type: "POST",
-			url: "@Url.Action("GetSingleTechnicalData", "Technical")",
+			url: '@Url.Action("GetSingleTechnicalData", "Technical")',
 			contentType: "application/json; charset=utf-8",
 		data: JSON.stringify(myData),
 		dataType: 'json',

@@ -419,7 +419,7 @@
         var oTable = $('#MainDataTable').dataTable({
            
             "order": [[7, "asc"]],
-            "sAjaxSource": "/Telephone/TelephoneDataProviderAction",
+            "sAjaxSource": '@Url.Action("TelephoneDataProviderAction","Telephone")',//"/Telephone/TelephoneDataProviderAction",
            
             "bLengthChange": true,
             dom: 'l<>Bfrtip',
@@ -544,7 +544,7 @@
             //alert(phoneUser_id);
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("GetSinglePhoneData", "Telephone")",
+                url: '@Url.Action("GetSinglePhoneData", "Telephone")',
                 contentType: "application/json; charset=utf-8",
             data: JSON.stringify(myData),
             dataType: 'json',
@@ -583,7 +583,7 @@
         $.ajax({
             'async': false,
             type: "POST",
-            url: "@Url.Action("GetSinglePhoneData", "Telephone")",
+            url: '@Url.Action("GetSinglePhoneData", "Telephone")',
             contentType: "application/json; charset=utf-8",
         data: JSON.stringify(myData),
         dataType: 'json',

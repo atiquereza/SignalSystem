@@ -76,7 +76,7 @@
         <div class="col-xs-5">
             <label>Search by Complain Date:</label><div id="complainDate"></div>
         </div>
-    </div></br>
+    </div><br>
 </div>
               
 @*Search filter ends*@
@@ -458,7 +458,7 @@
             //"sDom": "Tfrtip",
             // "aaSorting": [], // Prevent initial sorting
             "order": [[4, "desc"]],
-            "sAjaxSource": "/Telephone/DataProviderAction",
+            "sAjaxSource": '@Url.Action("DataProviderAction","Telephone")',//"/Telephone/DataProviderAction",
             //"fnServerData": function (sSource, aoData, fnCallback) {
             //    aoData.push({ "name": "roleId", "value": "admin" });},
             "bLengthChange": true,
@@ -576,7 +576,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("GetSingleComplainData", "Telephone")",
+                url: '@Url.Action("GetSingleComplainData", "Telephone")',
                 contentType: "application/json; charset=utf-8",
             data: JSON.stringify(myData),
             dataType: 'json',
@@ -616,7 +616,7 @@
         $.ajax({
             'async': false,
             type: "POST",
-            url: "@Url.Action("GetSingleComplainData", "Telephone")",
+            url: '@Url.Action("GetSingleComplainData", "Telephone")',
             contentType: "application/json; charset=utf-8",
         data: JSON.stringify(myData),
         dataType: 'json',
