@@ -5,12 +5,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Dark Admin</title>
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+  
+
+    <link href="~/Content/jquery.dataTables.yadcf.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet"/>
+
+   
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet"/>
+    
     <link href="~/Content/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/CSS/local.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/CSS/local.css" rel="stylesheet"/>
+    <link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet"/>
+  
+    
+    @*<link href="~/Content/TestCss.css" rel="stylesheet" />*@
+    @*@RenderSection("head-css", required: false)*@
+
+    
+
+
+
+
+
+
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
+    @*<script src="~/Scripts/TestSideNav.js"></script>*@
+    @*<script src="~/Scripts/bootstrap-datepicker.js"></script>*@
+
+
+
+
 
     @{
         Dictionary<string, string> sessionDictionary = new Dictionary<string, string>();
@@ -29,11 +58,21 @@
         string collapseMail = "collapse";
         string collapseTechnical = "collapse";
         string collapseEquipments = "collapse";
+        string collapseManageTelephoneUser = "collapse";
+        string collapseRequest = "collapse";
 
         string contorller = UtilityLibrary.GetControllerName();
+        if (contorller == "TelephoneRequest")
+        {
+            collapseRequest = string.Empty;
+        }
         if (contorller == "User")
         {
             collapseUser = string.Empty;
+        }
+        if (contorller == "TelephoneUser")
+        {
+            collapseManageTelephoneUser = string.Empty;
         }
         if (contorller == "Telephone")
         {
@@ -47,7 +86,7 @@
         {
             collapseTechnical = string.Empty;
         }
-        if (contorller == "Equipments")
+        if (contorller == "Equipment")
         {
             collapseEquipments = string.Empty;
         }
@@ -64,16 +103,43 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Admin Panel</a>
+                <a class="navbar-brand" href="#">Admin Panel</a>
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul id="active" class="nav navbar-nav side-nav">
+                <ul id="active" class="nav navbar-nav side-nav" style="width: 200px!important">
                     <li class="selected"><a href="@Url.Action("Index", "Home")"><i class="fa fa-bullseye"></i> Dashboard</a></li>
+                   
+                   <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-user"></i> Telephones & Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo1" class="@collapseManageTelephoneUser" style="list-style: none">
+                           
+                            <li>
+                                <a href="@Url.Action("ViewActiveTelephoneUsers", "TelephoneUser")"><i class="fa fa-fw fa-eye"></i>Active Telephone</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ViewTerminatedTelephoneHistory", "TelephoneUser")"><i class="fa fa-fw fa-eye"></i>Termination History</a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-phone"></i>Telephone<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo1" class="@collapseTelephone" style="list-style: none" ;>
-                           <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo6"><i class="fa fa-fw fa-user"></i>Telephone Requests <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo6" class="@collapseRequest" style="list-style: none">
+                           
+                            <li>
+                                <a href="@Url.Action("PendingRequest", "TelephoneRequest")"><i class="fa fa-fw fa-eye"></i>Pending Request</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ResolveRequest", "TelephoneRequest")"><i class="fa fa-fw fa-check"></i>Resolved Requests</a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-phone"></i>Telephone Complains<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo2" class="@collapseTelephone" style="list-style: none">
+                           
+                            <li>
                                 <a href="@Url.Action("PendingComplains", "Telephone")"><i class="fa fa-warning"></i> Pending Complains</a>
                             </li>
                             <li>
@@ -83,42 +149,40 @@
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-envelope"></i>Mail<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo3" class="@collapseMail" style="list-style: none;" >
+                        <ul id="demo3" class="@collapseMail" style="list-style: none">
                             <li>
-                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add Mail</a>
-                            </li>
-                            <li>
-                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
+                                <a href="@Url.Action("ListMails", "Mail")"><i class="fa fa-fw fa-eye"></i> View List of Mails</a>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo4"><i class="fa fa-fw fa-wrench"></i>Technical<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo4" class="@collapseTechnical" style="list-style: none" ;>
+                        <ul id="demo4" class="@collapseTechnical" style="list-style: none">
                             <li>
-                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
+                                <a href="@Url.Action("Index", "Technical")"><i class="fa fa-fw fa-plus"></i> Add </a>
                             </li>
-                            <li>
-                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
-                            </li>
+                            
                         </ul>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo5"><i class="fa fa-fw fa-cube"></i>Equipments<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo5" class="@collapseEquipments" style="list-style: none" ;>
+                        <ul id="demo5" class="@collapseEquipments" style="list-style: none">
+                           
                             <li>
-                                <a href="register.html"><i class="fa fa-fw fa-plus"></i> Add </a>
-                            </li>
-                            <li>
-                                <a href="users.html"><i class="fa fa-fw fa-eye"></i> View List of </a>
+                                <a href="@Url.Action("Index", "Equipment")"><i class="fa fa-fw fa-eye"></i> View List of </a>
                             </li>
                         </ul>
+                    <li class="">
+                        <a href="@Url.Action("Index", "Application")"><i class="fa fa-fw fa-gear"></i>Application Configuration</a>
+                    </li>
                     </li>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right navbar-user">
 
 
+
+
+                <ul class="nav navbar-nav navbar-right navbar-user">  
                     <li class="dropdown user-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @sessionDictionary["LoggedIn"]<b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -129,7 +193,7 @@
                     </li>
                     <li class="divider-vertical"></li>
                     <li>
-
+                     
                     </li>
                 </ul>
             </div>
@@ -137,6 +201,8 @@
         @RenderBody()
 
     </div>
+    
+    @RenderSection("head", required: false)
 
 </body>
 </html>
