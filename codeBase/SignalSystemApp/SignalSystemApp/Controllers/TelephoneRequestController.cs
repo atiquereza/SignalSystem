@@ -39,6 +39,11 @@ namespace SignalSystemApp.Controllers
             if (baNumber.Length == 0 || reqType.Length == 0 || reqType == "--Request Type--")
             {
                 ViewData["Message"] = "Error! Complete Search Fields";
+                ViewData["baNumber"] = baNumber;
+                ViewData["reqType"] = reqType;
+                ViewData["addressType"] = addressType;
+                ViewData["connectionType"] = connectionType;
+               
                 return View("Index");
             }
 
@@ -51,6 +56,10 @@ namespace SignalSystemApp.Controllers
             {
                 string url = UtilityLibrary.GetBaseURL() + "TelephoneUser/AddTelephoneUser";
                 ViewData["Message"] = "Error! Telephone User not found. To Add Telephone User Click <a href=\""+url+"\" style=\"color: blue;\">Here</a>";
+                ViewData["baNumber"] = baNumber;
+                ViewData["reqType"] = reqType;
+                ViewData["addressType"] = addressType;
+                ViewData["connectionType"] = connectionType;
                 return View("Index");
             }
 
@@ -71,7 +80,10 @@ namespace SignalSystemApp.Controllers
                 }
                 ViewData["RequestType"] = "New Connection";
                 ViewData["AvailableNumbers"] = aTelephoneNumber.GetAvailableTelephoneNumberForNewConnection(connectionType);
-
+                ViewData["baNumber"] = baNumber;
+                ViewData["reqType"] = reqType;
+                ViewData["addressType"] = addressType;
+                ViewData["connectionType"] = connectionType;
                 return View("Index");
             }
             if (reqType == "2")
@@ -86,6 +98,10 @@ namespace SignalSystemApp.Controllers
                 }
                 ViewData["RequestType"] = "Shifting";
                 ViewData["AvailableNumbers"] = aTelephoneNumber.GetAllotedNumbersForExistingUser(connectionType,addressType,baNumber);
+                ViewData["baNumber"] = baNumber;
+                ViewData["reqType"] = reqType;
+                ViewData["addressType"] = addressType;
+                ViewData["connectionType"] = connectionType;
                 return View("Index");
             }
             if (reqType == "3")
@@ -100,15 +116,27 @@ namespace SignalSystemApp.Controllers
                 }
                 ViewData["RequestType"] = "Termination";
                 ViewData["AvailableNumbers"] = aTelephoneNumber.GetAllotedNumbersForExistingUser(connectionType, addressType, baNumber);
+                ViewData["baNumber"] = baNumber;
+                ViewData["reqType"] = reqType;
+                ViewData["addressType"] = addressType;
+                ViewData["connectionType"] = connectionType;
                 return View("Index");
             }
-           
+
+            ViewData["baNumber"] = baNumber;
+            ViewData["reqType"] = reqType;
+            ViewData["addressType"] = addressType;
+            ViewData["connectionType"] = connectionType;
             return View("Index");
+
+
         }
         [Authenticate]
         public ActionResult AddNewRequest()
         {
            
+
+
 
             string BANumberID = Request["BANumberID"].ToString().Trim();
 
@@ -125,6 +153,12 @@ namespace SignalSystemApp.Controllers
             string Address = Request["Address"].ToString().Trim();
             string Comment = Request["Comment"].ToString().Trim();
             string RequestType = Request["RequestType"].ToString().Trim();
+
+
+            ViewData["baNumber"] = BANumber;
+            ViewData["reqType"] = RequestType;
+            ViewData["addressType"] = AddressType;
+            ViewData["connectionType"] = ConnectionType;
 
             TelephoneRequestInfo aInfo = new TelephoneRequestInfo()
             {
