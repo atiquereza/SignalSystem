@@ -83,12 +83,9 @@ namespace SignalSystemApp.Models.TelephoneUser
 
         private bool IsBANumberUnique(TelephoneUserInfo aTelephoneUserInfo)
         {
-            string query = "select * from phoneuserpersonalinfo where BANumber=@BANumber;";
-            Hashtable aHashtable = new Hashtable()
-            {
-                {"BANumber",aTelephoneUserInfo.BANumber}
-            };
-            if (aGateway.Select(query, aHashtable).Tables[0].Rows.Count == 0)
+            string query = "select * from phoneuserpersonalinfo where BANumber='" + aTelephoneUserInfo.BANumber + "';";
+           
+            if (aGateway.Select(query).Tables[0].Rows.Count == 0)
             {
                 return true;
             }
@@ -180,9 +177,6 @@ namespace SignalSystemApp.Models.TelephoneUser
                 }
                 );
             }
-
-
-
 
             totalRecords = Convert.ToInt32(aSet.Tables[1].Rows[0][0]);
             filteredRecord = allUsers.Count;
