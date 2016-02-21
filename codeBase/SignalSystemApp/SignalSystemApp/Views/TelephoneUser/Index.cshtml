@@ -1,5 +1,6 @@
 ﻿@using SignalSystem.Libs;
 @using SignalSystemApp.Views.Classes;
+@using SignalSystemApp.Models.TelephoneUser;
 
 @{
     string message = string.Empty;
@@ -20,6 +21,80 @@
         }
 
     }
+
+    string baNumber = string.Empty;
+    string name = string.Empty;
+    string appointment = string.Empty;
+    string plateName = string.Empty;
+    string rankForm = string.Empty;
+    string unit = string.Empty;
+    string serviceStatusOnService = string.Empty;
+    string serviceStatusLpr = string.Empty;
+    string joiningDate = string.Empty;
+    string ofcAddress = string.Empty;
+    string presentAddress = string.Empty;
+    string permanentAddress = string.Empty;
+    string personalPhone = string.Empty;
+    string emailAddress = string.Empty;
+    string genderMale = string.Empty;
+    string genderFemale = string.Empty;
+    string maritalStatusMarried = string.Empty;
+    string maritalStatusUnmarried = string.Empty;
+    TelephoneUserInfo aTelephoneUserInfo = new TelephoneUserInfo();
+    if( ViewData["TelephoneUserInfo"] != null)
+    {
+          aTelephoneUserInfo =(TelephoneUserInfo) ViewData["TelephoneUserInfo"];
+
+                baNumber = aTelephoneUserInfo.BANumber;
+                name = aTelephoneUserInfo.FullName;
+                appointment = aTelephoneUserInfo.Appointment;
+                plateName = aTelephoneUserInfo.PlateName;
+                rankForm = aTelephoneUserInfo.RankID;
+                unit = aTelephoneUserInfo.Unit;
+                if (aTelephoneUserInfo.ServiceStatus == "On Service")
+                {
+                    serviceStatusOnService = "checked";
+                }
+                else
+                {
+                    serviceStatusLpr = "checked";
+                }
+                joiningDate = aTelephoneUserInfo.JoiningDate.ToString("dd/MM/yyyy");
+                ofcAddress = aTelephoneUserInfo.OfficeAddress;
+                presentAddress = aTelephoneUserInfo.PresentAddress;
+                permanentAddress = aTelephoneUserInfo.PermanentAddress;
+                personalPhone = aTelephoneUserInfo.PersonalPhoneNumber;
+                emailAddress = aTelephoneUserInfo.EmailAddress;
+                if (aTelephoneUserInfo.Sex == "male")
+                {
+                    genderMale = "checked";
+                }
+                else
+                {
+                    genderFemale = "checked";
+                }
+                if (aTelephoneUserInfo.MaritalStatus == "unmarried")
+                {
+                    maritalStatusUnmarried = "checked";
+                }
+                else
+                {
+                    maritalStatusMarried = "checked";
+                }
+
+
+    }else
+    {
+        serviceStatusOnService ="checked";
+        genderMale = "checked";
+        maritalStatusMarried ="checked";
+
+    }
+
+
+    
+
+
 
     List<Dictionary<string, string>> ranks = FrameworkItems.GetRanks();    
     string optionsRank = string.Empty;
@@ -55,7 +130,7 @@
                 BA Number:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="banumber" placeholder="Enter BA Number" name="BANumber" required>
+                <input type="text" class="form-control" id="banumber" placeholder="Enter BA Number" name="BANumber" value="@baNumber" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -66,7 +141,7 @@
                 Name:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="FullName" required>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="FullName" value="@name" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -77,7 +152,7 @@
                 Appointment:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="appointment" placeholder="Enter Appointment" name="Appointment" required>
+                <input type="text" class="form-control" id="appointment" placeholder="Enter Appointment" name="Appointment" value="@appointment" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -89,7 +164,7 @@
                 Plate Name:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="plate-name" placeholder="Enter Plate Name" name="PlateName" required>
+                <input type="text" class="form-control" id="plate-name" placeholder="Enter Plate Name" name="PlateName" value="@plateName" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -112,7 +187,7 @@
                 Unit:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="unit" placeholder="Enter Unit Name" name="Unit">
+                <input type="text" class="form-control" id="unit" placeholder="Enter Unit Name" name="Unit" value="@unit" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -124,20 +199,15 @@
             </label>
             <div class="col-md-9">
                 <label class="radio">
-                    <input type="radio" name="ServiceStatus" id="OnService" value="On Service" name="OnService"  checked>
+                    <input type="radio" name="ServiceStatus" id="OnService" value="On Service" name="OnService"  @serviceStatusOnService>
                     On Service
                 </label>
                 <label class="radio">
-                    <input type="radio" name="ServiceStatus" id="LPR" value="LPR" >
+                    <input type="radio" name="ServiceStatus" id="LPR" value="LPR" @serviceStatusLpr>
                     LPR
                 </label>
             </div>
-            @*<div class="col-md-9">
-                <select id="user-role" class="form-control" name="ServiceStatus">
-                    <option>--Please Select--</option>
-                    @Html.Raw(optionsServiceStatus)
-                </select>
-            </div>*@
+           
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
             </div>
@@ -147,11 +217,9 @@
             Joining Date:
         </label>
         <div class="col-md-9">
-            <input type="text" id='datepicker1' class="form-control" placeholder="Enter Joining Date" name="JoiningDate"style="color: black;width: 200px;" required> 
+            <input type="text" id='datepicker1' class="form-control" placeholder="Enter Joining Date" name="JoiningDate"style="color: black;width: 200px;" value="@joiningDate" required> 
         </div>
         <div class="col-md-1">
-               
-            @*  <i class="fa fa-lock fa-2x"></i>*@
         </div>
     </div>
     <div id="LPRDate">
@@ -162,7 +230,7 @@
                 <input type="text" id='datepicker2' class="form-control" placeholder="Enter LPR Date" name="LPRDate" style="color: black; width: 200px;"> 
             </div>
         <div class="col-md-1">  
-            @*<i class="fa fa-lock fa-2x"></i>*@
+          
         </div>
         </div>
      <div>
@@ -170,7 +238,7 @@
                Office Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="office-address" placeholder="Enter Office Address" name="OfficeAddress" required></textarea>
+                <textarea type="text" class="form-control" id="office-address" placeholder="Enter Office Address" name="OfficeAddress"  required>@ofcAddress</textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -181,7 +249,7 @@
                Presenet Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="home-address" placeholder="Enter Home Address" name="PresentAddress" required></textarea>
+                <textarea type="text" class="form-control" id="home-address" placeholder="Enter Home Address" name="PresentAddress" required>@presentAddress</textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -192,7 +260,7 @@
                Permanent Address:
             </label>
             <div class="col-md-9">
-                <textarea type="text" class="form-control" id="permanent-address" placeholder="Enter Permanent Address" name="PermanentAddress" required></textarea>
+                <textarea type="text" class="form-control" id="permanent-address" placeholder="Enter Permanent Address" name="PermanentAddress" required>@permanentAddress</textarea>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -203,7 +271,7 @@
                Personal Phone:
             </label>
             <div class="col-md-9">
-                <input type="text" class="form-control" id="personal-phone" placeholder="Enter Personal" name="PersonalPhoneNumber" required>
+                <input type="text" class="form-control" id="personal-phone" placeholder="Enter Personal" name="PersonalPhoneNumber" value="@personalPhone" required>
             </div>
             <div class="col-md-1">
                 <i class="fa fa-lock fa-2x"></i>
@@ -214,7 +282,7 @@
                 Email address:
             </label>
             <div class="col-md-9">
-                <input type="email" class="form-control" id="emailaddress" placeholder="Enter email address" name="EmailAddress" required>
+                <input type="email" class="form-control" id="emailaddress" placeholder="Enter email address" name="EmailAddress" value="@emailAddress" required>
                 <p class="help-block">
                     Example: yourname@domain.com
                 </p>
@@ -229,11 +297,11 @@
             </label>
             <div class="col-md-10">
                 <label class="radio">
-                    <input type="radio" name="Sex" id="sex" value="male" name="male" checked >
+                    <input type="radio" name="Sex" id="sex" value="male" name="male" @genderMale >
                     Male
                 </label>
                 <label class="radio">
-                    <input type="radio" name="Sex" id="sex" value="female">
+                    <input type="radio" name="Sex" id="sex" value="female" @genderFemale>
                     Female
                 </label>
             </div>
@@ -244,11 +312,11 @@
             </label>
             <div class="col-md-10">
                 <label class="radio">
-                    <input type="radio" name="MaritalStatus" id="sex" value="unmarried" name="unmarried" checked >
+                    <input type="radio" name="MaritalStatus" id="sex" value="unmarried" name="unmarried" @maritalStatusUnmarried  >
                     Unmarried
                 </label>
                 <label class="radio">
-                    <input type="radio" name="MaritalStatus" id="sex" value="married">
+                    <input type="radio" name="MaritalStatus" id="sex" value="married" @maritalStatusMarried >
                     Married
                 </label>
             </div>

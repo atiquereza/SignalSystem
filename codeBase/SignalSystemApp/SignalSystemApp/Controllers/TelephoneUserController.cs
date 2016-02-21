@@ -29,6 +29,15 @@ namespace SignalSystemApp.Controllers
         [HttpPost]
         public ActionResult AddNewTelephoneUser(TelephoneUserInfo aTelephoneUserInfo)
         {
+
+           
+
+            if (aTelephoneUserInfo.RankID == null)
+            {
+                ViewData["Message"] = "Error! Please Set All Fields";
+                ViewData["TelephoneUserInfo"] = aTelephoneUserInfo;
+                return View("Index");
+            }
             if (aTelephoneUserInfo.BANumber.Trim().Length == 0
                 || aTelephoneUserInfo.Appointment.Trim().Length == 0
                 || aTelephoneUserInfo.EmailAddress.Trim().Length == 0
@@ -45,8 +54,10 @@ namespace SignalSystemApp.Controllers
                 || aTelephoneUserInfo.Unit.Trim().Length == 0)
 
 
-            {
+            {               
+
                 ViewData["Message"] = "Error! Please Set All Fields";
+                ViewData["TelephoneUserInfo"] = aTelephoneUserInfo;
                 return View("Index");
             }
 
@@ -54,6 +65,7 @@ namespace SignalSystemApp.Controllers
                 && aTelephoneUserInfo.LPRDate.ToString("yyyy-MM-dd") == "0001-01-01")
             {
                 ViewData["Message"] = "Error! Please Set LPR Date Fields";
+                ViewData["TelephoneUserInfo"] = aTelephoneUserInfo;
                 return View("Index");
             }
 
@@ -61,6 +73,7 @@ namespace SignalSystemApp.Controllers
             string message = aUser.AddTelephoneUser(aTelephoneUserInfo);
 
             ViewData["Message"] = message;
+            ViewData["TelephoneUserInfo"] = aTelephoneUserInfo;
             return View("Index");
         }
         [Authenticate]
@@ -132,6 +145,34 @@ namespace SignalSystemApp.Controllers
                 aaData = terminatedHistory
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [Authenticate]
+        public ActionResult ViewEnlistedTelephoneUsers()
+        {
+            return View();
+        }
+        [Authenticate]
+        public ActionResult GetActiveTelephoneUsers(JQueryDataTableParamModel aModel)
+        {
+            TelephoneUser aUser = new TelephoneUser();
+            int totalRecords = 0;
+            int filteredRecord = 0;
+
+            string baNumber = Convert.ToString(Request["sSearch_0"]);
+            string name = Convert.ToString(Request["sSearch_1"]);
+            string palteName = Convert.ToString(Request["sSearch_2"]);
+            string rank = Convert.ToString(Request["sSearch_3"]);
+
+            List<string[]> allUsers = aUser.GetAllTelephoneUser(out totalRecords,out filteredRecord,aModel.iDisplayStart,aModel.iDisplayLength,baNumber,name,palteName,rank);
+            return Json(new
+            {
+                sEcho = aModel.sEcho,
+                iTotalRecords = filteredRecord,
+                iTotalDisplayRecords = totalRecords,
+                aaData = allUsers
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 
 }

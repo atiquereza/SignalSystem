@@ -116,5 +116,77 @@ namespace SignalSystemApp.Models.TelephoneUser
             }
             return aInfo;
         }
+
+        public List<string[]> GetAllTelephoneUser(out int totalRecords, out int filteredRecord, int start, int length,string baNumber,string name,string palteName,string rank)
+        {
+
+
+            string query = "select * from  phoneuserpersonalinfo left join menusrank on "+
+            "phoneuserpersonalinfo.RankId = menusrank.id where ";
+
+            string countQuery = "select count(*) from  phoneuserpersonalinfo left join menusrank on " +
+           "phoneuserpersonalinfo.RankId = menusrank.id where ";
+            if (baNumber.Trim().Length != 0)
+            {
+                query += " phoneuserpersonalinfo.BANumber like '%" + baNumber + "%' and ";
+                countQuery += " phoneuserpersonalinfo.BANumber like '%" + baNumber + "%' and ";
+            }
+            if (name.Trim().Length != 0)
+            {
+                query += " phoneuserpersonalinfo.FullName like '%" + name + "%' and ";
+                countQuery += " phoneuserpersonalinfo.FullName like '%" + name + "%' and ";
+            }
+            if (palteName.Trim().Length != 0)
+            {
+                query += " phoneuserpersonalinfo.PlateName like '%" + palteName + "%' and ";
+                countQuery += " phoneuserpersonalinfo.PlateName like '%" + palteName + "%' and ";
+            }
+            if (rank.Trim().Length != 0)
+            {
+                query += " menusrank.Value like '%" + rank + "%' and ";
+                countQuery += " menusrank.Value like '%" + rank + "%' and ";
+            }
+
+
+            if (baNumber.Trim().Length == 0 && name.Trim().Length == 0 && palteName.Trim().Length == 0 && rank.Trim().Length == 0)
+            {
+                query = query.Trim().Substring(0, query.Trim().LastIndexOf("where"));
+                countQuery = countQuery.Trim().Substring(0, countQuery.Trim().LastIndexOf("where"));
+
+            }
+            else
+            {
+                query = query.Trim().Substring(0, query.Trim().LastIndexOf("and"));
+                countQuery = countQuery.Trim().Substring(0, countQuery.Trim().LastIndexOf("and"));
+
+
+            }
+            query += " limit " + start + "," + start + length + ";" + countQuery+ ";";
+
+            DataSet aSet = aGateway.Select(query);
+
+            List<string[]> allUsers = new List<string[]>();
+
+            foreach (DataRow dataRow in aSet.Tables[0].Rows)
+            {
+                allUsers.Add(new string[]
+                {
+                     dataRow["BANumber"].ToString(),
+                     dataRow["FullName"].ToString(),
+                     dataRow["PlateName"].ToString(),
+                     dataRow["Value"].ToString(),
+                     dataRow["PresentAddress"].ToString(),
+                     dataRow["OfficeAddress"].ToString()
+                }
+                );
+            }
+
+
+
+
+            totalRecords = Convert.ToInt32(aSet.Tables[1].Rows[0][0]);
+            filteredRecord = allUsers.Count;
+            return allUsers;
+        }
     }
 }
